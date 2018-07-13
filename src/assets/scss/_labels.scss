@@ -1,0 +1,40 @@
+.labels {
+    padding: 0;
+    display: inline-block;
+    li {
+        display: inline-block;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+    }
+}
+
+.label {
+    display: inline-block;
+    background: #f2f2f2;
+    color: black;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    padding: .2rem .5rem;
+}
+
+.is-Plugin { background-color: #bfd4f2;}
+.is-Screenshot { background-color: #207DE5; color: #fff;}
+.is-Field { background-color: #FAD8C7;}
+.is-Panel { background-color: #000; color: #fff;}
+.is-CLI { background-color: #006B75; color: #fff;}
+.is-Commercial { background-color: #5319e7; color: #fff;}
+.is-Blueprint { background-color: #C7DEF8;}
+.is-Controller { background-color: #bfdadc;}
+.is-Beta { background-color: #ED6420; color: #fff;}
+.is-Widget { background-color: #BFE5BF;}
+.is-Misc { background-color: #5BDDF6;}
+.is-Snippet { background-color: #FEFC20;}
+.is-Template { background-color: #F7C6C7;}
+.is-Tag { background-color: #c7e9bd;}
+.is-Model { background-color: #d4c5f9;}
+.is-Tutorial { background-color: #e1f7c6;}
+.is-Core { background-color: #e3e2e2;}
+.is-Broken { background-color: #e11d21; color: #fff;}
+.is-Field-method { background-color: #d4c5f9;}
+.is-Deprecated { background-color: #FBCA04;}
+.is-email { background-color: #80eda9;}

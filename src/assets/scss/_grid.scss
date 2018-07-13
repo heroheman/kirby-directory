@@ -1,0 +1,50 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.l-container {
+  display: block;
+  width: 100%;
+  margin: 0 1rem 0;
+  max-width: $maxWidth;
+  @media screen and (min-width: $sm) {
+    margin: 0 auto;
+  }
+
+  &--grid {
+    display: grid;
+    grid-template-areas:  "header"
+                          "main"
+                          "main"
+                          "footer";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr 1fr 1fr;
+
+    @media screen and (min-width: $xs) {
+      grid-template-areas:  "header main main main"
+                            "header main main main"
+                            "header main main main"
+                            "footer main main main";
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+    }
+  }
+}
+
+.l-header {
+  grid-area: header;
+  @media screen and (min-width: $sm) {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+}
+.l-main {
+  grid-area: main;
+}
+.l-footer {
+  grid-area: footer;
+}

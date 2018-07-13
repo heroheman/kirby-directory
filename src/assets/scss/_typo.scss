@@ -1,0 +1,23 @@
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: $font-main;
+  font-size:16px;
+}
+
+p, li, span {
+  font-size: 1.6rem;
+}
+
+a {
+  color: $cLink;
+  text-decoration: none;
+  border-bottom: 1px solid $cBorder;
+}
+
+p {
+  line-height: 1.5;
+  font-size: 1.8rem;
+}
