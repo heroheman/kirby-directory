@@ -58,9 +58,6 @@ export default {
     }
   },
   computed: {
-    filterByPanel () {
-      return this.$store.state.items.filter(item => item.comments > 3)
-    },
     ...mapState([
       'items',
       'displayedItems'
@@ -70,41 +67,32 @@ export default {
     ])
   },
   watch: {
-    '$route.params.label': function () {
-      if (this.$route.params.label) {
-        this.label = this.$route.params.label
-        this.$store.dispatch('getResultsWithPage', {label: this.label, page: this.page})
-      } else {
-        this.$store.dispatch('getResultsAll')
-      }
+    '$route.params': function () {
+      let label = this.$route.params.label
+      let page = this.$route.params.page || 1
+      this.$store.dispatch('getResultsFilter', {label: label, page: page})
     },
-    '$route.params.page': function () {
-      if (this.$route.params.page) {
-        this.page = this.$route.params.page
-        this.$store.dispatch('getResultsWithPage', {label: this.label, page: this.page})
-      }
-    }
   },
   methods: {
     ...mapActions([
       'fetchItemsAll',
       'getResultsAll',
-      'getResultsFilter',
-      'getResultsWithPage',
-      'getPage',
-      'incPage',
-      'decPage'
+      'getResultsFilter'
     ])
   },
   created () {
   },
   mounted () {
-    if (this.$route.params.label === undefined) {
-      this.$store.dispatch('getResultsAll')
-    } else {
-      this.label = this.$route.params.label
-      this.$store.dispatch('getResultsFilter', {label: this.label})
-    }
+    let label = this.$route.params.label
+    let page = this.$route.params.page || 1
+    this.$store.dispatch('getResultsFilter', {label: label, page: page})
+
+    // if (this.$route.params.label === undefined) {
+    //   this.$store.dispatch('getResultsAll')
+    // } else {
+    //   this.label = this.$route.params.label
+    //   this.$store.dispatch('getResultsFilter', {label: this.label})
+    // }
 
     this.$on('searchChanged', results => {
       this.searchResults = results

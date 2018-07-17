@@ -36,7 +36,7 @@ const mutations = {
     state.displayedItems.results = state.items
   },
   SET_RESULTS_FILTER: (state, payload) => {
-    state.displayedItems.results = state.items.filter(i => i.labels.some(i => i.name === payload.label))
+    // state.displayedItems.results = state.items.filter(i => i.labels.some(i => i.name === payload.label))
   },
   SET_MAX_PAGE: (state) => {
     let pageNumber = Math.floor(state.displayedItems.results.length / state.displayedItems.perPage)
@@ -47,32 +47,24 @@ const mutations = {
       state.displayedItems.maxPage = pageNumber
     }
   },
-  SET_RESULTS_PAGE: (state) => {
+  SET_RESULTS_PAGE: (state, payload) => {
+    const {label, page} = payload
+    console.log(payload, label, page)
+    if (label !== undefined) {
+      // get all items with label
+      state.displayedItems.results = state.items.filter(i => i.labels.some(i => i.name === label))
+    } else {
+      state.displayedItems.results = state.items
+    }
+
+    // set currentpage
+    state.displayedItems.currentPage = page
+
+    // get only paged from pageview
     const start = state.displayedItems.currentPage * state.displayedItems.perPage
     const end = start + state.displayedItems.perPage
-    console.log(start, end, state.displayedItems.currentPage)
+
     state.displayedItems.resultsPaged = state.displayedItems.results.slice(start, end)
-  },
-  SET_PAGE_NUMBER: (state, page) => {
-    const maxPage = state.displayedItems.maxPage
-    console.log('set current page to', page)
-    if (page < maxPage) {
-      state.displayedItems.currentPage = page
-    }
-  },
-  INC_PAGE_NUMBER: (state) => {
-    const currentPage = state.displayedItems.currentPage
-    const maxPage = state.displayedItems.maxPage
-    if (currentPage < maxPage) {
-      state.displayedItems.currentPage++
-    }
-  },
-  DEC_PAGE_NUMBER: (state) => {
-    const currentPage = state.displayedItems.currentPage
-    state.displayedItems.currentPage--
-    if (currentPage > 0) {
-      state.displayedItems.currentPage++
-    }
   },
   TOGGLE_LOADING: (state) => {
     state.isLoading = !state.isLoading
@@ -110,36 +102,9 @@ const actions = {
   },
   getResultsAll ({ commit, state }) {
     commit('SET_RESULTS_ALL')
-    commit('SET_MAX_PAGE')
-    commit('SET_RESULTS_PAGE')
   },
-  getResultsFilter ({commit, state}, label) {
-    commit('SET_RESULTS_FILTER', label)
-    commit('SET_MAX_PAGE')
-    commit('SET_RESULTS_PAGE')
-  },
-  getResultsWithPage ({commit, state}, payload) {
-    let {label, page} = payload
-    console.log(label, page)
-    commit('SET_RESULTS_FILTER', label)
-    commit('SET_MAX_PAGE')
-    commit('SET_PAGE_NUMBER', page)
-    commit('SET_RESULTS_PAGE')
-  },
-  getPage ({commit, state}, page) {
-    commit('SET_MAX_PAGE')
-    commit('SET_PAGE_NUMBER', page)
-    commit('SET_RESULTS_PAGE')
-  },
-  incPage ({commit, state}) {
-    commit('SET_MAX_PAGE')
-    commit('INC_PAGE_NUMBER')
-    commit('SET_RESULTS_PAGE')
-  },
-  decPage ({commit, state}) {
-    commit('SET_MAX_PAGE')
-    commit('DEC_PAGE_NUMBER')
-    commit('SET_RESULTS_PAGE')
+  getResultsFilter ({commit, state}, payload) {
+    commit('SET_RESULTS_PAGE', payload)
   },
   toggleLoading ({commit, state}) {
     commit('TOGGLE_LOADING')
@@ -147,7 +112,6 @@ const actions = {
 }
 
 const getters = {
-  getItemsByLabel: state => label => state.items.filter(i => i.labels.some(l => l.name === label)),
   getLoading: state => state.isLoading
   // expanded:
   // filtered: (state) => (label) => {

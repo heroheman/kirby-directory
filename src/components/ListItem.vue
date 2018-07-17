@@ -1,4 +1,4 @@
-:<template>
+<template>
   <div class="listitem">
     {{ item.title }} &mdash;
     <span v-for="label in item.labels" :key="label.id">
