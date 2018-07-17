@@ -12,7 +12,7 @@ export default new Router({
       component: List
     },
     {
-      path: '/:label?',
+      path: '/:label/:page?',
       name: 'List',
       component: List
     }
