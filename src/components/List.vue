@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="list">
 
-    {{ getLoading }}
+    Loading: {{ getLoading }}
     <br>
 
     <!-- <vue-fuse :keys="keys" :list="items" event-name="searchChanged" :treshold="0.1"/>
@@ -13,21 +13,14 @@
       </li>
     </ul> -->
 
-    <router-link :to="{ name: 'ListStart' }">All</router-link>
-    <router-link :to="{ name: 'List', params: { label: 'Panel' }}">Panel</router-link>
-    <router-link :to="{ name: 'List', params: { label: 'Panel', page: 1 }}">Panel 1</router-link>
-    <router-link :to="{ name: 'List', params: { label: 'Panel', page: 2 }}">Panel 2</router-link>
-    <router-link :to="{ name: 'List', params: { label: 'CLI' }}">CLI</router-link>
-    <router-link :to="{ name: 'List', params: { label: 'Commercial' }}">Commercial</router-link>
-
-    <button @click="decPage()">Prev</button>
-    <button @click="getPage(2)">goto2</button>
-    <button @click="incPage()">Next</button>
-    <ol>
-      <li v-for="item in displayedItems.resultsPaged" :key="item.id">
+    <ul class="list__items" v-if="results !== 0">
+      <li class="list__item"
+        v-for="item in displayedItems.resultsPaged"
+        :key="item.id">
         <ListItem :item="item"/>
       </li>
-    </ol>
+    </ul>
+
     <Pagination :label="label" :currentPage="page"/>
   </div>
 </template>
@@ -63,7 +56,6 @@ export default {
       this.label = this.$route.params.label
       this.page = this.$route.params.page || 1
       this.$store.dispatch('getResultsFilter', {label: this.label, page: this.page})
-
     }
   },
   methods: {
@@ -94,5 +86,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+@import './../assets/scss/_vars.scss';
+.list {
+  position: relative;
+  padding: 10px;
+  min-height: 70vh;
+
+  &__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    border: 1px solid #eee;
+    margin-bottom: 3rem;
+    padding: 2rem;
+  }
+
+}
 </style>

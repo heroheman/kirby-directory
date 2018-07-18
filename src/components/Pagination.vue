@@ -12,8 +12,6 @@
         {{ i }}
       </router-link>
     </li>
-    {{ label }}
-    {{ page }}
   </ul>
 </template>
 
