@@ -39,17 +39,10 @@ const mutations = {
     // state.displayedItems.results = state.items.filter(i => i.labels.some(i => i.name === payload.label))
   },
   SET_MAX_PAGE: (state) => {
-    let pageNumber = Math.floor(state.displayedItems.results.length / state.displayedItems.perPage)
-
-    if (pageNumber === 0) {
-      state.displayedItems.maxPage = 0
-    } else {
-      state.displayedItems.maxPage = pageNumber
-    }
   },
   SET_RESULTS_PAGE: (state, payload) => {
     const {label, page} = payload
-    console.log(payload, label, page)
+
     if (label !== undefined) {
       // get all items with label
       state.displayedItems.results = state.items.filter(i => i.labels.some(i => i.name === label))
@@ -58,7 +51,11 @@ const mutations = {
     }
 
     // set currentpage
-    state.displayedItems.currentPage = page
+    if (page !== 0) {
+      state.displayedItems.currentPage = page - 1
+    } else {
+      state.displayedItems.currentPage = page
+    }
 
     // get only paged from pageview
     const start = state.displayedItems.currentPage * state.displayedItems.perPage
@@ -112,13 +109,10 @@ const actions = {
 }
 
 const getters = {
-  getLoading: state => state.isLoading
-  // expanded:
-  // filtered: (state) => (label) => {
-  //   return state.items.filter((item) => {
-  //     return item.labels.some(l => l.name == label)
-  //   })
-  // }
+  getLoading: state => state.isLoading,
+  getLastPage: state => {
+    return Math.ceil(state.displayedItems.results.length / state.displayedItems.perPage)
+  }
 }
 
 const store = new Vuex.Store({

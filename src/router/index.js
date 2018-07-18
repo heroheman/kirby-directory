@@ -8,6 +8,10 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: {name: 'ListStart'}
+    },
+    {
+      path: '/all/:page?',
       name: 'ListStart',
       component: List
     },

@@ -4,16 +4,6 @@
     {{ getLoading }}
     <br>
 
-    <!-- <ul>
-      <li v-for="item in getItemsByLabel('CLI')" :key="item.id">
-        {{item.title}}
-        {{item.comments}}
-        <span v-for="label in item.labels" :key="label.id">
-          {{label.name}}
-        </span>
-      </li>
-    </ul> -->
-
     <!-- <vue-fuse :keys="keys" :list="items" event-name="searchChanged" :treshold="0.1"/>
 
     <ul>
@@ -38,6 +28,7 @@
         <ListItem :item="item"/>
       </li>
     </ol>
+    <Pagination :label="label" :currentPage="page"/>
   </div>
 </template>
 
@@ -45,10 +36,11 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import VueFuse from 'vue-fuse'
 import ListItem from './ListItem.vue'
+import Pagination from './Pagination.vue'
 
 export default {
   name: 'List',
-  components: {VueFuse, ListItem},
+  components: {VueFuse, ListItem, Pagination},
   data () {
     return {
       keys: ['title'],
@@ -68,10 +60,11 @@ export default {
   },
   watch: {
     '$route.params': function () {
-      let label = this.$route.params.label
-      let page = this.$route.params.page || 1
-      this.$store.dispatch('getResultsFilter', {label: label, page: page})
-    },
+      this.label = this.$route.params.label
+      this.page = this.$route.params.page || 1
+      this.$store.dispatch('getResultsFilter', {label: this.label, page: this.page})
+
+    }
   },
   methods: {
     ...mapActions([

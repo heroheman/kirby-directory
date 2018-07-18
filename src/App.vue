@@ -1,22 +1,26 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div id="app" class="l-container l-container--grid">
+    <!-- l-header -->
+    <HeaderSection>
+      kirby <span>plugins</span>
+    </HeaderSection>
+
+    <main class="l-main">
+      <router-view/>
+    </main>
   </div>
 </template>
 
 <script>
+import HeaderSection from './components/Header.vue'
 export default {
-  name: 'App'
+  name: 'App',
+  components: { HeaderSection }
 }
 </script>
 
 <style lang="scss">
 @import './assets/scss/main.scss';
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
