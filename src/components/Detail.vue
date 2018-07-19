@@ -31,26 +31,7 @@
         </ul>
       </div>
 
-      <div class="detail__body-section">
-
-        <h3 class="detail__subheadline is-toggle"
-          title="Show Readme"
-          @click="showReadme()"
-          >
-          Show Readme
-        </h3>
-
-        <h3 class="detail__subheadline is-toggle"
-            title="Hide Readme"
-            @click="hideReadme()"
-            >
-          Hide Readme
-        </h3>
-
-        <vue-markdown class="detail__readme" :source="detail.readme" v-if="readmeVisible">
-        </vue-markdown>
-      </div>
-
+      <DetailReadme />
       <DetailComments />
 
     </div>
@@ -58,54 +39,24 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import VueMarkdown from 'vue-markdown'
 import DetailComments from './DetailComments.vue'
+import DetailReadme from './DetailReadme.vue'
 
 export default {
   name: 'DetailView',
-  components: {VueMarkdown, DetailComments},
-  data () {
-    return {
-      readmeVisible: false,
-      commentsVisible: false
-    }
-  },
+  components: {VueMarkdown, DetailComments, DetailReadme},
   computed: {
     ...mapState([
       'detail'
     ]),
     ...mapGetters([
-      'getLoading',
-      'getPluginRepo'
+      'getLoading'
     ])
   },
   mounted () {
     this.$store.dispatch('getDetail', {number: this.$route.params.id})
-  },
-  methods: {
-    ...mapActions([
-      'getComments',
-      'getReadme'
-    ]),
-    showReadme: function () {
-      if (this.detail.readme === '') {
-        this.getReadme(this.getPluginRepo)
-      }
-      this.readmeVisible = true
-    },
-    hideReadme: function () {
-      this.readmeVisible = false
-    },
-    showComments: function () {
-      if (this.detail.readme === '') {
-        this.getComments(this.$route.params.id)
-      }
-      this.commentsVisible = true
-    },
-    hideComments: function () {
-      this.commentsVisible = false
-    }
   }
 }
 </script>
@@ -179,63 +130,8 @@ export default {
             }
         }
     }
-    &__readme {
-        padding: 0 1rem;
-        h1, h2, h3, h4, h5, h6 {
-            font-size: 2rem;
-        }
-    }
     img {
           max-width: 100%;
       }
   }
-    .comment {
-        display: grid;
-        grid-template-areas: "img head"
-                            "img body"
-                            "img body";
-        grid-template-columns: 1fr 7fr;
-        grid-template-rows: 1fr 1fr 1fr;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 2rem;
-        padding: 2rem;
-        &__img {
-            grid-area: img;
-            img {
-                border-radius: 5px;
-                height: auto;
-                width: 100%;
-                max-width: 8rem;
-            }
-        }
-        &__head {
-            grid-area: head;
-        }
-            &__name {
-            }
-            &__date {
-            }
-            &__link {
-            }
-        &__body {
-            grid-area: body;
-            p {
-                margin: 0;
-            }
-        }
-    }
-    .comments {
-        margin-top: 2rem;
-        &-note {
-            margin: 0;
-            .icon {
-                margin-left: 1rem;
-                margin-right: .5rem;
-            }
-            // + button {
-            //     margin-top: 1rem;
-            // }
-        }
-    }
 </style>
