@@ -10,7 +10,7 @@
     <ul class="labels listitem__labels">
       <li class="listitem__label" v-for="label in item.labels" :key="label.id">
         <router-link
-          :to="{name:'list', params:{ type: label.name }}"
+          :to="{name:'List', params:{ label: label.name }}"
           :class="['label', `is-${label.name}`]"
           >
           {{ label.name }}

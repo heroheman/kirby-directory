@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import List from '@/components/List'
+import Detail from '@/components/Detail'
 
 Vue.use(Router)
 
@@ -9,6 +10,11 @@ export default new Router({
     {
       path: '/',
       redirect: {name: 'ListStart'}
+    },
+    {
+      path: '/detail/:id',
+      name: 'Detail',
+      component: Detail
     },
     {
       path: '/all/:page?',

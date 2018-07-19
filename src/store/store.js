@@ -3,12 +3,19 @@ import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
 const searchApi = 'https://api.github.com/search/issues?q=is:open+repo:jenstornell/kirby-plugins&sort=desc&order=created'
-// const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
+// const commentApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues/'
+const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
+const repoApi = 'https://api.github.com/repos'
 
 Vue.use(Vuex)
 
 const state = {
   items: [],
+  detail: {
+    item: {},
+    comments: [],
+    readme: ''
+  },
   displayedItems: {
     currentPage: 0,
     perPage: 20,
@@ -65,6 +72,21 @@ const mutations = {
   },
   TOGGLE_LOADING: (state) => {
     state.isLoading = !state.isLoading
+  },
+  GET_DETAIL: (state, payload) => {
+    const {number} = payload
+    // empty details
+    state.detail.comments = []
+    state.detail.readme = ''
+    state.detail.item = state.items.find(i => i.number === Number(number))
+  },
+  GET_README: (state, payload) => {
+    // encrypt payload
+    payload = atob(payload.content)
+    state.detail.readme = payload
+  },
+  GET_COMMENTS: (state, payload) => {
+    state.detail.comments = payload
   }
 }
 
@@ -103,13 +125,36 @@ const actions = {
   getResultsFilter ({commit, state}, payload) {
     commit('SET_RESULTS_PAGE', payload)
   },
-  toggleLoading ({commit, state}) {
+  getDetail ({commit}, payload) {
+    commit('GET_DETAIL', payload)
+  },
+  getComments: async function ({commit}, payload) {
+    const response = await fetch(`${issueApi}/${payload}/comments`)
+      .then(res => res.json())
+    commit('GET_COMMENTS', response)
+  },
+  getReadme: async function ({commit, state}, payload) {
+    let response = await fetch(`${repoApi}/${payload}/readme`)
+      .then(res => res.json())
+    commit('GET_README', response)
+  },
+  toggleLoading (commit) {
     commit('TOGGLE_LOADING')
   }
 }
 
 const getters = {
   getLoading: state => state.isLoading,
+  getPluginRepo: state => {
+    const bodytext = state.detail.item.body
+    let pluginUrl
+    let urlparts = []
+
+    // eslint-disable-next-line
+    pluginUrl = bodytext.match(/https?:\/\/github.com[^\s\)]+/)
+    urlparts = pluginUrl[0].split('/')
+    return urlparts[3] + '/' + urlparts[4]
+  },
   getLastPage: state => {
     return Math.ceil(state.displayedItems.results.length / state.displayedItems.perPage)
   }

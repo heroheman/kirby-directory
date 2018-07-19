@@ -2,7 +2,7 @@
 <div class="l-header">
   <header class="header">
     <h1 class="header__brand">
-      <img alt="" src="../assets/kirbyicon.png"/>
+      <!-- <img alt="" src="../assets/kirbyicon.png"/> -->
       <slot></slot>
     </h1>
     <!-- <nav class="header__icons" v-if="$mq === 'xs'">

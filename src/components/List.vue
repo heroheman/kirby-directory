@@ -13,7 +13,7 @@
       </li>
     </ul> -->
 
-    <ul class="list__items" v-if="results !== 0">
+    <ul class="list__items" v-if="displayedItems !== 0">
       <li class="list__item"
         v-for="item in displayedItems.resultsPaged"
         :key="item.id">

@@ -27,11 +27,6 @@ export default {
     ...mapGetters([
       'getLastPage'
     ])
-  },
-  methods: {
-    randomNumber: function (i) {
-      return i * Math.floor(Math.random() * (10 - 1 + 1)) + 1
-    }
   }
 }
 </script>
