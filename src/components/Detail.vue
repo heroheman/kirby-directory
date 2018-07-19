@@ -51,52 +51,8 @@
         </vue-markdown>
       </div>
 
-      <div class="comment-wrapper detail__body-section">
-        <h3 class="detail__subheadline is-toggle" @click="showComments">
-          Show Comments
-        </h3>
-        <h3 class="detail__subheadline is-toggle" @click="hideComments">
-          Hide Comments
-        </h3>
+      <DetailComments />
 
-        <p class="comments-note" v-if="commentsVisible">
-          <span v-if="detail.comments.length > 0">
-            <!-- <SvgIcon :icon="'comments'"></SvgIcon> -->
-            This Entry has {{detail.comments.length}} Comments.  Participate directly
-            <a :href="detail.html_url">on Github</a>.
-          </span>
-          <span v-if="detail.comments.length === 0">
-            <!-- <SvgIcon :icon="'comments'"></SvgIcon> -->
-            There is currently no comment for this entry. Participate directly
-            <a :href="detail.html_url">on Github</a>.
-          </span>
-        </p>
-
-        <div class="comments" v-if="detail.comments.length > 0">
-          <div class="comment" v-for="comment in detail.comments" :key="comment.id">
-            <div class="comment__img">
-              <img :src="comment.user.avatar_url" :alt="comment.user.login">
-            </div>
-            <div class="comment__head">
-              <span class="comment__name">
-                <a :href="comment.user.html_url">
-                  {{ comment.user.login }}
-                </a>
-              </span>
-              <!-- <span class="comment__date" :time="getRelTime(comment.created_at)">
-                test
-                </span> -->
-                <span class="comment__link">
-                  <a :href="comment.html_url">
-                    show comment on github
-                  </a>
-                </span>
-            </div>
-            <VueMarkdown class="comment__body" :source="comment.body">
-            </VueMarkdown>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 </template>
@@ -104,10 +60,11 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import VueMarkdown from 'vue-markdown'
+import DetailComments from './DetailComments.vue'
 
 export default {
   name: 'DetailView',
-  components: {VueMarkdown},
+  components: {VueMarkdown, DetailComments},
   data () {
     return {
       readmeVisible: false,
