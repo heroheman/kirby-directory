@@ -4,6 +4,7 @@
     <h3 class="detail__subheadline is-toggle"
       title="Show Readme"
       @click="showReadme()"
+      v-if="!readmeVisible"
       >
       Show Readme
     </h3>
@@ -11,6 +12,7 @@
     <h3 class="detail__subheadline is-toggle"
         title="Hide Readme"
         @click="hideReadme()"
+        v-else
         >
       Hide Readme
     </h3>

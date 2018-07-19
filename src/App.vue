@@ -6,6 +6,7 @@
     </HeaderSection>
 
     <main class="l-main">
+      <Search />
       <router-view/>
     </main>
   </div>
@@ -13,9 +14,10 @@
 
 <script>
 import HeaderSection from './components/Header.vue'
+import Search from './components/Search.vue'
 export default {
   name: 'App',
-  components: { HeaderSection }
+  components: { HeaderSection, Search }
 }
 </script>
 

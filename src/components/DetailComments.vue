@@ -1,9 +1,9 @@
 <template>
   <div class="comment-wrapper detail__body-section">
-    <h3 class="detail__subheadline is-toggle" @click="showComments">
+    <h3 class="detail__subheadline is-toggle" @click="showComments" v-if="!commentsVisible">
       Show Comments
     </h3>
-    <h3 class="detail__subheadline is-toggle" @click="hideComments">
+    <h3 class="detail__subheadline is-toggle" @click="hideComments" v-else>
       Hide Comments
     </h3>
 
