@@ -1,9 +1,11 @@
 <template>
   <div class="comment-wrapper detail__body-section">
     <h3 class="detail__subheadline is-toggle" @click="showComments" v-if="!commentsVisible">
+      <font-awesome-icon icon="comments" />
       Show Comments
     </h3>
     <h3 class="detail__subheadline is-toggle" @click="hideComments" v-else>
+      <font-awesome-icon icon="comments" />
       Hide Comments
     </h3>
 

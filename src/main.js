@@ -6,6 +6,14 @@ import router from './router'
 import VueFuse from 'vue-fuse'
 import store from './store/store'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faArrowLeft, faComments, faStream } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(faArrowLeft, faComments, faStream)
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

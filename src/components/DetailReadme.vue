@@ -6,6 +6,7 @@
       @click="showReadme()"
       v-if="!readmeVisible"
       >
+      <font-awesome-icon icon="stream" />
       Show Readme
     </h3>
 
@@ -14,6 +15,7 @@
         @click="hideReadme()"
         v-else
         >
+      <font-awesome-icon icon="stream" />
       Hide Readme
     </h3>
 
@@ -48,7 +50,6 @@ export default {
       'getReadme'
     ]),
     getPluginRepo: function () {
-      console.log('pluginrepo calledj')
       let bodytext = this.detail.item.body
       let pluginUrl
       let urlparts = []
