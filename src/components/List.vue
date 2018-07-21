@@ -12,7 +12,8 @@
       </li>
     </ul>
 
-    <Pagination :label="label" :currentPage="page"/>
+    <Pagination />
+
   </div>
 </template>
 
@@ -26,13 +27,13 @@ export default {
   components: {ListItem, Pagination},
   data () {
     return {
-      label: this.$route.params.label || '',
-      page: this.$route.params.page || '0'
     }
   },
   computed: {
     ...mapState([
       'items',
+      'query',
+      'label',
       'displayedItems'
     ]),
     ...mapGetters([
@@ -41,24 +42,77 @@ export default {
   },
   watch: {
     '$route.params': function () {
-      this.label = this.$route.params.label
-      this.page = this.$route.params.page || 1
-      this.$store.dispatch('getResultsFilter', {label: this.label, page: this.page})
+      // if is label
+      if (this.$route.params.label !== '' && this.$route.params.query !== '') {
+        let page = this.$route.params.page || 1
+        console.log('load all item with page: ', page)
+
+        this.$store.dispatch('getResultsAll')
+        this.$store.commit('PAGE_CURRENT_RESULTS', page)
+      }
+    },
+    '$route.params.label': function () {
+      // if is label
+      if (this.$route.params.label !== '') {
+        let label = this.$route.params.label
+        let page = this.$route.params.page || 1
+        console.log('has label: ', label, page)
+        this.$store.dispatch('getResultsFilter', {label: label, page: page})
+      }
+    },
+    '$route.params.query': function () {
+      // if has search query
+      if (this.$route.params.query !== '' || this.$route.params.query !== undefined) {
+        let query = this.$route.params.query
+        let page = this.$route.params.page || 1
+        console.log('has search: ', query, page)
+        this.getResultsSearch({query: query, page: page})
+      }
+    },
+    '$route.params.page': function () {
+      // no searchquery, no label
+      if (this.$route.params.page !== '') {
+        let page = this.$route.params.page || 1
+
+        if (this.$route.params.label !== '' && this.$route.params.label !== undefined) {
+          console.log('label page changed to: ', page)
+          // this.$store.dispatch('getResultsFilter', {label: label, page: page})
+          this.$store.commit('PAGE_CURRENT_RESULTS', page)
+        }
+        if (this.$route.params.query !== '' && this.$route.params.query !== undefined) {
+          console.log('search page changed to: ', page)
+          // this.getResultsSearch({query: query, page: page})
+          this.$store.commit('PAGE_CURRENT_RESULTS', page)
+        }
+      }
     }
   },
   methods: {
     ...mapActions([
       'fetchItemsAll',
       'getResultsAll',
-      'getResultsFilter'
+      'getResultsFilter',
+      'getResultsSearch'
     ])
   },
   created () {
   },
   mounted () {
-    let label = this.$route.params.label
+    console.log('list mounted')
     let page = this.$route.params.page || 1
-    this.$store.dispatch('getResultsFilter', {label: label, page: page})
+
+    // if is label
+    if (this.$route.params.label !== '') {
+      let label = this.$route.params.label
+      console.log('has label: ', label, page)
+      this.$store.dispatch('getResultsFilter', {label: label, page: page})
+    }
+    // if has search query
+    if (this.$route.params.query !== '' && this.$route.params.query !== undefined) {
+      let query = this.$route.params.query
+      console.log('has search: ', query, page)
+      this.getResultsSearch({query: query, page: page})
+    }
   }
 }
 </script>
@@ -77,9 +131,9 @@ export default {
   }
 
   &__item {
-    border: 1px solid #eee;
+    border-bottom: 1px solid #eee;
     margin-bottom: 3rem;
-    padding: 2rem;
+    padding: 2rem 0;
   }
 
 }

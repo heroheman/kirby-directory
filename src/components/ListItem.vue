@@ -7,6 +7,13 @@
       </a>
     </router-link>
 
+
+    <VueMarkdown
+      :source="item.body"
+      class="listitem__description listitem__description--excerpt">
+      {{ item.body }}
+    </VueMarkdown>
+
     <ul class="labels listitem__labels">
       <li class="listitem__label" v-for="label in item.labels" :key="label.id">
         <router-link
@@ -17,12 +24,6 @@
         </router-link>
       </li>
     </ul>
-
-    <VueMarkdown
-      :source="item.body"
-      class="listitem__description listitem__description--excerpt">
-      {{ item.body }}
-    </VueMarkdown>
   </div>
 </template>
 
@@ -45,17 +46,21 @@ export default {
   display: grid;
   grid-template-areas: "name" "description" "labels";
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr auto 1fr;
+  grid-template-rows: auto auto 1fr;
+
   @media screen and (min-width: $sm) {
-    grid-template-areas: "name name labels" "description description description";
-    grid-template-columns: 40% 1fr;
-    grid-template-rows: 1fr;
+    // grid-template-areas: "name name labels" "description description description";
+    // grid-template-areas: "name" "description" "labels";
+    // grid-template-columns: 40% 1fr;
+    // grid-template-rows: 1fr;
   }
 
   &__name {
     grid-area: name;
     display: block;
     margin: 0;
+
+    @extend %h18;
   }
 
   &__labels {
@@ -65,8 +70,8 @@ export default {
     padding: 1rem 0;
 
     @media screen and (min-width: $sm) {
-      text-align: right;
-      padding: 0;
+      // text-align: right;
+      // padding: 0;
     }
   }
 

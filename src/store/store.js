@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
 const searchApi = 'https://api.github.com/search/issues?q=is:open+repo:jenstornell/kirby-plugins&sort=desc&order=created'
-// const commentApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues/'
 const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
 
@@ -11,6 +10,8 @@ Vue.use(Vuex)
 
 const state = {
   items: [],
+  query: '',
+  label: '',
   detail: {
     item: {},
     comments: [],
@@ -26,7 +27,7 @@ const state = {
   isLoading: true,
   labelTypes: {
     name: 'Types',
-    items: ['all', 'Blueprint', 'Controller', 'Core', 'Field', 'Misc', 'Model', 'Plugin', 'Snippet', 'Tag', 'Template']
+    items: ['Blueprint', 'Controller', 'Core', 'Field', 'Misc', 'Model', 'Plugin', 'Snippet', 'Tag', 'Template']
   },
   labelGroups: {
     name: 'Groups',
@@ -42,22 +43,28 @@ const mutations = {
   SET_RESULTS_ALL: (state) => {
     state.displayedItems.results = state.items
   },
-  SET_RESULTS_FILTER: (state, payload) => {
-    // state.displayedItems.results = state.items.filter(i => i.labels.some(i => i.name === payload.label))
-  },
-  SET_MAX_PAGE: (state) => {
-  },
-  SET_RESULTS_PAGE: (state, payload) => {
-    const {label, page} = payload
+  SET_RESULTS_SEARCH: (state, query) => {
+    if (query !== '') {
+      state.query = query
+      query = query.trim().toLowerCase()
 
+      state.displayedItems.results = state.items.filter(item => {
+        return item.title.toLowerCase().includes(query) || item.body.toLowerCase().includes(query)
+      })
+    }
+  },
+  SET_RESULTS_LABEL: (state, label) => {
+    state.label = label
     if (label !== undefined) {
       // get all items with label
       state.displayedItems.results = state.items.filter(i => i.labels.some(i => i.name === label))
     } else {
       state.displayedItems.results = state.items
     }
-
+  },
+  PAGE_CURRENT_RESULTS: (state, page) => {
     // set currentpage
+    console.log(page)
     if (page !== 0) {
       state.displayedItems.currentPage = page - 1
     } else {
@@ -99,7 +106,6 @@ const actions = {
     }
 
     let lsTest = JSON.parse(localStorage.getItem('vuex'))
-    console.log(lsTest)
 
     if (lsTest === null || lsTest.items.length === 0) {
       let allData = []
@@ -123,7 +129,14 @@ const actions = {
     commit('SET_RESULTS_ALL')
   },
   getResultsFilter ({commit, state}, payload) {
-    commit('SET_RESULTS_PAGE', payload)
+    const {label, page} = payload
+    commit('SET_RESULTS_LABEL', label)
+    commit('PAGE_CURRENT_RESULTS', page)
+  },
+  getResultsSearch ({commit, state}, payload) {
+    const {query, page} = payload
+    commit('SET_RESULTS_SEARCH', query)
+    commit('PAGE_CURRENT_RESULTS', page)
   },
   getDetail ({commit}, payload) {
     commit('GET_DETAIL', payload)
@@ -145,16 +158,6 @@ const actions = {
 
 const getters = {
   getLoading: state => state.isLoading,
-  getPluginRepo: state => {
-    const bodytext = state.detail.item.body
-    let pluginUrl
-    let urlparts = []
-
-    // eslint-disable-next-line
-    pluginUrl = bodytext.match(/https?:\/\/github.com[^\s\)]+/)
-    urlparts = pluginUrl[0].split('/')
-    return urlparts[3] + '/' + urlparts[4]
-  },
   getLastPage: state => {
     return Math.ceil(state.displayedItems.results.length / state.displayedItems.perPage)
   }

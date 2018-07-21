@@ -13,7 +13,13 @@
 
     <ul class="navlist">
       <li>
-        <router-link to="/">Home</router-link>
+        <router-link :to="{name: 'ListStart', params: { page: '1'} }">Home</router-link>
+      </li>
+      <li>
+        <router-link :to="{name: 'ListStart', params: { page: '1'} }">FAQ</router-link>
+      </li>
+      <li>
+        <router-link :to="{name: 'ListStart', params: { page: '1'} }">Privacy</router-link>
       </li>
       <!-- <li>
         <router-link :to="{'path': '/about'}">About & FAQ</router-link>
@@ -23,19 +29,25 @@
       </li> -->
     </ul>
 
-    <ul class="navlist">
+    <ul class="navlist navlist--label">
       <li class="navlist__desc">{{labelTypes.name}}</li>
       <li v-for="type in labelTypes.items" :key="type">
-        <router-link :to="{ name: 'List', params: { label: type }}">
+        <router-link
+          :to="{ name: 'List', params: { label: type, page: 1 }}"
+          :class="['label', `is-${type}`]"
+          >
           {{ type }}
         </router-link>
       </li>
     </ul>
 
-    <ul class="navlist">
+    <ul class="navlist navlist--label">
       <li class="navlist__desc">{{labelGroups.name}}</li>
       <li v-for="group in labelGroups.items" :key="group">
-        <router-link :to="{ name: 'List', params: { label: group }}">
+        <router-link
+          :to="{ name: 'List', params: { label: group, page: 1 }}"
+          :class="['label', `is-${group}`]"
+          >
           {{ group }}
         </router-link>
       </li>
@@ -85,7 +97,7 @@ export default {
     span {
       font-size: inherit;
       font-weight: 800;
-      font-style: italic;
+      // font-style: italic;
     }
     img {
       position: relative;
@@ -113,17 +125,32 @@ export default {
   position: relative;
   list-style: none;
   margin: 0 0 3rem;
-  padding: 0;
+  padding: 0 3rem 0 0;
+
   > li {
-    margin: 0 0 .5rem;
+    margin: 0 .5rem .5rem;
     > a {
       text-decoration: none;
+      font-weight: 800;
       border: 0;
     }
   }
+
+  &--label {
+    > li {
+      &:not(.navlist__desc) {
+        display: inline-block;
+      }
+      a {
+        font-weight: 400;
+      }
+    }
+  }
+
   &__desc {
     font-weight: 800;
   }
+
   &--mobile {
     position: relative;
     list-style: none;

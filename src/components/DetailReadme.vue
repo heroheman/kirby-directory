@@ -39,8 +39,7 @@ export default {
       'detail'
     ]),
     ...mapGetters([
-      'getLoading',
-      'getPluginRepo'
+      'getLoading'
     ])
   },
   methods: {
@@ -48,9 +47,21 @@ export default {
       'getComments',
       'getReadme'
     ]),
+    getPluginRepo: function () {
+      console.log('pluginrepo calledj')
+      let bodytext = this.detail.item.body
+      let pluginUrl
+      let urlparts = []
+
+      // eslint-disable-next-line
+      pluginUrl = bodytext.match(/https?:\/\/github.com[^\s\)]+/)
+      urlparts = pluginUrl[0].split('/')
+
+      return urlparts[3] + '/' + urlparts[4]
+    },
     showReadme: function () {
       if (this.detail.readme === '') {
-        this.getReadme(this.getPluginRepo)
+        this.getReadme(this.getPluginRepo())
       }
       this.readmeVisible = true
     },

@@ -1,12 +1,14 @@
 <template>
   <section class="search">
-    <input class="search__searchfield" name="" type="text"
-           placeholder="search for plugin, label, author or anything else"
-           />
+
+    <input class="search__searchfield" name="" type="text" v-model="search" @keyup="searchQuery"
+      placeholder="search for plugin, label, author or anything else"
+      />
 
     <button class="search__searchbutton" @click="searchQuery">
       <img alt="" src="../assets/icons/search.png"/>
     </button>
+
   </section>
 </template>
 
@@ -17,6 +19,7 @@ export default {
   name: 'Search',
   data () {
     return {
+      search: ''
     }
   },
   computed: {
@@ -32,10 +35,16 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getResultsFilter'
+      'getResultsFilter',
+      'getResultsSearch'
     ]),
     searchQuery: function () {
-      console.log('TODO: Searchfj f')
+      if (this.search !== '') {
+        this.$router.push({name: 'Search', params: {query: this.search, page: 1}})
+        this.getResultsSearch({query: this.search, page: 1})
+      } else {
+        this.$router.push({name: 'ListStart', params: {page: 1}})
+      }
     }
   }
 }

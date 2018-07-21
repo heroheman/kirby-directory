@@ -2,10 +2,17 @@
   <ul class="pagination" v-if="getLastPage > 0">
     <li class="pagination__item" v-for="i in getLastPage" :key="`${label}-${i}`">
       <router-link
-        :to="{ name: 'ListStart', params: { page: i }}"
-        v-if="label === '' || label === undefined">
+        :to="{ name: 'Search', params: { query: query, page: i }}"
+        v-if="query !== ''">
         {{ i }}
       </router-link>
+
+      <router-link
+        :to="{ name: 'ListStart', params: { page: i }}"
+        v-else-if="label === '' || label === undefined">
+        {{ i }}
+      </router-link>
+
       <router-link
         :to="{ name: 'List', params: { label: label, page: i }}"
         v-else>
@@ -16,16 +23,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'Pagination',
-  props: [
-    'label',
-    'page'
-  ],
   computed: {
     ...mapGetters([
       'getLastPage'
+    ]),
+    ...mapState([
+      'items',
+      'query',
+      'label',
+      'displayedItems'
     ])
   }
 }
