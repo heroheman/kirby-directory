@@ -5,20 +5,29 @@
       <a>
         {{ item.title }}
       </a>
+      <span class="listitem__authorname" v-if="getAuthor(item.body) !== false">
+        &mdash; by
+        <a href="#">
+          {{ getAuthor(item.body) }}
+        </a>
+      </span>
     </router-link>
 
-
-    <VueMarkdown
+    <VueMarkdown v-if="item.body"
       :source="item.body"
       class="listitem__description listitem__description--excerpt">
       {{ item.body }}
     </VueMarkdown>
 
+    <p class="listitem__description listitem__description--excerpt" v-else >
+      Could'nt find any description
+    </p>
+
     <ul class="labels listitem__labels">
       <li class="listitem__label" v-for="label in item.labels" :key="label.id">
         <router-link
           :to="{name:'List', params:{ label: label.name }}"
-          :class="['label', `is-${label.name}`]"
+          :class="[`dot-${label.name}`]"
           >
           {{ label.name }}
         </router-link>
@@ -35,7 +44,23 @@ export default {
   components: { VueMarkdown },
   props: [
     'item'
-  ]
+  ],
+  methods: {
+    getAuthor: function (bodytext) {
+      let pluginUrl
+      let urlparts = []
+
+      // eslint-disable-next-line
+      pluginUrl = bodytext.match(/https?:\/\/github.com[^\s\)]+/) || false
+
+      if (!pluginUrl) {
+        return false
+      } else {
+        urlparts = pluginUrl[0].split('/')
+        return urlparts[3]
+      }
+    }
+  }
 }
 </script>
 
@@ -59,14 +84,30 @@ export default {
     grid-area: name;
     display: block;
     margin: 0;
+    margin-bottom: 1rem;
 
     @extend %h18;
+    a {
+      @include custom-underline;
+    }
+  }
+
+  &__authorname {
+    @extend %smallprint;
+    span, a {
+      @extend %smallprint;
+    }
+    a {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   &__labels {
     grid-area: labels;
     text-align: left;
-    margin: 0;
+    margin: 0 2rem 0 0;
     padding: 1rem 0;
 
     @media screen and (min-width: $sm) {
@@ -77,7 +118,7 @@ export default {
 
   &__description {
     grid-area: description;
-    margin-top: 1rem;
+    margin-bottom: 1rem;
     &--excerpt {
       img, img, pre, ul, strong, br, table,
       h1, h2, h3, h4, h5, h6, p > a, blockquote + p

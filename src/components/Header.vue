@@ -34,7 +34,7 @@
       <li v-for="type in labelTypes.items" :key="type">
         <router-link
           :to="{ name: 'List', params: { label: type, page: 1 }}"
-          :class="['label', `is-${type}`]"
+          :class="['dot', `dot-${type}`]"
           >
           {{ type }}
         </router-link>
@@ -46,7 +46,7 @@
       <li v-for="group in labelGroups.items" :key="group">
         <router-link
           :to="{ name: 'List', params: { label: group, page: 1 }}"
-          :class="['label', `is-${group}`]"
+          :class="['dot', `dot-${group}`]"
           >
           {{ group }}
         </router-link>
@@ -139,7 +139,7 @@ export default {
   &--label {
     > li {
       &:not(.navlist__desc) {
-        display: inline-block;
+        // display: inline-block;
       }
       a {
         font-weight: 400;

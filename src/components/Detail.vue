@@ -23,7 +23,7 @@
           <li class="listitem__label" v-for="label in detail.item.labels" :key="label.id">
             <router-link
               :to="{name:'List', params:{ label: label.name }}"
-              :class="['label', `is-${label.name}`]"
+              :class="['dot', `dot-${label.name}`]"
               >
               {{ label.name }}
             </router-link>
@@ -62,6 +62,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import './../assets/scss/_vars.scss';
+
 .detail {
     position: relative;
     &__head {
@@ -73,8 +75,11 @@ export default {
         font-weight: 400;
         margin: 0;
         span {
-            font-size: inherit;
-            color: #ccc;
+          font-size: inherit;
+          color: #ccc;
+        }
+        a {
+          @include custom-underline;
         }
     }
     &__subheadline {
@@ -111,18 +116,20 @@ export default {
         &-section {
             position: relative;
             margin-bottom: 2rem;
-            padding: 1rem 2rem;
         }
         &-main {
-          min-height: 30vh;
+          min-height: 20vh;
+          padding: 1rem 0;
         }
         &-section {
             background: #f8f8f8;
             border-radius: .5rem;
+            padding: 1rem 2rem;
         }
         blockquote {
             border-left: 2px solid red;
             margin-left: 0;
+            margin-bottom: 4rem;
             padding-left: 2rem;
             p {
                 font-size: 2rem;
