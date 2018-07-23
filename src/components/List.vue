@@ -1,8 +1,16 @@
 <template>
   <div class="list">
 
-    Loading: {{ getLoading }}
-    <br>
+    <div class="loadingwrapper" v-if="getLoading">
+      <div class="loadingwrapper__inner">
+        <pulse-loader :loading="getLoading"/>
+        <p>
+          Either this is your first visit or the data has been updated. Therefore we now load a temporary copy of the plugin database from Github. This can take up to 10 seconds
+          Loading: {{ getLoading }}
+        </p>
+      </div>
+    </div>
+  <br>
 
     <ul class="list__items" v-if="displayedItems !== 0">
       <li class="list__item"
@@ -21,10 +29,11 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import ListItem from './ListItem.vue'
 import Pagination from './Pagination.vue'
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
   name: 'List',
-  components: {ListItem, Pagination},
+  components: {ListItem, Pagination, PulseLoader},
   data () {
     return {
     }
@@ -119,6 +128,27 @@ export default {
 
 <style lang="scss">
 @import './../assets/scss/_vars.scss';
+.loadingwrapper {
+  position: relative;
+  min-width: 50vw;
+  min-height: 50vh;
+  width: 100%;
+
+  &__inner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .v-spinner {
+  }
+
+  p {
+    @extend %smallprint;
+  }
+}
 .list {
   position: relative;
   padding: 10px;

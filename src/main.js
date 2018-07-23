@@ -7,10 +7,10 @@ import VueFuse from 'vue-fuse'
 import store from './store/store'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faArrowLeft, faComments, faStream } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faComments, faStream, faCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faArrowLeft, faComments, faStream)
+library.add(faArrowLeft, faComments, faStream, faCog)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

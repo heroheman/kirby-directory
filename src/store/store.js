@@ -40,6 +40,11 @@ const mutations = {
     state.items = items
     state.displayedItems.results = state.items
   },
+  REMOVE_ITEMS: (state) => {
+    state.items = []
+    state.displayedItems.results = state.items
+    state.displayedItems.resultsPaged = state.items
+  },
   SET_RESULTS_ALL: (state) => {
     state.displayedItems.results = state.items
   },
@@ -98,7 +103,14 @@ const mutations = {
 }
 
 const actions = {
-  fetchItemsAll: async function ({ commit }) {
+  fetchItemsAll: async function ({ commit, state }) {
+    console.info('fetching new items')
+    console.time('FETCH NEW ITEMS')
+    // toggle loading if is false
+    if (state.isLoading === false) {
+      commit('TOGGLE_LOADING')
+    }
+
     // if no local state given
     if (!localStorage.getItem('vuex')) {
       // create state with empty content
@@ -123,7 +135,14 @@ const actions = {
       }
       commit('SET_ITEMS', { items: allData })
       commit('TOGGLE_LOADING')
+      commit('PAGE_CURRENT_RESULTS', 0)
+    } else {
+      commit('TOGGLE_LOADING')
     }
+    console.timeEnd('FETCH NEW ITEMS')
+  },
+  removeItemsAll: function ({commit}) {
+    commit('REMOVE_ITEMS')
   },
   getResultsAll ({ commit, state }) {
     commit('SET_RESULTS_ALL')

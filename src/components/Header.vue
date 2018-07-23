@@ -52,25 +52,63 @@
         </router-link>
       </li>
     </ul>
+
+    <button
+      :disabled="buttonDisabled"
+      class="btn--simple" v-on:click="deleteLocalStorage()"
+      title="This resets the cache and re-downloads all the data from Github. As the Github API is very limited - please don't abuse it."
+    >
+      <font-awesome-icon icon="cog" />
+      Reset Cache
+    </button>
+    <span class="buttonnote" v-if="buttonDisabled">Disabled. Please wait 30 Seconds</span>
   </nav>
 </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import debounce from 'tiny-debounce'
+
 export default {
   name: 'Header',
+  data () {
+    return {
+      buttonDisabled: false
+    }
+  },
   computed: {
     ...mapState([
       'labelGroups',
       'labelTypes'
     ])
+  },
+  methods: {
+    ...mapActions([
+      'fetchItemsAll',
+      'removeItemsAll'
+    ]),
+    deleteLocalStorage: function () {
+      // this.removeItemsAll()
+      // this.fetchItemsAll()
+      this.buttonDisabled = true
+      this.disableButton()
+    },
+    disableButton: debounce(function () {
+      this.buttonDisabled = false
+    }, 30000)
   }
 }
 </script>
 
 <style lang="scss">
 @import './../assets/scss/_vars.scss';
+
+.buttonnote {
+  display: block;
+  font-size: 1rem;
+  @extend %smallprint;
+}
 
 .header {
   position: relative;
