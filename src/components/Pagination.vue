@@ -1,5 +1,5 @@
 <template>
-  <ul class="pagination" v-if="getLastPage > 0">
+  <ul class="pagination" v-if="getLastPage > 1">
     <li class="pagination__item" v-for="i in getLastPage" :key="`${label}-${i}`">
       <router-link
         :to="{ name: 'Search', params: { query: query, page: i }}"

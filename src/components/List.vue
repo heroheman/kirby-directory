@@ -10,8 +10,12 @@
         </p>
       </div>
     </div>
-  <br>
 
+    <p class="list__summary">
+      There are currently <strong>{{displayedItems.results.length}}</strong> results
+      <span v-if="label !== ''">in <strong>{{label}}</strong></span>
+      <span v-if="query !== ''">for the term <strong>{{query}}</strong></span>
+    </p>
     <ul class="list__items" v-if="displayedItems !== 0">
       <li class="list__item"
         v-for="item in displayedItems.resultsPaged"
@@ -52,11 +56,12 @@ export default {
   watch: {
     '$route.params': function () {
       // if is label
-      if (this.$route.params.label !== '' && this.$route.params.query !== '') {
+      if (this.$route.params.label === '' && this.$route.params.query === '') {
         let page = this.$route.params.page || 1
-        console.log('load all item with page: ', page)
+        // console.log('load all item with page: ', page)
+        // TODO: this gets called every time, fixthis
 
-        this.$store.dispatch('getResultsAll')
+        this.getResultsAll()
         this.$store.commit('PAGE_CURRENT_RESULTS', page)
       }
     },
@@ -65,16 +70,16 @@ export default {
       if (this.$route.params.label !== '') {
         let label = this.$route.params.label
         let page = this.$route.params.page || 1
-        console.log('has label: ', label, page)
+        // console.log('has label: ', label, page)
         this.$store.dispatch('getResultsFilter', {label: label, page: page})
       }
     },
     '$route.params.query': function () {
       // if has search query
-      if (this.$route.params.query !== '' || this.$route.params.query !== undefined) {
+      if (this.$route.params.query !== '' && this.$route.params.query !== undefined) {
         let query = this.$route.params.query
         let page = this.$route.params.page || 1
-        console.log('has search: ', query, page)
+        // console.log('has search: ', query, page)
         this.getResultsSearch({query: query, page: page})
       }
     },
@@ -106,6 +111,20 @@ export default {
   },
   created () {
   },
+  beforeRouteLeave: function (to, from, next) {
+    console.log(to.name, from.name)
+    if (to.name === 'Search') {
+      this.$store.dispatch('removeLabel')
+    }
+    if (to.name === 'List') {
+      this.$store.dispatch('removeQuery')
+    }
+    if (to.name === 'ListStart') {
+      this.$store.dispatch('removeLabel')
+      this.$store.dispatch('removeQuery')
+    }
+    next()
+  },
   mounted () {
     console.log('list mounted')
     let page = this.$route.params.page || 1
@@ -113,13 +132,13 @@ export default {
     // if is label
     if (this.$route.params.label !== '') {
       let label = this.$route.params.label
-      console.log('has label: ', label, page)
+      // console.log('has label: ', label, page)
       this.$store.dispatch('getResultsFilter', {label: label, page: page})
     }
     // if has search query
     if (this.$route.params.query !== '' && this.$route.params.query !== undefined) {
       let query = this.$route.params.query
-      console.log('has search: ', query, page)
+      // console.log('has search: ', query, page)
       this.getResultsSearch({query: query, page: page})
     }
   }
@@ -142,9 +161,6 @@ export default {
     text-align: center;
   }
 
-  .v-spinner {
-  }
-
   p {
     @extend %smallprint;
   }
@@ -153,6 +169,21 @@ export default {
   position: relative;
   padding: 10px;
   min-height: 70vh;
+
+  &__summary {
+    @extend %smallprint;
+    font-style: normal;
+
+    span {
+      @extend %smallprint;
+      font-style: normal;
+    }
+
+    strong {
+      font-weight: 800;
+      color: $cText;
+    }
+  }
 
   &__items {
     list-style: none;

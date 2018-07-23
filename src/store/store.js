@@ -40,11 +40,6 @@ const mutations = {
     state.items = items
     state.displayedItems.results = state.items
   },
-  REMOVE_ITEMS: (state) => {
-    state.items = []
-    state.displayedItems.results = state.items
-    state.displayedItems.resultsPaged = state.items
-  },
   SET_RESULTS_ALL: (state) => {
     state.displayedItems.results = state.items
   },
@@ -99,6 +94,17 @@ const mutations = {
   },
   GET_COMMENTS: (state, payload) => {
     state.detail.comments = payload
+  },
+  REMOVE_ITEMS: (state) => {
+    state.items = []
+    state.displayedItems.results = state.items
+    state.displayedItems.resultsPaged = state.items
+  },
+  REMOVE_QUERY: (state) => {
+    state.query = ''
+  },
+  REMOVE_LABEL: (state) => {
+    state.label = ''
   }
 }
 
@@ -151,11 +157,13 @@ const actions = {
     const {label, page} = payload
     commit('SET_RESULTS_LABEL', label)
     commit('PAGE_CURRENT_RESULTS', page)
+    commit('REMOVE_QUERY')
   },
   getResultsSearch ({commit, state}, payload) {
     const {query, page} = payload
     commit('SET_RESULTS_SEARCH', query)
     commit('PAGE_CURRENT_RESULTS', page)
+    commit('REMOVE_LABEL')
   },
   getDetail ({commit}, payload) {
     commit('GET_DETAIL', payload)
@@ -169,6 +177,12 @@ const actions = {
     let response = await fetch(`${repoApi}/${payload}/readme`)
       .then(res => res.json())
     commit('GET_README', response)
+  },
+  removeLabel ({commit}) {
+    commit('REMOVE_LABEL')
+  },
+  removeQuery ({commit}) {
+    commit('REMOVE_QUERY')
   },
   toggleLoading (commit) {
     commit('TOGGLE_LOADING')
