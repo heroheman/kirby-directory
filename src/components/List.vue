@@ -14,7 +14,17 @@
     <p class="list__summary">
       There are currently <strong>{{displayedItems.results.length}}</strong> results
       <span v-if="label !== ''">in <strong>{{label}}</strong></span>
-      <span v-if="query !== ''">for the term <strong>{{query}}</strong></span>
+      <span v-if="query !== ''">for the term <strong>{{query}}</strong></span>.
+      Showing
+      <select class="invisible-dropdown" v-model="displayedItems.perPage" v-on:change="updatePerPageNumber">
+        <option disabled value="">Please select</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="70">70</option>
+        <option value="100">100</option>
+      </select>
+      results per page.
     </p>
     <ul class="list__items" v-if="displayedItems !== 0">
       <li class="list__item"
@@ -53,6 +63,18 @@ export default {
       'getLoading'
     ])
   },
+  methods: {
+    ...mapActions([
+      'fetchItemsAll',
+      'getResultsAll',
+      'getResultsFilter',
+      'getResultsSearch',
+      'setItemsPerPage'
+    ]),
+    updatePerPageNumber: function (e) {
+      this.setItemsPerPage(e.target.value)
+    }
+  },
   watch: {
     '$route.params': function () {
       // if is label
@@ -82,37 +104,12 @@ export default {
         // console.log('has search: ', query, page)
         this.getResultsSearch({query: query, page: page})
       }
-    },
-    '$route.params.page': function () {
-      // no searchquery, no label
-      if (this.$route.params.page !== '') {
-        let page = this.$route.params.page || 1
-
-        if (this.$route.params.label !== '' && this.$route.params.label !== undefined) {
-          console.log('label page changed to: ', page)
-          // this.$store.dispatch('getResultsFilter', {label: label, page: page})
-          this.$store.commit('PAGE_CURRENT_RESULTS', page)
-        }
-        if (this.$route.params.query !== '' && this.$route.params.query !== undefined) {
-          console.log('search page changed to: ', page)
-          // this.getResultsSearch({query: query, page: page})
-          this.$store.commit('PAGE_CURRENT_RESULTS', page)
-        }
-      }
     }
-  },
-  methods: {
-    ...mapActions([
-      'fetchItemsAll',
-      'getResultsAll',
-      'getResultsFilter',
-      'getResultsSearch'
-    ])
   },
   created () {
   },
   beforeRouteLeave: function (to, from, next) {
-    console.log(to.name, from.name)
+    // console.log(to, from.name)
     if (to.name === 'Search') {
       this.$store.dispatch('removeLabel')
     }
@@ -125,8 +122,12 @@ export default {
     }
     next()
   },
+  beforeRouteUpdate: function (to, from, next) {
+    this.$store.commit('PAGE_CURRENT_RESULTS', to.params.page)
+    next()
+  },
   mounted () {
-    console.log('list mounted')
+    // console.log('list mounted')
     let page = this.$route.params.page || 1
 
     // if is label
@@ -165,6 +166,18 @@ export default {
     @extend %smallprint;
   }
 }
+
+.invisible-dropdown {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  font-weight: 800;
+  border-bottom: 2px solid red;
+  width: 30px;
+}
+
 .list {
   position: relative;
   padding: 10px;

@@ -64,7 +64,7 @@ const mutations = {
   },
   PAGE_CURRENT_RESULTS: (state, page) => {
     // set currentpage
-    console.log(page)
+    // console.log('page called', page)
     if (page !== 0) {
       state.displayedItems.currentPage = page - 1
     } else {
@@ -100,6 +100,9 @@ const mutations = {
     state.displayedItems.results = state.items
     state.displayedItems.resultsPaged = state.items
   },
+  SET_ITEMS_PER_PAGE: (state, payload) => {
+    state.displayedItems.perPage = payload
+  },
   REMOVE_QUERY: (state) => {
     state.query = ''
   },
@@ -110,8 +113,6 @@ const mutations = {
 
 const actions = {
   fetchItemsAll: async function ({ commit, state }) {
-    console.info('fetching new items')
-    console.time('FETCH NEW ITEMS')
     // toggle loading if is false
     if (state.isLoading === false) {
       commit('TOGGLE_LOADING')
@@ -131,21 +132,22 @@ const actions = {
       let currentPage = 0
       let perPage = 100
 
+      console.time('FETCH NEW ITEMS')
       while (morePagesAvailable) {
         currentPage++
         const response = await fetch(`${searchApi}&per_page=${perPage}&page=${currentPage}`)
         let {items, total_count} = await response.json()
         items.forEach(e => allData.unshift(e))
         morePagesAvailable = currentPage < (total_count / perPage)
-        console.log(allData, morePagesAvailable, currentPage, items)
+        // console.log(allData, morePagesAvailable, currentPage, items)
       }
+      console.timeEnd('FETCH NEW ITEMS')
       commit('SET_ITEMS', { items: allData })
       commit('TOGGLE_LOADING')
       commit('PAGE_CURRENT_RESULTS', 0)
     } else {
       commit('TOGGLE_LOADING')
     }
-    console.timeEnd('FETCH NEW ITEMS')
   },
   removeItemsAll: function ({commit}) {
     commit('REMOVE_ITEMS')
@@ -183,6 +185,10 @@ const actions = {
   },
   removeQuery ({commit}) {
     commit('REMOVE_QUERY')
+  },
+  setItemsPerPage ({commit}, payload) {
+    commit('SET_ITEMS_PER_PAGE', payload)
+    commit('PAGE_CURRENT_RESULTS', 1)
   },
   toggleLoading (commit) {
     commit('TOGGLE_LOADING')

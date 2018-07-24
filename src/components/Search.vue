@@ -14,6 +14,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
+import debounce from 'tiny-debounce'
 
 export default {
   name: 'Search',
@@ -38,14 +39,21 @@ export default {
       'getResultsFilter',
       'getResultsSearch'
     ]),
-    searchQuery: function () {
+    searchQuery: debounce(function () {
       if (this.search !== '') {
         this.$router.push({name: 'Search', params: {query: this.search, page: 1}})
         this.getResultsSearch({query: this.search, page: 1})
       } else {
         this.$router.push({name: 'ListStart', params: {page: 1}})
       }
+    }, 200)
+  },
+  beforeRouteLeave: function (to, from, next) {
+    if (from.name === 'Search') {
+      this.$store.dispatch('removeQuery')
+      this.search = ''
     }
+    next()
   }
 }
 </script>

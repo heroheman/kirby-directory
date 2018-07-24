@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import List from '@/components/List'
 import Detail from '@/components/Detail'
+import ContentFAQ from '@/components/ContentFAQ'
+import ContentPrivacy from '@/components/ContentPrivacy'
 
 Vue.use(Router)
 
@@ -13,6 +15,16 @@ export default new Router({
     {
       path: '/',
       redirect: {name: 'ListStart'}
+    },
+    {
+      path: '/faq',
+      name: 'ContentFAQ',
+      component: ContentFAQ
+    },
+    {
+      path: '/privacy',
+      name: 'ContentPrivacy',
+      component: ContentPrivacy
     },
     {
       path: '/detail/:id',

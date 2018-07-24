@@ -16,10 +16,10 @@
         <router-link :to="{name: 'ListStart', params: { page: '1'} }">Home</router-link>
       </li>
       <li>
-        <router-link :to="{name: 'ListStart', params: { page: '1'} }">FAQ</router-link>
+        <router-link :to="{name: 'ContentFAQ'}">FAQ</router-link>
       </li>
       <li>
-        <router-link :to="{name: 'ListStart', params: { page: '1'} }">Privacy</router-link>
+        <router-link :to="{name: 'ContentPrivacy'}">Privacy</router-link>
       </li>
       <!-- <li>
         <router-link :to="{'path': '/about'}">About & FAQ</router-link>
