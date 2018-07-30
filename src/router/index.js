@@ -42,7 +42,7 @@ export default new Router({
       component: List
     },
     {
-      path: '/:label/:page?',
+      path: '/label/:label/:page?',
       name: 'List',
       component: List
     }

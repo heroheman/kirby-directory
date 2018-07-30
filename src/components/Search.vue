@@ -18,12 +18,16 @@ import debounce from 'tiny-debounce'
 
 export default {
   name: 'Search',
-  data () {
-    return {
-      search: ''
-    }
-  },
   computed: {
+    search: {
+      get () {
+        return this.$store.getters.getSearchTerm
+      },
+      set (value) {
+        // this.$store.commit('SET_SEARCH_QUERY', value)
+        this.setSearchQuery(value)
+      }
+    },
     ...mapState([
       'items',
       'displayedItems'
@@ -37,16 +41,17 @@ export default {
   methods: {
     ...mapActions([
       'getResultsFilter',
-      'getResultsSearch'
+      'getResultsSearch',
+      'setSearchQuery'
     ]),
     searchQuery: debounce(function () {
       if (this.search !== '') {
-        this.$router.push({name: 'Search', params: {query: this.search, page: 1}})
-        this.getResultsSearch({query: this.search, page: 1})
+        this.$router.push({name: 'Search', params: {query: this.$store.getters.getSearchTerm, page: 1}})
+        // this.getResultsSearch({query: this.search, page: 1})
       } else {
         this.$router.push({name: 'ListStart', params: {page: 1}})
       }
-    }, 200)
+    }, 500)
   },
   beforeRouteLeave: function (to, from, next) {
     if (from.name === 'Search') {
@@ -68,6 +73,9 @@ export default {
   &__searchfield {
     width: 100%;
     padding: 1rem;
+    background: white;
+    box-shadow: 0;
+    appearance: none;
   }
 
   &__searchbutton {

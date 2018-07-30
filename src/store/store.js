@@ -43,6 +43,10 @@ const mutations = {
   SET_RESULTS_ALL: (state) => {
     state.displayedItems.results = state.items
   },
+  SET_SEARCH_QUERY: (state, query) => {
+    console.log(query)
+    state.query = query
+  },
   SET_RESULTS_SEARCH: (state, query) => {
     if (query !== '') {
       state.query = query
@@ -152,20 +156,24 @@ const actions = {
   removeItemsAll: function ({commit}) {
     commit('REMOVE_ITEMS')
   },
-  getResultsAll ({ commit, state }) {
+  getResultsAll ({ commit, state }, page) {
     commit('SET_RESULTS_ALL')
+    commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsFilter ({commit, state}, payload) {
     const {label, page} = payload
     commit('SET_RESULTS_LABEL', label)
     commit('PAGE_CURRENT_RESULTS', page)
-    commit('REMOVE_QUERY')
+    // commit('REMOVE_QUERY')
+  },
+  setSearchQuery ({commit, state}, payload) {
+    commit('SET_SEARCH_QUERY', payload)
   },
   getResultsSearch ({commit, state}, payload) {
     const {query, page} = payload
     commit('SET_RESULTS_SEARCH', query)
     commit('PAGE_CURRENT_RESULTS', page)
-    commit('REMOVE_LABEL')
+    // commit('REMOVE_LABEL')
   },
   getDetail ({commit}, payload) {
     commit('GET_DETAIL', payload)
@@ -199,7 +207,8 @@ const getters = {
   getLoading: state => state.isLoading,
   getLastPage: state => {
     return Math.ceil(state.displayedItems.results.length / state.displayedItems.perPage)
-  }
+  },
+  getSearchTerm: state => state.query
 }
 
 const store = new Vuex.Store({

@@ -26,6 +26,9 @@
       </select>
       results per page.
     </p>
+
+    <Pagination />
+
     <ul class="list__items" v-if="displayedItems !== 0">
       <li class="list__item"
         v-for="item in displayedItems.resultsPaged"
@@ -69,79 +72,85 @@ export default {
       'getResultsAll',
       'getResultsFilter',
       'getResultsSearch',
-      'setItemsPerPage'
+      'setItemsPerPage',
+      'setSearchQuery',
+      'removeQuery',
+      'removeLabel'
     ]),
     updatePerPageNumber: function (e) {
-      this.setItemsPerPage(e.target.value)
+      this.setItemsPerPage(Number(e.target.value))
+    },
+    updateList: function () {
+      console.info(this.$route.name)
+      let page = this.$route.params.page || 1
+
+      if (this.$route.name === 'ListStart') {
+        console.log('updatelist: is Start: ', page)
+        this.removeQuery()
+        this.removeLabel()
+        this.getResultsAll(page)
+      }
+
+      // if is label
+      if (this.$route.name === 'List') {
+        let label = this.$route.params.label
+        console.log('updatelist: has label: ', label, page)
+        this.removeQuery()
+        this.getResultsFilter({label: label, page: page})
+      }
+
+      // if has search query
+      if (this.$route.name === 'Search') {
+        let query = this.$route.params.query
+        if (this.$store.getters.getSearchTerm === '') {
+          this.setSearchQuery(query)
+        }
+
+        console.log('updatelist: has search: ', query, page)
+
+        this.removeLabel()
+        this.getResultsSearch({query: query, page: page})
+      }
     }
   },
   watch: {
     '$route.params': function () {
       // if is label
-      if (this.$route.params.label === '' && this.$route.params.query === '') {
-        let page = this.$route.params.page || 1
-        // console.log('load all item with page: ', page)
-        // TODO: this gets called every time, fixthis
-
-        this.getResultsAll()
-        this.$store.commit('PAGE_CURRENT_RESULTS', page)
-      }
-    },
-    '$route.params.label': function () {
-      // if is label
-      if (this.$route.params.label !== '') {
-        let label = this.$route.params.label
-        let page = this.$route.params.page || 1
-        // console.log('has label: ', label, page)
-        this.$store.dispatch('getResultsFilter', {label: label, page: page})
-      }
-    },
-    '$route.params.query': function () {
-      // if has search query
-      if (this.$route.params.query !== '' && this.$route.params.query !== undefined) {
-        let query = this.$route.params.query
-        let page = this.$route.params.page || 1
-        // console.log('has search: ', query, page)
-        this.getResultsSearch({query: query, page: page})
-      }
+      console.log(this.$route.name)
+      this.updateList()
     }
   },
   created () {
   },
+  beforeRouteEnter: function (to, from, next) {
+    // console.log('router enter', to, from)
+    next()
+  },
   beforeRouteLeave: function (to, from, next) {
-    // console.log(to, from.name)
+    console.log('before.route.leave', to.name, from.name)
     if (to.name === 'Search') {
-      this.$store.dispatch('removeLabel')
+      // this.$store.dispatch('removeLabel')
     }
     if (to.name === 'List') {
-      this.$store.dispatch('removeQuery')
+      // this.$store.dispatch('removeQuery')
     }
     if (to.name === 'ListStart') {
-      this.$store.dispatch('removeLabel')
-      this.$store.dispatch('removeQuery')
+      // console.log('going to list start')
+      // this.$store.dispatch('removeLabel')
+      // this.$store.dispatch('removeQuery')
+
+      // this.getResultsAll()
+      // this.$store.commit('PAGE_CURRENT_RESULTS', 1)
     }
     next()
   },
   beforeRouteUpdate: function (to, from, next) {
+    console.log('before route update')
     this.$store.commit('PAGE_CURRENT_RESULTS', to.params.page)
     next()
   },
   mounted () {
-    // console.log('list mounted')
-    let page = this.$route.params.page || 1
-
-    // if is label
-    if (this.$route.params.label !== '') {
-      let label = this.$route.params.label
-      // console.log('has label: ', label, page)
-      this.$store.dispatch('getResultsFilter', {label: label, page: page})
-    }
-    // if has search query
-    if (this.$route.params.query !== '' && this.$route.params.query !== undefined) {
-      let query = this.$route.params.query
-      // console.log('has search: ', query, page)
-      this.getResultsSearch({query: query, page: page})
-    }
+    this.updateList()
   }
 }
 </script>

@@ -3,13 +3,13 @@
     <li class="pagination__item" v-for="i in getLastPage" :key="`${label}-${i}`">
       <router-link
         :to="{ name: 'Search', params: { query: query, page: i }}"
-        v-if="query !== ''">
+        v-if="$route.name === 'Search'">
         {{ i }}
       </router-link>
 
       <router-link
         :to="{ name: 'ListStart', params: { page: i }}"
-        v-else-if="label === '' || label === undefined">
+        v-else-if="$route.name === 'ListStart'">
         {{ i }}
       </router-link>
 
