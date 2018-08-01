@@ -9,6 +9,10 @@
       <Search />
       <router-view/>
     </main>
+
+    <footer class="l-footer">
+      <p>Footer</p>
+    </footer>
   </div>
 </template>
 

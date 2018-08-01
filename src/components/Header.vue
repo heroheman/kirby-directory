@@ -5,11 +5,12 @@
       <!-- <img alt="" src="../assets/kirbyicon.png"/> -->
       <slot></slot>
     </h1>
-    <!-- <nav class="header__icons" v-if="$mq === 'xs'">
-    </nav> -->
+    <button class="header__toggle" @click="showMenu()">
+      <font-awesome-icon icon="ellipsis-h" color="red" />
+    </button>
   </header>
 
-  <nav class="nav">
+  <nav :class="['nav', {'is-open': menuVisible}]">
 
     <ul class="navlist">
       <li>
@@ -74,7 +75,8 @@ export default {
   name: 'Header',
   data () {
     return {
-      buttonDisabled: false
+      buttonDisabled: false,
+      menuVisible: false
     }
   },
   computed: {
@@ -96,7 +98,10 @@ export default {
     },
     disableButton: debounce(function () {
       this.buttonDisabled = false
-    }, 30000)
+    }, 30000),
+    showMenu: function () {
+      this.menuVisible = !this.menuVisible
+    }
   }
 }
 </script>
@@ -117,15 +122,28 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  @media screen and (min-width: $xs) {
-    margin-bottom: 5rem;
+  margin-bottom: 5rem;
+
+  &__toggle {
+    position: absolute;
+    right: 0;
+    appearance: none;
+    border: none;
+    background: transparent;
+    font-size: 2rem;
+
+    @media screen and (min-width: $xs) {
+      display: none;
+    }
   }
+
   &__icons {
     flex-basis: 50%;
     align-self: flex-end;
     text-align: right;
     padding-right: 2rem;
   }
+
   &__brand {
     flex-basis: 50%;
     margin: 0;
@@ -156,9 +174,20 @@ export default {
     }
   }
 }
+
 .nav {
   position: relative;
+  display: none;
+  height: 100vh;
+  &.is-open {
+    display: block;
+  }
+  @media screen and (min-width: $xs) {
+    display: block;
+    height: auto;
+  }
 }
+
 .navlist {
   position: relative;
   list-style: none;
@@ -166,7 +195,7 @@ export default {
   padding: 0 3rem 0 0;
 
   > li {
-    margin: 0 .5rem .5rem;
+    margin: 0 .5rem .5rem 0;
     > a {
       text-decoration: none;
       font-weight: 800;
@@ -176,9 +205,12 @@ export default {
 
   &--label {
     > li {
+      display: block;
+
       &:not(.navlist__desc) {
-        // display: inline-block;
+        display: inline-block;
       }
+
       a {
         font-weight: 400;
       }
@@ -189,19 +221,14 @@ export default {
     font-weight: 800;
   }
 
-  &--mobile {
-    position: relative;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  @media screen and (min-width: $xs) {
     > li {
-      display: inline-block;
-      margin: 0 .5rem 0 0;
-      > a {
-        text-decoration: none;
-        border: 0;
+      display: block;
+      &:not(.navlist__desc) {
+        display: block;
       }
     }
+
   }
 }
 </style>

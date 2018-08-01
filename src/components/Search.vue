@@ -6,7 +6,7 @@
       />
 
     <button class="search__searchbutton" @click="searchQuery">
-      <img alt="" src="../assets/icons/search.png"/>
+      <font-awesome-icon icon="search" color="#333" />
     </button>
 
   </section>
@@ -64,6 +64,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import './../assets/scss/_vars.scss';
+
 .search {
   position: relative;
   top: 1rem;
@@ -71,17 +73,19 @@ export default {
   margin-bottom: 5rem;
 
   &__searchfield {
+    position: relative;
     width: 100%;
     padding: 1rem;
     background: white;
     box-shadow: 0;
     appearance: none;
+    border: 1px solid $cBorder;
   }
 
   &__searchbutton {
     position: absolute;
     top: 1rem;
-    right: 2rem;
+    right: 1rem;
     appearance: none;
     -webkit-appearance: none;
     border: 0;
