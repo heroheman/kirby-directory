@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <p class="list__summary">
+    <p class="list__summary" v-if="displayedItems !== 0">
       There are currently <strong>{{displayedItems.results.length}}</strong> results
       <span v-if="label !== ''">in <strong>{{label}}</strong></span>
       <span v-if="query !== ''">for the term <strong>{{query}}</strong></span>.
@@ -26,8 +26,6 @@
       </select>
       results per page.
     </p>
-
-    <Pagination />
 
     <ul class="list__items" v-if="displayedItems !== 0">
       <li class="list__item"
@@ -189,7 +187,7 @@ export default {
 
 .list {
   position: relative;
-  padding: 10px;
+  padding: 1rem 0;
   min-height: 70vh;
 
   &__summary {

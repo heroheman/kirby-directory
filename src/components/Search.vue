@@ -70,7 +70,11 @@ export default {
   position: relative;
   top: 1rem;
   width: 100%;
-  margin-bottom: 5rem;
+  margin-bottom: 0;
+
+  @media screen and (min-width: $xs) {
+    margin-bottom: 0;
+  }
 
   &__searchfield {
     position: relative;

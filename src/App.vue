@@ -11,7 +11,7 @@
     </main>
 
     <footer class="l-footer">
-      <p>Footer</p>
+      <p>&copy; 2018 - Frontend by <a href="https://flore.nz">Florenz Heldermann</a> | Backend data provided by Jens Tornell's <a href="https://github.com/jenstornell/kirby-plugins">Github Plugin Collection</a> | <router-link :to="{name: 'ContentPrivacy'}">Privacy</router-link></p>
     </footer>
   </div>
 </template>

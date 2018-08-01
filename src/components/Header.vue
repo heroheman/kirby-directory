@@ -14,26 +14,22 @@
 
     <ul class="navlist">
       <li>
-        <router-link :to="{name: 'ListStart', params: { page: '1'} }">Home</router-link>
+        <router-link :to="{name: 'ListStart', params: { page: '1'} }" @click.native="hideNav()">
+          Home
+        </router-link>
       </li>
       <li>
-        <router-link :to="{name: 'ContentFAQ'}">FAQ</router-link>
+        <router-link :to="{name: 'ContentFAQ'}" @click.native="hideNav()">
+          FAQ
+        </router-link>
       </li>
-      <li>
-        <router-link :to="{name: 'ContentPrivacy'}">Privacy</router-link>
-      </li>
-      <!-- <li>
-        <router-link :to="{'path': '/about'}">About & FAQ</router-link>
-      </li> -->
-      <!-- <li>
-        <router-link :to="{'path': '/privacy'}">Privacy</router-link>
-      </li> -->
     </ul>
 
     <ul class="navlist navlist--label">
       <li class="navlist__desc">{{labelTypes.name}}</li>
       <li v-for="type in labelTypes.items" :key="type">
         <router-link
+          @click.native="hideNav()"
           :to="{ name: 'List', params: { label: type, page: 1 }}"
           :class="['dot', `dot-${type}`]"
           >
@@ -46,6 +42,7 @@
       <li class="navlist__desc">{{labelGroups.name}}</li>
       <li v-for="group in labelGroups.items" :key="group">
         <router-link
+          @click.native="hideNav()"
           :to="{ name: 'List', params: { label: group, page: 1 }}"
           :class="['dot', `dot-${group}`]"
           >
@@ -91,9 +88,10 @@ export default {
       'removeItemsAll'
     ]),
     deleteLocalStorage: function () {
-      // this.removeItemsAll()
-      // this.fetchItemsAll()
+      this.removeItemsAll()
+      this.fetchItemsAll()
       this.buttonDisabled = true
+      this.hideNav()
       this.disableButton()
     },
     disableButton: debounce(function () {
@@ -101,6 +99,10 @@ export default {
     }, 30000),
     showMenu: function () {
       this.menuVisible = !this.menuVisible
+    },
+    hideNav: function () {
+      console.log('hide nav')
+      this.menuVisible = false
     }
   }
 }
@@ -206,6 +208,7 @@ export default {
   &--label {
     > li {
       display: block;
+      margin-right: 1rem;
 
       &:not(.navlist__desc) {
         display: inline-block;
