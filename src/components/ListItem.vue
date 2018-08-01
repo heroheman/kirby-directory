@@ -61,13 +61,14 @@ export default {
       }
     },
     makeTitleSlug: function (title) {
-      // eslint-disable no-useless-escape
       return title.toString().toLowerCase()
         // Replace spaces with -
         .replace(/\s+/g, '-')
         // Remove all non-word chars
+        // eslint-disable-next-line no-useless-escape
         .replace(/[^\w\-]+/g, '')
         // Replace multiple - with single -
+        // eslint-disable-next-line no-useless-escape
         .replace(/\-\-+/g, '-')
         // Trim - from start of text
         .replace(/^-+/, '')

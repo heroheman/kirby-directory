@@ -73,11 +73,26 @@ export default {
 }
 </script>
 <style lang="scss">
-.detail__readme {
+  @import './../assets/scss/_vars.scss';
+
+  .detail__readme {
     padding: 0 1rem;
 
     h1, h2, h3, h4, h5, h6 {
       font-size: 2rem;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    pre code {
+      overflow: scroll;
+      white-space: pre-line;
+
+      @media screen and (min-width: $sm) {
+        white-space: pre-wrap;
+      }
     }
   }
 </style>

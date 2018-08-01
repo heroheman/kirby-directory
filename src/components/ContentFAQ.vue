@@ -11,12 +11,11 @@ This page is a frontend [for the great plugin collection](https://github.com/jen
 ### *Who are you?*
 I am Florenz Heldermann and an independent frontend developer from Bremen, Germany. More information can be found on my [site](https://flore.nz), [blog](https://flore.nz/blog) or on [Twitter](https://twitter.com/track02). On LinkedIn and Xing I can also be found, but don't even get the idea to reach me there in a timely manner.
 
-### *The search does not work! What is a rate limit?*
-The search is currently a direct request to the Github API. This does not allow [more than 10 requests](https://developer.github.com/v3/rate_limit/). If it doesn't work, please wait a moment - usually no more than a few seconds - and then try again.
-Hopefully one of the next updates will solve this problem.
+### *The page does not load correctly!*
+Github is very restrictive regarding external access to the search API. This is why all issues are downloaded the first time you load the page and saved in your browser using localStorage. Due to this limitation, it is possible that the calls have just been used up. Just wait 30-60 seconds and reload the page.
 
-### *How can I add my plugin?*
-Not here at all. Please go to the plugin repository on Github and add an issue. The issue should have a title, a short summary and a link to your Github repository.
+### *The results are outdated.*
+All plugins are in your browser cache. Although this is deleted once a week, it is possible that not all newer results will be displayed. So if you miss anything, reset the cache. You can find a link in the sidebar.
 
 ### *How can I add my plugin?*
 Not here at all. Please go to the [plugin repository](https://github.com/jenstornell/kirby-plugins) on Github and add an issue. The issue should have a title, a short summary and a link to your Github repository.
@@ -34,18 +33,23 @@ This site was built using Vue.js, vue-cli (with webpack-simple), [VueMarkdown](h
 Right. This page is currently the only page I have written by myself. Probably as soon as [Kirby 3](https://getkirby.com/next) (with the new built-in Rest API) is released I will use a Kirby installation as backend.
 
 ### *Your code sucks!*
-I know. I'm still learning.
+I know. I'm still learning. You can write me an E-mail or create a pull request on Github. And ... don't be mean!
+
+### *Since this is a FAQ, where is the bad joke that always comes last?*
+I haven't had time for that yet.
 
 ## Changelog
 * initial release
 
 ## Roadmap
-* [ ] Ask Jens if he agrees that I use his data.
-* [ ] improved search with cached results
+* [x] Ask Jens if he agrees that I use his data.
+* [x] improved search with cached results
 * [x] Vuex State Implementation
 * [ ] Kirby as content backend
 * [ ] Github Login / Firebase Integration  for faving plugins
 * [ ] add kirby templates
+* [ ] think about a bad joke for the last faq point
+
   </Content>
 </template>
 
