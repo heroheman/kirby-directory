@@ -27,7 +27,7 @@ export default new Router({
       component: ContentPrivacy
     },
     {
-      path: '/detail/:id',
+      path: '/detail/:id/:slug?',
       name: 'Detail',
       component: Detail
     },

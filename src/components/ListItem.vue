@@ -1,7 +1,7 @@
 <template>
   <div class="listitem">
 
-    <router-link tag="h3" class="listitem__name" :to="'/detail/' + item.number" :key="item.id">
+    <router-link tag="h3" class="listitem__name" :to="'/detail/' + item.number + '/' + makeTitleSlug(item.title)" :key="item.id">
       <a>
         {{ item.title }}
       </a>
@@ -59,6 +59,20 @@ export default {
         urlparts = pluginUrl[0].split('/')
         return urlparts[3]
       }
+    },
+    makeTitleSlug: function (title) {
+      // eslint-disable no-useless-escape
+      return title.toString().toLowerCase()
+        // Replace spaces with -
+        .replace(/\s+/g, '-')
+        // Remove all non-word chars
+        .replace(/[^\w\-]+/g, '')
+        // Replace multiple - with single -
+        .replace(/\-\-+/g, '-')
+        // Trim - from start of text
+        .replace(/^-+/, '')
+        // Trim - from end of text
+        .replace(/-+$/, '')
     }
   }
 }

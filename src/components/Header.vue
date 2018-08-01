@@ -2,8 +2,9 @@
 <div class="l-header">
   <header class="header">
     <h1 class="header__brand">
-      <!-- <img alt="" src="../assets/kirbyicon.png"/> -->
-      <slot></slot>
+      <router-link :to="{name: 'ListStart', params: { page: '1'} }">
+        <slot></slot>
+      </router-link>
     </h1>
     <button class="header__toggle" @click="showMenu()">
       <font-awesome-icon icon="ellipsis-h" color="red" />
