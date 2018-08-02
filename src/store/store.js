@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
-const searchApi = 'https://api.github.com/search/issues?q=is:open+repo:jenstornell/kirby-plugins&sort=desc&order=created'
+const searchApi = 'https://api.github.com/search/issues?q=is:open+repo:jenstornell/kirby-plugins&sort=updated&order=asc'
 const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
 
@@ -27,11 +27,11 @@ const state = {
   isLoading: true,
   labelTypes: {
     name: 'Types',
-    items: ['Blueprint', 'Controller', 'Core', 'Field', 'Misc', 'Model', 'Plugin', 'Snippet', 'Tag', 'Template']
+    items: ['Blueprint', 'Controller', 'Core', 'Field', 'Misc', 'Model', 'Plugin', 'Snippet', 'Tag', 'Template', 'Security']
   },
   labelGroups: {
     name: 'Groups',
-    items: ['Commercial', 'Panel', 'Screenshot', 'Stable', 'Beta']
+    items: ['Commercial', 'Panel', 'Screenshot', 'Beta', 'v2', 'v3']
   }
 }
 
@@ -93,8 +93,13 @@ const mutations = {
   },
   GET_README: (state, payload) => {
     // encrypt payload
-    payload = atob(payload.content)
-    state.detail.readme = payload
+    console.log(payload)
+    if (payload.message) {
+      state.detail.readme = payload.message
+    } else {
+      payload = atob(payload.content)
+      state.detail.readme = payload
+    }
   },
   GET_COMMENTS: (state, payload) => {
     state.detail.comments = payload
@@ -186,6 +191,8 @@ const actions = {
   getReadme: async function ({commit, state}, payload) {
     let response = await fetch(`${repoApi}/${payload}/readme`)
       .then(res => res.json())
+      .catch(error => console.error(`Fetch Error =\n`, error));
+
     commit('GET_README', response)
   },
   removeLabel ({commit}) {

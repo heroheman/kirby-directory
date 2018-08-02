@@ -73,7 +73,7 @@ export default {
   margin-bottom: 0;
 
   @media screen and (min-width: $xs) {
-    margin-bottom: 0;
+    margin-bottom: 6rem;
   }
 
   &__searchfield {

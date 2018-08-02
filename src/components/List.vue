@@ -187,7 +187,7 @@ export default {
 
 .list {
   position: relative;
-  padding: 1rem 0;
+  padding: 0;
   min-height: 70vh;
 
   &__summary {

@@ -15,12 +15,12 @@
 
     <ul class="navlist">
       <li>
-        <router-link :to="{name: 'ListStart', params: { page: '1'} }" @click.native="hideNav()">
+        <router-link class="navlist__link" :to="{name: 'ListStart', params: { page: '1'} }" @click.native="hideNav()">
           Home
         </router-link>
       </li>
       <li>
-        <router-link :to="{name: 'ContentFAQ'}" @click.native="hideNav()">
+        <router-link class="navlist__link" :to="{name: 'ContentFAQ'}" @click.native="hideNav()">
           FAQ
         </router-link>
       </li>
@@ -125,7 +125,11 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 5rem;
+  margin-bottom: 1rem;
+
+  @media screen and (min-width: $xs) {
+    margin-bottom: 5rem;
+  }
 
   &__toggle {
     position: absolute;
@@ -153,11 +157,23 @@ export default {
     vertical-align: middle;
     font-weight: 400;
     font-size: 2rem;
+
+    &::before {
+      content: '';
+      position: relative;
+      display: inline-block;
+      width: 1.3rem;
+      height: 1.3rem;
+      background: red;
+      border-radius: 50%;
+    }
+
     span {
       font-size: inherit;
       font-weight: 800;
       // font-style: italic;
     }
+
     img {
       position: relative;
       top: 9px;
@@ -165,9 +181,11 @@ export default {
       max-height: 3rem;
     }
   }
+
   &__filter {
     flex-basis: 100%;
   }
+
   @media screen and (min-width: $xs) {
     &__icons {
       display: none;

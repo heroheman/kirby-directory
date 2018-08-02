@@ -5,32 +5,38 @@
       title="Show Readme"
       @click="showReadme()"
       v-if="!readmeVisible"
-      >
-      <font-awesome-icon icon="stream" />
-      Show Readme
+    >
+      <font-awesome-icon icon="stream" size="1x" />
+        Show Readme
+        for {{detail.item.title}}
     </h3>
 
     <h3 class="detail__subheadline is-toggle"
-        title="Hide Readme"
-        @click="hideReadme()"
-        v-else
-        >
+      title="Hide Readme"
+      @click="hideReadme()"
+      v-else
+    >
       <font-awesome-icon icon="stream" />
-      Hide Readme
+        Hide Readme
+        for {{detail.item.title}}
     </h3>
 
-    <vue-markdown class="detail__readme" :source="detail.readme" v-if="readmeVisible">
-    </vue-markdown>
+    <div v-if="readmeVisible">
+      <pulse-loader color="red" :loading="!detail.readme.length"/>
+      <vue-markdown class="detail__readme" :source="detail.readme">
+      </vue-markdown>
+    </div>
   </div>
 </template>
 
 <script>
 import VueMarkdown from 'vue-markdown'
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'DetailReadmeView',
-  components: {VueMarkdown},
+  components: {VueMarkdown, PulseLoader},
   data () {
     return {
       readmeVisible: false
@@ -76,7 +82,8 @@ export default {
   @import './../assets/scss/_vars.scss';
 
   .detail__readme {
-    padding: 0 1rem;
+    padding: 0;
+    border-top: 1px solid $cBorder;
 
     h1, h2, h3, h4, h5, h6 {
       font-size: 2rem;

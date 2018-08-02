@@ -47,19 +47,30 @@
   text-decoration: none;
   border-bottom: 0;
   font-size: 1.4rem;
+  transition: all .25s ease;
 
   &::before {
-    content: '';
     position: absolute;
-    background: red;
-    width: .8rem;
-    height: .8rem;
     left: 0;
     top: 50%;
-    transform: translateY(-50%);
+    content: '';
+    width: .8rem;
+    height: .8rem;
     border-radius: 50%;
+    background: lighten(red, 40%);
+    transform: translateY(-50%);
+    transition: all .25s ease;
+  }
+
+  &:hover {
+    // padding-left: 1.3rem;
+    &::before {
+      width: 1rem;
+      height: 1rem;
+    }
   }
 }
+
 .dot-Plugin::before { background-color: #bfd4f2;}
 .dot-Screenshot::before { background-color: #207DE5; color: #fff;}
 .dot-Field::before { background-color: #FAD8C7;}
@@ -81,3 +92,5 @@
 .dot-Field-method::before { background-color: #d4c5f9;}
 .dot-Deprecated::before { background-color: #FBCA04;}
 .dot-email::before { background-color: #80eda9;}
+.dot-v2::before { background-color: blue;}
+.dot-v3::before { background-color: red;}
