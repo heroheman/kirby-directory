@@ -1,7 +1,7 @@
 .labels {
     padding: 0;
     display: inline-block;
-        line-height: 1.5;
+    line-height: 1.5;
     li {
         display: inline-block;
         margin-right: 2rem;
@@ -70,6 +70,13 @@
     }
   }
 }
+
+.dot-File::before { background-color: #ddd;}
+.dot-Has::before { background-color: #0052cc;}
+.dot-License::before { background-color: #c5def5;}
+.dot-State::before { background-color: #fbca04;}
+.dot-Type::before { background-color: #000;}
+.dot-Version::before { background-color: #5319e7;}
 
 .dot-Plugin::before { background-color: #bfd4f2;}
 .dot-Screenshot::before { background-color: #207DE5; color: #fff;}

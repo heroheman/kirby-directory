@@ -25,14 +25,32 @@ const state = {
     resultsPaged: []
   },
   isLoading: true,
-  labelTypes: {
-    name: 'Types',
-    items: ['Blueprint', 'Controller', 'Core', 'Field', 'Misc', 'Model', 'Plugin', 'Snippet', 'Tag', 'Template', 'Security']
-  },
-  labelGroups: {
-    name: 'Groups',
-    items: ['Commercial', 'Panel', 'Screenshot', 'Beta', 'v2', 'v3']
-  }
+  labelGroups: [
+    {
+      name: 'File',
+      items: ['CLI', 'Screenshot', 'Packagist']
+    },
+    {
+      name: 'Has',
+      items: ['Blueprint', 'Controller', 'Field', 'Field Method', 'Kirbytext Tag', 'Model', 'Snippet', 'Template', 'Widget']
+    },
+    {
+      name: 'License',
+      items: ['Commercial', 'MIT']
+    },
+    {
+      name: 'State',
+      items: ['Beta', 'Broken', 'Deprecated']
+    },
+    {
+      name: 'Type',
+      items: ['Plugin', 'Core', 'Tutorial', 'Misc']
+    },
+    {
+      name: 'Version',
+      items: ['2', '3']
+    },
+  ]
 }
 
 const mutations = {
@@ -61,7 +79,8 @@ const mutations = {
     state.label = label
     if (label !== undefined) {
       // get all items with label
-      state.displayedItems.results = state.items.filter(i => i.labels.some(i => i.name === label))
+      state.displayedItems.results = state.items
+        .filter(i => i.labels.some(i => i.name.toLowerCase() === label.toLowerCase()))
     } else {
       state.displayedItems.results = state.items
     }
@@ -191,7 +210,7 @@ const actions = {
   getReadme: async function ({commit, state}, payload) {
     let response = await fetch(`${repoApi}/${payload}/readme`)
       .then(res => res.json())
-      .catch(error => console.error(`Fetch Error =\n`, error));
+      .catch(error => console.error(`Fetch Error =\n`, error))
 
     commit('GET_README', response)
   },

@@ -36,9 +36,9 @@ html {
 .l-header {
   grid-area: header;
   @media screen and (min-width: $sm) {
-    position: sticky;
-    top: 0;
-    height: 100vh;
+    // position: sticky;
+    // top: 0;
+    // height: 100vh;
   }
 }
 .l-main {

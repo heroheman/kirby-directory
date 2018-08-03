@@ -26,28 +26,19 @@
       </li>
     </ul>
 
-    <ul class="navlist navlist--label">
-      <li class="navlist__desc">{{labelTypes.name}}</li>
-      <li v-for="type in labelTypes.items" :key="type">
+    <ul
+      v-for="group in labelGroups"
+      class="navlist navlist--label">
+
+      <li class="navlist__desc">{{group.name}}</li>
+
+      <li v-for="type in group.items" :key="type">
         <router-link
           @click.native="hideNav()"
-          :to="{ name: 'List', params: { label: type, page: 1 }}"
-          :class="['dot', `dot-${type}`]"
+          :to="{ name: 'List', params: { label: `${group.name}: ${type}`, page: 1 }}"
+          :class="['dot', `dot-${group.name}`]"
           >
           {{ type }}
-        </router-link>
-      </li>
-    </ul>
-
-    <ul class="navlist navlist--label">
-      <li class="navlist__desc">{{labelGroups.name}}</li>
-      <li v-for="group in labelGroups.items" :key="group">
-        <router-link
-          @click.native="hideNav()"
-          :to="{ name: 'List', params: { label: group, page: 1 }}"
-          :class="['dot', `dot-${group}`]"
-          >
-          {{ group }}
         </router-link>
       </li>
     </ul>
@@ -79,8 +70,7 @@ export default {
   },
   computed: {
     ...mapState([
-      'labelGroups',
-      'labelTypes'
+      'labelGroups'
     ])
   },
   methods: {
@@ -102,8 +92,10 @@ export default {
       this.menuVisible = !this.menuVisible
     },
     hideNav: function () {
-      console.log('hide nav')
       this.menuVisible = false
+    },
+    getLabelClass (payload) {
+      return payload
     }
   }
 }
@@ -119,9 +111,9 @@ export default {
 }
 
 .header {
+  display: flex;
   position: relative;
   margin-top: 2rem;
-  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;

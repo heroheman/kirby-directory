@@ -27,9 +27,10 @@
       <li class="listitem__label" v-for="label in item.labels" :key="label.id">
         <router-link
           :to="{name:'List', params:{ label: label.name }}"
-          :class="[`dot-${label.name}`]"
+          :class="['dot', `dot-${getLabelClass(label.name)}`]"
+          :title="`show all items with label ${getLabelName(label.name)}`"
           >
-          {{ label.name }}
+          {{ getLabelName(label.name) }}
         </router-link>
       </li>
     </ul>
@@ -74,6 +75,18 @@ export default {
         .replace(/^-+/, '')
         // Trim - from end of text
         .replace(/-+$/, '')
+    },
+    getLabelClass: function (label) {
+      const parts = label.split(':')
+      return parts[0]
+    },
+    getLabelName: function (label) {
+      const parts = label.split(':')
+      if (parts[0] === 'Version') {
+        return label
+      } else {
+        return parts[1].trim()
+      }
     }
   }
 }
