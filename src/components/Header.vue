@@ -28,6 +28,7 @@
 
     <ul
       v-for="group in labelGroups"
+      :key="group.name"
       class="navlist navlist--label">
 
       <li class="navlist__desc">{{group.name}}</li>

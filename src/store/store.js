@@ -49,7 +49,7 @@ const state = {
     {
       name: 'Version',
       items: ['2', '3']
-    },
+    }
   ]
 }
 
