@@ -14,9 +14,8 @@
     </router-link>
 
     <VueMarkdown v-if="item.body"
-      :source="item.body"
+      :source="cleanMarkdown(item.body)"
       class="listitem__description listitem__description--excerpt">
-      {{ item.body }}
     </VueMarkdown>
 
     <p class="listitem__description listitem__description--excerpt" v-else >
@@ -39,6 +38,7 @@
 
 <script>
 import VueMarkdown from 'vue-markdown'
+import removeMD from 'remove-markdown'
 
 export default {
   name: 'ListItem',
@@ -60,6 +60,14 @@ export default {
         urlparts = pluginUrl[0].split('/')
         return urlparts[3]
       }
+    },
+    cleanMarkdown: function (description) {
+      const cleanedDescription = removeMD(description)
+      console.group()
+      console.log('withmd', description)
+      console.log('without', cleanedDescription)
+      console.groupEnd()
+      return cleanedDescription
     },
     makeTitleSlug: function (title) {
       return title.toString().toLowerCase()

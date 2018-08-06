@@ -20,6 +20,7 @@
     "axios": "^0.18.0",
     "i": "^0.3.6",
     "npm": "^6.2.0",
+    "remove-markdown": "^0.3.0",
     "tiny-debounce": "^0.1.1",
     "vue": "^2.5.2",
     "vue-fuse": "^1.5.2",
