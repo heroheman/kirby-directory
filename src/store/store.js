@@ -1,10 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+// import items from '../../api/items.json'
 import createPersistedState from 'vuex-persistedstate'
 
-const searchApi = 'https://api.github.com/search/issues?q=is:open+repo:jenstornell/kirby-plugins&sort=updated&order=asc'
+// const searchApi = 'https://api.github.com/search/issues?q=is:open+repo:jenstornell/kirby-plugins&sort=updated&order=asc'
 const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
+// const localApi = 'http://kirtools.uber.space/api/items.json'
+// const localApi = 'http://localhost:8080/api/items.json'
+// const localApiHeader = {
+//   type: 'GET',
+//   dataType: 'json',
+//   mode: 'no-cors',
+//   headers: {
+//     'Access-Control-Allow-Origin': '*'
+//   }
+// }
 
 Vue.use(Vuex)
 
@@ -155,24 +166,21 @@ const actions = {
     let lsTest = JSON.parse(localStorage.getItem('vuex'))
 
     if (lsTest === null || lsTest.items.length === 0) {
-      let allData = []
-      let morePagesAvailable = true
-      let currentPage = 0
-      let perPage = 100
-
-      console.time('FETCH NEW ITEMS')
-      while (morePagesAvailable) {
-        currentPage++
-        const response = await fetch(`${searchApi}&per_page=${perPage}&page=${currentPage}`)
-        let {items, total_count} = await response.json()
-        items.forEach(e => allData.unshift(e))
-        morePagesAvailable = currentPage < (total_count / perPage)
-        // console.log(allData, morePagesAvailable, currentPage, items)
+      const pluginData = '/static/api/items.json'
+      // const pluginData = 'http://kirtools.uber.space/api/items.json'
+      let request = new XMLHttpRequest()
+      request.open('GET', pluginData, true)
+      request.responseType = 'json'
+      request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+          const items = request.response
+          commit('SET_ITEMS', { items: items })
+          commit('TOGGLE_LOADING')
+          commit('PAGE_CURRENT_RESULTS', 0)
+        }
       }
-      console.timeEnd('FETCH NEW ITEMS')
-      commit('SET_ITEMS', { items: allData })
-      commit('TOGGLE_LOADING')
-      commit('PAGE_CURRENT_RESULTS', 0)
+
+      request.send()
     } else {
       commit('TOGGLE_LOADING')
     }
