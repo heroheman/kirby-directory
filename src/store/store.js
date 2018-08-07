@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+// import createPersistedState from 'vuex-persistedstate'
 
 const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
@@ -147,30 +147,30 @@ const actions = {
     }
 
     // if no local state given
-    if (!localStorage.getItem('vuex')) {
-      // create state with empty content
-      localStorage.setItem('vuex', '{"items":[]}')
-    }
+    // if (!localStorage.getItem('vuex')) {
+    // create state with empty content
+    // localStorage.setItem('vuex', '{"items":[]}')
+    // }
 
-    let lsTest = JSON.parse(localStorage.getItem('vuex'))
+    // let lsTest = JSON.parse(localStorage.getItem('vuex'))
 
-    if (lsTest === null || lsTest.items.length === 0) {
-      let request = new XMLHttpRequest()
-      request.open('GET', pluginData, true)
-      request.responseType = 'json'
-      request.onreadystatechange = function () {
-        if (request.readyState === 4 && request.status === 200) {
-          const items = request.response
-          commit('SET_ITEMS', { items: items })
-          commit('TOGGLE_LOADING')
-          commit('PAGE_CURRENT_RESULTS', 0)
-        }
+    // if (lsTest === null || lsTest.items.length === 0) {
+    let request = new XMLHttpRequest()
+    request.open('GET', pluginData, true)
+    request.responseType = 'json'
+    request.onreadystatechange = function () {
+      if (request.readyState === 4 && request.status === 200) {
+        const items = request.response
+        commit('SET_ITEMS', { items: items })
+        commit('TOGGLE_LOADING')
+        commit('PAGE_CURRENT_RESULTS', 0)
       }
-
-      request.send()
-    } else {
-      commit('TOGGLE_LOADING')
     }
+
+    request.send()
+    // } else {
+    //   commit('TOGGLE_LOADING')
+    // }
   },
   removeItemsAll: function ({commit}) {
     commit('REMOVE_ITEMS')
@@ -236,10 +236,10 @@ const store = new Vuex.Store({
   state,
   mutations,
   actions,
-  getters,
-  plugins: [createPersistedState({
-    paths: ['items']
-  })]
+  getters
+  // plugins: [createPersistedState({
+  //   paths: ['items']
+  // })]
 })
 
 export default store
