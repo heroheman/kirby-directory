@@ -38,7 +38,7 @@
 
 <script>
 import VueMarkdown from 'vue-markdown'
-import removeMD from 'remove-markdown'
+// import removeMD from 'remove-markdown'
 
 export default {
   name: 'ListItem',
