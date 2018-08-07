@@ -62,7 +62,6 @@ const mutations = {
     state.displayedItems.results = state.items
   },
   SET_SEARCH_QUERY: (state, query) => {
-    console.log(query)
     state.query = query
   },
   SET_RESULTS_SEARCH: (state, query) => {
@@ -114,7 +113,6 @@ const mutations = {
   },
   GET_README: (state, payload) => {
     // encrypt payload
-    console.log(payload)
     if (payload.message) {
       state.detail.readme = payload.message
     } else {

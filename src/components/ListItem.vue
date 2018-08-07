@@ -62,8 +62,10 @@ export default {
       }
     },
     cleanMarkdown: function (description) {
-      const cleanedDescription = removeMD(description)
-      return cleanedDescription
+      // remove markdown
+      // remove urls
+      // remove the single Github, that has no link anymore. sad.
+      return removeMD(description, { useImgAltText: false }).replace(/(?:https?|ftp):\/\/[\n\S]+/g, '').replace(/GitHub/ig, '')
     },
     makeTitleSlug: function (title) {
       return title.toString().toLowerCase()
