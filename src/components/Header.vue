@@ -52,6 +52,7 @@
       </li>
     </ul>
 
+    <!--
     <button
       :disabled="buttonDisabled"
       class="btn--simple" v-on:click="deleteLocalStorage()"
@@ -60,6 +61,7 @@
       <font-awesome-icon icon="cog" />
       Reset Cache
     </button>
+    -->
     <span class="buttonnote" v-if="buttonDisabled">Disabled. Please wait 30 Seconds</span>
   </nav>
 </div>
@@ -227,7 +229,9 @@ export default {
 
   > li {
     margin: 0 .5rem .5rem 0;
-    display: inline-block;
+    &::not(.navlist__desc) {
+      display: inline-block;
+    }
     > a {
       text-decoration: none;
       font-weight: 800;
@@ -244,8 +248,10 @@ export default {
 
   &--label {
     > li {
-      display: block;
       margin-right: 1rem;
+      &::not(.navlist__desc) {
+        display: block;
+      }
 
       &:not(.navlist__desc) {
         display: inline-block;
@@ -259,7 +265,7 @@ export default {
 
   &__desc {
     font-weight: 800;
-    display: none !important;
+    display: none;
     @media screen and (min-width: $xs) {
       display: block;
     }
