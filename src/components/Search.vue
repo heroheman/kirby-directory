@@ -2,7 +2,7 @@
   <section class="search">
 
     <input class="search__searchfield" name="" type="text" v-model="search" @keyup="searchQuery"
-      placeholder="search for plugin, label, author or anything else"
+      placeholder="search all plugins"
       />
 
     <button class="search__searchbutton" @click="searchQuery">
@@ -70,7 +70,7 @@ export default {
   position: relative;
   top: 1rem;
   width: 100%;
-  margin-bottom: 0;
+  margin-bottom: 2rem;
 
   @media screen and (min-width: $xs) {
     margin-bottom: 6rem;
