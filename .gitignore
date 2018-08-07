@@ -15,4 +15,4 @@ selenium-debug.log
 *.ntvs*
 *.njsproj
 *.sln
-static/api/items.json
+/static/api/items.json

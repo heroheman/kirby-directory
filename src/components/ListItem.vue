@@ -168,6 +168,7 @@ export default {
       h1, h2, h3, h4, h5, h6, > p:first-child, blockquote + p
       { display: none; }
       p {
+        font-size: 1.6rem;
         padding: 0;
         margin: 0;
       }

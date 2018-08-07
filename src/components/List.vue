@@ -3,15 +3,11 @@
 
     <div class="loadingwrapper" v-if="getLoading">
       <div class="loadingwrapper__inner">
-        <pulse-loader :loading="getLoading"/>
-        <p>
-          Either this is your first visit or the data has been updated. Therefore we now load a temporary copy of the plugin database from Github. This can take up to 10 seconds
-          Loading: {{ getLoading }}
-        </p>
+        <pulse-loader :loading="getLoading" color="red"/>
       </div>
     </div>
 
-    <p class="list__summary" v-if="displayedItems !== 0">
+    <p class="list__summary" v-if="!getLoading">
       There are currently <strong>{{displayedItems.results.length}}</strong> results
       <span v-if="label !== ''">in <strong>{{label}}</strong></span>
       <span v-if="query !== ''">for the term <strong>{{query}}</strong></span>.

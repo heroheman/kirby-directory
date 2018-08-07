@@ -88,6 +88,7 @@ export default {
   }
   &__subheadline {
     position: relative;
+    font-size: 1.6rem;
     padding-left: 2rem;
     transition: all .25s ease;
 
