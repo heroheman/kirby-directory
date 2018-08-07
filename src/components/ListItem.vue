@@ -62,10 +62,14 @@ export default {
       }
     },
     cleanMarkdown: function (description) {
+      let cleanDesc
       // remove markdown
+      cleanDesc = removeMD(description, { useImgAltText: false })
       // remove urls
+      // cleanDesc = description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '')
       // remove the single Github, that has no link anymore. sad.
-      return removeMD(description, { useImgAltText: false }).replace(/(?:https?|ftp):\/\/[\n\S]+/g, '').replace(/GitHub/ig, '')
+      // cleanDesc = description.replace(/GitHub/ig, '')
+      return cleanDesc
     },
     makeTitleSlug: function (title) {
       return title.toString().toLowerCase()
@@ -155,7 +159,7 @@ export default {
     margin-bottom: 1rem;
     &--excerpt {
       img, img, pre, ul, strong, br, table,
-      h1, h2, h3, h4, h5, h6, p > a, blockquote + p
+      h1, h2, h3, h4, h5, h6, > p:first-child, blockquote + p
       { display: none; }
       p {
         padding: 0;

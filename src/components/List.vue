@@ -145,6 +145,7 @@ export default {
 .invisible-dropdown {
   -webkit-appearance: none;
   -moz-appearance: none;
+  text-align-last:center;
   appearance: none;
   background: transparent;
   border: 0;
