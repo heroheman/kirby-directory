@@ -56,6 +56,7 @@ export default {
   .pagination__item a {
     display: inline-block;
     padding: .3rem .6rem;
+    font-size: 1.2rem;
   }
 
   .pagination__item .router-link-active {

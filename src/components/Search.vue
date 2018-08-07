@@ -70,6 +70,7 @@ export default {
   position: relative;
   top: 1rem;
   width: 100%;
+  margin-top: .5rem;
   margin-bottom: 2rem;
 
   @media screen and (min-width: $xs) {
