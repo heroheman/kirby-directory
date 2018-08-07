@@ -162,6 +162,7 @@ export default {
   &__summary {
     @extend %smallprint;
     font-style: normal;
+    font-size: 1.4rem;
 
     span {
       @extend %smallprint;

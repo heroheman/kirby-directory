@@ -6,14 +6,22 @@
         <slot></slot>
       </router-link>
     </h1>
-    <button class="header__toggle" @click="showMenu()">
-      <font-awesome-icon icon="ellipsis-h" color="red" />
-    </button>
+    <div class="header__mobile-nav">
+      <router-link tag="button" class="navlist__link" :to="{name: 'ListStart', params: { page: '1'} }" @click.native="hideNav()" title="Home">
+        <font-awesome-icon icon="home" color="red" />
+      </router-link>
+      <router-link tag="button" class="navlist__link" :to="{name: 'ContentFAQ'}" @click.native="hideNav()" title="FAQ">
+        <font-awesome-icon icon="question" color="red" />
+      </router-link>
+      <button class="header__toggle" @click="showMenu()">
+        <font-awesome-icon icon="ellipsis-h" color="red" />
+      </button>
+    </div>
   </header>
 
   <nav :class="['nav', {'is-open': menuVisible}]">
 
-    <ul class="navlist">
+    <ul class="navlist navlist--main">
       <li>
         <router-link class="navlist__link" :to="{name: 'ListStart', params: { page: '1'} }" @click.native="hideNav()">
           Home
@@ -121,22 +129,25 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
 
   @media screen and (min-width: $xs) {
     margin-bottom: 5rem;
   }
 
-  &__toggle {
+  &__mobile-nav {
     position: absolute;
     right: 0;
-    appearance: none;
-    border: none;
-    background: transparent;
-    font-size: 2rem;
 
     @media screen and (min-width: $xs) {
       display: none;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      background: transparent;
+      font-size: 2rem;
     }
   }
 
@@ -208,15 +219,26 @@ export default {
 .navlist {
   position: relative;
   list-style: none;
-  margin: 0 0 3rem;
-  padding: 0 3rem 0 0;
+  margin: 0 0 2rem;
+  padding: 0 2rem 0 0;
+  @media screen and (min-width: $xs) {
+    margin: 0 0 3rem;
+  }
 
   > li {
     margin: 0 .5rem .5rem 0;
+    display: inline-block;
     > a {
       text-decoration: none;
       font-weight: 800;
       border: 0;
+    }
+  }
+
+  &--main {
+    display: none;
+    @media screen and (min-width: $xs) {
+      display: block;
     }
   }
 
@@ -237,6 +259,10 @@ export default {
 
   &__desc {
     font-weight: 800;
+    display: none !important;
+    @media screen and (min-width: $xs) {
+      display: block;
+    }
   }
 
   @media screen and (min-width: $xs) {
@@ -246,7 +272,6 @@ export default {
         display: block;
       }
     }
-
   }
 }
 </style>
