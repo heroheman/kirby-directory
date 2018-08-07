@@ -36,7 +36,7 @@
       <li v-for="type in group.items" :key="type">
         <router-link
           @click.native="hideNav()"
-          :to="{ name: 'List', params: { label: `${group.name}: ${type}`, page: 1 }}"
+          :to="{ name: 'List', params: { label: `${group.name}: ${mutateNavTitle(type)}`, page: 1 }}"
           :class="['dot', `dot-${group.name}`]"
           >
           {{ type }}
@@ -89,6 +89,9 @@ export default {
     disableButton: debounce(function () {
       this.buttonDisabled = false
     }, 30000),
+    mutateNavTitle: function (title) {
+      return title.replace(' ', '')
+    },
     showMenu: function () {
       this.menuVisible = !this.menuVisible
     },

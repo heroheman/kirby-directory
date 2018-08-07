@@ -79,11 +79,9 @@ export default {
       this.setItemsPerPage(Number(e.target.value))
     },
     updateList: function () {
-      console.info(this.$route.name)
       let page = this.$route.params.page || 1
 
       if (this.$route.name === 'ListStart') {
-        console.log('updatelist: is Start: ', page)
         this.removeQuery()
         this.removeLabel()
         this.getResultsAll(page)
@@ -92,7 +90,6 @@ export default {
       // if is label
       if (this.$route.name === 'List') {
         let label = this.$route.params.label
-        console.log('updatelist: has label: ', label, page)
         this.removeQuery()
         this.getResultsFilter({label: label, page: page})
       }
@@ -104,8 +101,6 @@ export default {
           this.setSearchQuery(query)
         }
 
-        console.log('updatelist: has search: ', query, page)
-
         this.removeLabel()
         this.getResultsSearch({query: query, page: page})
       }
@@ -113,37 +108,10 @@ export default {
   },
   watch: {
     '$route.params': function () {
-      // if is label
-      console.log(this.$route.name)
       this.updateList()
     }
   },
-  created () {
-  },
-  beforeRouteEnter: function (to, from, next) {
-    // console.log('router enter', to, from)
-    next()
-  },
-  beforeRouteLeave: function (to, from, next) {
-    console.log('before.route.leave', to.name, from.name)
-    if (to.name === 'Search') {
-      // this.$store.dispatch('removeLabel')
-    }
-    if (to.name === 'List') {
-      // this.$store.dispatch('removeQuery')
-    }
-    if (to.name === 'ListStart') {
-      // console.log('going to list start')
-      // this.$store.dispatch('removeLabel')
-      // this.$store.dispatch('removeQuery')
-
-      // this.getResultsAll()
-      // this.$store.commit('PAGE_CURRENT_RESULTS', 1)
-    }
-    next()
-  },
   beforeRouteUpdate: function (to, from, next) {
-    console.log('before route update')
     this.$store.commit('PAGE_CURRENT_RESULTS', to.params.page)
     next()
   },

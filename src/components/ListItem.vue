@@ -63,10 +63,6 @@ export default {
     },
     cleanMarkdown: function (description) {
       const cleanedDescription = removeMD(description)
-      console.group()
-      console.log('withmd', description)
-      console.log('without', cleanedDescription)
-      console.groupEnd()
       return cleanedDescription
     },
     makeTitleSlug: function (title) {

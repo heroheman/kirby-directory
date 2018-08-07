@@ -1,21 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import items from '../../api/items.json'
 import createPersistedState from 'vuex-persistedstate'
 
-// const searchApi = 'https://api.github.com/search/issues?q=is:open+repo:jenstornell/kirby-plugins&sort=updated&order=asc'
 const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
-// const localApi = 'http://kirtools.uber.space/api/items.json'
-// const localApi = 'http://localhost:8080/api/items.json'
-// const localApiHeader = {
-//   type: 'GET',
-//   dataType: 'json',
-//   mode: 'no-cors',
-//   headers: {
-//     'Access-Control-Allow-Origin': '*'
-//   }
-// }
+const pluginData = '/static/api/items.json'
 
 Vue.use(Vuex)
 
@@ -82,7 +71,10 @@ const mutations = {
       query = query.trim().toLowerCase()
 
       state.displayedItems.results = state.items.filter(item => {
-        return item.title.toLowerCase().includes(query) || item.body.toLowerCase().includes(query)
+        // search for title, body and label
+        return item.title.toLowerCase().includes(query) ||
+          item.body.toLowerCase().includes(query) ||
+          item.labels.some(i => i.name.toLowerCase().includes(query))
       })
     }
   },
@@ -98,7 +90,6 @@ const mutations = {
   },
   PAGE_CURRENT_RESULTS: (state, page) => {
     // set currentpage
-    // console.log('page called', page)
     if (page !== 0) {
       state.displayedItems.currentPage = page - 1
     } else {
@@ -166,8 +157,6 @@ const actions = {
     let lsTest = JSON.parse(localStorage.getItem('vuex'))
 
     if (lsTest === null || lsTest.items.length === 0) {
-      const pluginData = '/static/api/items.json'
-      // const pluginData = 'http://kirtools.uber.space/api/items.json'
       let request = new XMLHttpRequest()
       request.open('GET', pluginData, true)
       request.responseType = 'json'
