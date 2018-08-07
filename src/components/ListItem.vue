@@ -63,8 +63,10 @@ export default {
     },
     cleanMarkdown: function (description) {
       let cleanDesc
+      // remove img markdown from text
+      cleanDesc = description.replace(/(!\[.*?\]\()(.+?)(\))/g, '')
       // remove markdown
-      cleanDesc = removeMD(description, { useImgAltText: false })
+      // cleanDesc = removeMD(description, { useImgAltText: false })
       // remove urls
       // cleanDesc = description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '')
       // remove the single Github, that has no link anymore. sad.
@@ -132,6 +134,10 @@ export default {
 
   &__authorname {
     @extend %smallprint;
+    display: block;
+    @media screen and (min-width: $xs) {
+      display: inline-block;
+    }
     span, a {
       @extend %smallprint;
     }
