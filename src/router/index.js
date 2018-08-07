@@ -4,6 +4,7 @@ import List from '@/components/List'
 import Detail from '@/components/Detail'
 import ContentFAQ from '@/components/ContentFAQ'
 import ContentPrivacy from '@/components/ContentPrivacy'
+import ContentImprint from '@/components/ContentImprint'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/privacy',
       name: 'ContentPrivacy',
       component: ContentPrivacy
+    },
+    {
+      path: '/imprint',
+      name: 'ContentImprint',
+      component: ContentImprint
     },
     {
       path: '/detail/:id/:slug?',
