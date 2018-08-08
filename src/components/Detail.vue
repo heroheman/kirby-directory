@@ -57,7 +57,7 @@ import debounce from 'tiny-debounce'
 export default {
   name: 'DetailView',
   components: {VueMarkdown, DetailComments, DetailReadme, PulseLoader},
-  metaInfo() {
+  metaInfo () {
     return {
       title: this.getDetailTitle
     }
@@ -81,8 +81,12 @@ export default {
     }, 500)
   },
   mounted () {
-    // wait a second after items are loaded
-    this.updateDetail()
+    if (this.detail.item.title) {
+      this.getDetail({number: this.$route.params.id})
+    } else {
+      // wait a second after items are loaded
+      this.updateDetail()
+    }
   }
 }
 </script>
