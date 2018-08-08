@@ -47,7 +47,7 @@ export default {
   components: {ListItem, Pagination, PulseLoader},
   metaInfo () {
     return {
-      title: this.label || this.query
+      title: this.getLabel || this.getQuery || 'Home'
     }
   },
   data () {
@@ -62,7 +62,9 @@ export default {
       'displayedItems'
     ]),
     ...mapGetters([
-      'getLoading'
+      'getLoading',
+      'getLabel',
+      'getQuery'
     ])
   },
   methods: {
