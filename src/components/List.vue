@@ -45,6 +45,11 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 export default {
   name: 'List',
   components: {ListItem, Pagination, PulseLoader},
+  metaInfo() {
+    return {
+      title: this.label || this.query
+    }
+  },
   data () {
     return {
     }

@@ -25,6 +25,7 @@
     "vue": "^2.5.2",
     "vue-fuse": "^1.5.2",
     "vue-markdown": "^2.2.4",
+    "vue-meta": "^1.5.2",
     "vue-router": "^3.0.1",
     "vue-spinner": "^1.0.3",
     "vue-svgicon": "^3.0.4",

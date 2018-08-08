@@ -30,13 +30,15 @@ Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden 
 
 Quelle: eRecht24
 
-
   </Content>
 </template>
 
 <script>
 import Content from './Content.vue'
 export default {
+  metaInfo: {
+    title: 'Imprint'
+  },
   components: {Content}
 }
 </script>

@@ -219,6 +219,9 @@ const actions = {
 
 const getters = {
   getLoading: state => state.isLoading,
+  getLabel: state => state.label,
+  getQuery: state => state.query,
+  getDetailTitle: state => state.detail.item.title,
   getLastPage: state => {
     return Math.ceil(state.displayedItems.results.length / state.displayedItems.perPage)
   },

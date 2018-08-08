@@ -18,9 +18,6 @@ export default new Router({
       redirect: {name: 'ListStart'}
     },
     {
-      path: '/api'
-    },
-    {
       path: '/faq',
       name: 'ContentFAQ',
       component: ContentFAQ

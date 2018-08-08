@@ -57,12 +57,18 @@ import debounce from 'tiny-debounce'
 export default {
   name: 'DetailView',
   components: {VueMarkdown, DetailComments, DetailReadme, PulseLoader},
+  metaInfo() {
+    return {
+      title: this.getDetailTitle
+    }
+  },
   computed: {
     ...mapState([
       'detail'
     ]),
     ...mapGetters([
-      'getLoading'
+      'getLoading',
+      'getDetailTitle'
     ])
   },
   methods: {

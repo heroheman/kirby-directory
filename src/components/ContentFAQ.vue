@@ -56,6 +56,9 @@ I haven't had time for that yet.
 <script>
 import Content from './Content.vue'
 export default {
+  metaInfo: {
+    title: 'FAQ'
+  },
   components: {Content}
 }
 </script>

@@ -7,7 +7,7 @@
       </a>
       <span class="listitem__authorname" v-if="getAuthor(item.body) !== false">
         &mdash; by
-        <a href="#">
+        <a :href="`https://github.com/${getAuthor(item.body)}`">
           {{ getAuthor(item.body) }}
         </a>
       </span>
