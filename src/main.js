@@ -8,10 +8,10 @@ import VueFuse from 'vue-fuse'
 import store from './store/store'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faArrowLeft, faComments, faStream, faCog, faEllipsisH, faSearch, faLink, faHome, faQuestion } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faArrowCircleLeft, faComments, faStream, faCog, faEllipsisH, faSearch, faLink, faHome, faQuestion } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faArrowLeft, faComments, faStream, faCog, faEllipsisH, faSearch, faLink, faHome, faQuestion)
+library.add(faArrowLeft, faArrowCircleLeft, faComments, faStream, faCog, faEllipsisH, faSearch, faLink, faHome, faQuestion)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(Meta)

@@ -8,7 +8,12 @@
     </div>
 
     <div class="detail__head" v-if="!getLoading">
+
+
       <h2 class="detail__headline">
+      <button class="back" @click="goBack()" aria-hidden title="go back to overview">
+        <font-awesome-icon icon="arrow-circle-left" color="red" size="lg" />
+      </button>
         <a :href="detail.item.html_url">
           #{{ detail.item.number }}
         </a> &dash;
@@ -94,6 +99,9 @@ export default {
       } else {
         return parts[1].trim()
       }
+    },
+    goBack: function () {
+      this.$router.go(-1)
     }
   },
   mounted () {
@@ -112,6 +120,24 @@ export default {
 
 .detail {
   position: relative;
+
+  .back {
+    position: relative;
+    top: -2px;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 0;
+    background: 0;
+    margin-bottom: 1rem;
+    @extend %smallprint;
+    color: $cBorder;
+    padding-left: 0;
+    padding-right: 0.2rem;
+
+    svg {
+      // margin-right: .5rem;
+    }
+  }
 
   &__head {
     margin-top: 3rem;

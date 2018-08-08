@@ -49,7 +49,7 @@ export default {
     return {
       title: this.getLabel || this.getQuery || 'Home',
       meta: [
-        { description: `All Plugins labeled with ${this.label}`}
+        {description: `All Plugins labeled with ${this.label}`}
       ]
     }
   },
