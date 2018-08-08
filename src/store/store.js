@@ -146,31 +146,25 @@ const actions = {
       commit('TOGGLE_LOADING')
     }
 
-    // if no local state given
-    // if (!localStorage.getItem('vuex')) {
-    // create state with empty content
-    // localStorage.setItem('vuex', '{"items":[]}')
+    // let request = new XMLHttpRequest()
+    // request.open('GET', pluginData, true)
+    // request.responseType = 'json'
+    // request.onreadystatechange = function () {
+    //   if (request.readyState === 4 && request.status === 200) {
+    //     const items = request.response
+    //     commit('SET_ITEMS', { items: items })
+    //     commit('TOGGLE_LOADING')
+    //     commit('PAGE_CURRENT_RESULTS', 0)
+    //   }
     // }
+    // await request.send()
 
-    // let lsTest = JSON.parse(localStorage.getItem('vuex'))
+    let response = await fetch(pluginData)
+    let items = await response.json()
 
-    // if (lsTest === null || lsTest.items.length === 0) {
-    let request = new XMLHttpRequest()
-    request.open('GET', pluginData, true)
-    request.responseType = 'json'
-    request.onreadystatechange = function () {
-      if (request.readyState === 4 && request.status === 200) {
-        const items = request.response
-        commit('SET_ITEMS', { items: items })
-        commit('TOGGLE_LOADING')
-        commit('PAGE_CURRENT_RESULTS', 0)
-      }
-    }
-
-    request.send()
-    // } else {
-    //   commit('TOGGLE_LOADING')
-    // }
+    commit('SET_ITEMS', { items: items })
+    commit('TOGGLE_LOADING')
+    commit('PAGE_CURRENT_RESULTS', 0)
   },
   removeItemsAll: function ({commit}) {
     commit('REMOVE_ITEMS')
@@ -192,7 +186,6 @@ const actions = {
     const {query, page} = payload
     commit('SET_RESULTS_SEARCH', query)
     commit('PAGE_CURRENT_RESULTS', page)
-    // commit('REMOVE_LABEL')
   },
   getDetail ({commit}, payload) {
     commit('GET_DETAIL', payload)

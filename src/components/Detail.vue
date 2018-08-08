@@ -1,6 +1,13 @@
 <template>
   <section class="detail">
-    <div class="detail__head">
+
+    <div class="loadingwrapper" v-if="getLoading">
+      <div class="loadingwrapper__inner">
+        <pulse-loader :loading="getLoading" color="red"/>
+      </div>
+    </div>
+
+    <div class="detail__head" v-if="!getLoading">
       <h2 class="detail__headline">
         <a :href="detail.item.html_url">
           #{{ detail.item.number }}
@@ -9,7 +16,7 @@
       </h2>
     </div>
 
-    <div class="detail__body">
+    <div class="detail__body" v-if="!getLoading">
 
       <!-- <div class="loading" :loading="loading"> -->
       <!--   <pacman-loader :loading="loading" color="red"></pacman-loader> -->
@@ -40,14 +47,16 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import VueMarkdown from 'vue-markdown'
 import DetailComments from './DetailComments.vue'
 import DetailReadme from './DetailReadme.vue'
+import debounce from 'tiny-debounce'
 
 export default {
   name: 'DetailView',
-  components: {VueMarkdown, DetailComments, DetailReadme},
+  components: {VueMarkdown, DetailComments, DetailReadme, PulseLoader},
   computed: {
     ...mapState([
       'detail'
@@ -56,8 +65,18 @@ export default {
       'getLoading'
     ])
   },
+  methods: {
+    ...mapActions([
+      'getDetail',
+      'fetchItemsAll'
+    ]),
+    updateDetail: debounce(function () {
+      this.getDetail({number: this.$route.params.id})
+    }, 500)
+  },
   mounted () {
-    this.$store.dispatch('getDetail', {number: this.$route.params.id})
+    // wait a second after items are loaded
+    this.updateDetail()
   }
 }
 </script>

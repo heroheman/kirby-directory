@@ -27,7 +27,13 @@ import HeaderSection from './components/Header.vue'
 import Search from './components/Search.vue'
 export default {
   name: 'App',
-  components: { HeaderSection, Search }
+  components: { HeaderSection, Search },
+  metaInfo: {
+    // if no subcomponents specify a metaInfo.title, this title will be used
+    title: 'Kirby Plugin Directory',
+    // all titles will be injected into this template
+    titleTemplate: '%s | Kirby Plugins'
+  }
 }
 </script>
 
