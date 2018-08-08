@@ -53,13 +53,17 @@ import VueMarkdown from 'vue-markdown'
 import DetailComments from './DetailComments.vue'
 import DetailReadme from './DetailReadme.vue'
 import debounce from 'tiny-debounce'
+import removeMD from 'remove-markdown'
 
 export default {
   name: 'DetailView',
   components: {VueMarkdown, DetailComments, DetailReadme, PulseLoader},
   metaInfo () {
     return {
-      title: this.getDetailTitle
+      title: this.getDetailTitle,
+      meta: [
+        { description: removeMD(this.detail.item.body) }
+      ]
     }
   },
   computed: {

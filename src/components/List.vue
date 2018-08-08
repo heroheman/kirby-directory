@@ -47,7 +47,10 @@ export default {
   components: {ListItem, Pagination, PulseLoader},
   metaInfo () {
     return {
-      title: this.getLabel || this.getQuery || 'Home'
+      title: this.getLabel || this.getQuery || 'Home',
+      meta: [
+        { description: `All Plugins labeled with ${this.label}`}
+      ]
     }
   },
   data () {
