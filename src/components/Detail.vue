@@ -29,11 +29,11 @@
         <ul class="detail__labels labels">
           <li class="listitem__label" v-for="label in detail.item.labels" :key="label.id">
             <router-link
-              :title="`Show more items from Label ${label.name}`"
               :to="{name:'List', params:{ label: label.name }}"
-              :class="['dot', `dot-${label.name}`]"
+              :class="['dot', `dot-${getLabelClass(label.name)}`]"
+              :title="`show all items with label ${getLabelName(label.name)}`"
               >
-              {{ label.name }}
+              {{ getLabelName(label.name) }}
             </router-link>
           </li>
         </ul>
@@ -82,7 +82,19 @@ export default {
     ]),
     updateDetail: debounce(function () {
       this.getDetail({number: this.$route.params.id})
-    }, 500)
+    }, 500),
+    getLabelClass: function (label) {
+      const parts = label.split(':')
+      return parts[0]
+    },
+    getLabelName: function (label) {
+      const parts = label.split(':')
+      if (parts[0] === 'Version') {
+        return label
+      } else {
+        return parts[1].trim()
+      }
+    }
   },
   mounted () {
     if (this.detail.item.title) {
