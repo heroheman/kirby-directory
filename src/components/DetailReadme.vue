@@ -93,9 +93,24 @@ export default {
       max-width: 100%;
     }
 
+    pre {
+      // white-space: pre-wrap;
+      white-space: pre-line;
+      word-wrap: break-word;
+      text-align: justify;
+      font-size: 1rem;
+
+      @media screen and (min-width: $sm) {
+        white-space: pre-wrap;
+        font-size: 1.4rem;
+      }
+    }
+
     pre code {
       overflow: scroll;
       white-space: pre-line;
+      word-wrap: break-word;
+      text-align: justify;
 
       @media screen and (min-width: $sm) {
         white-space: pre-wrap;
