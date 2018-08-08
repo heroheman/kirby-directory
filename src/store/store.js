@@ -27,12 +27,12 @@ const state = {
   isLoading: true,
   labelGroups: [
     {
-      name: 'File',
-      items: ['CLI', 'Screenshot', 'Packagist']
-    },
-    {
       name: 'Has',
       items: ['Blueprint', 'Controller', 'Field', 'Field Method', 'Kirbytext Tag', 'Model', 'Snippet', 'Template', 'Widget']
+    },
+    {
+      name: 'File',
+      items: ['CLI', 'Screenshot', 'Packagist']
     },
     {
       name: 'License',
