@@ -159,9 +159,12 @@ export default {
     @extend %smallprint;
     font-style: normal;
     font-size: 1.4rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
 
     span {
       @extend %smallprint;
+      font-size: inherit;
       font-style: normal;
     }
 
