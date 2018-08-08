@@ -3,12 +3,12 @@
 ### Impressum
 
 #### Angaben gemäß § 5 TMG
-Florenz Heldermann 
-Oberweserstrasse 22 
+Florenz Heldermann
+Oberweserstrasse 22
 28203 Bremen
 
 #### Kontakt
-Telefon: 017661099909 
+Telefon: 017661099909
 E-Mail: moin@flore.nz
 
 #### Umsatzsteuer
