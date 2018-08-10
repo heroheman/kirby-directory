@@ -9,7 +9,6 @@
 
     <div class="detail__head" v-if="!getLoading">
 
-
       <h2 class="detail__headline">
       <button class="back" @click="goBack()" aria-hidden title="go back to overview">
         <font-awesome-icon icon="arrow-circle-left" color="red" size="lg" />
@@ -67,13 +66,22 @@ export default {
     return {
       title: this.getDetailTitle,
       meta: [
-        { description: removeMD(this.detail.item.body) }
+        { description: removeMD(this.detail.item.body) },
+        {
+          'property': 'og:title',
+          'content': `${this.getDetailTitle} | ${this.meta.title}`
+        },
+        {
+          'property': 'og:description',
+          'content': removeMD(this.detail.item.body)
+        }
       ]
     }
   },
   computed: {
     ...mapState([
-      'detail'
+      'detail',
+      'meta'
     ]),
     ...mapGetters([
       'getLoading',
@@ -133,19 +141,16 @@ export default {
     color: $cBorder;
     padding-left: 0;
     padding-right: 0.2rem;
-
-    svg {
-      // margin-right: .5rem;
-    }
   }
 
   &__head {
     margin-top: 3rem;
     width: 100%;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
   }
   &__headline {
     font-weight: 400;
+    font-size: 2rem;
     margin: 0;
     span {
       font-size: inherit;

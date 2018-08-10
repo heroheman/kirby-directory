@@ -49,7 +49,15 @@ export default {
     return {
       title: this.getLabel || this.getQuery || 'Home',
       meta: [
-        {description: `All Plugins labeled with ${this.label}`}
+        {description: `See all Plugins for the GetKirby CMS labeled with ${this.label || 'all'}`},
+        {
+          'property': 'og:title',
+          'content': (this.getLabel || this.getQuery || 'Home') + ` | ${this.meta.title}`
+        },
+        {
+          'property': 'og:description',
+          'content': `See all Plugins for the GetKirby CMS labeled with ${this.label || 'all'}`
+        }
       ]
     }
   },
@@ -62,6 +70,7 @@ export default {
       'items',
       'query',
       'label',
+      'meta',
       'displayedItems'
     ]),
     ...mapGetters([

@@ -50,7 +50,13 @@ const state = {
       name: 'Version',
       items: ['2', '3']
     }
-  ]
+  ],
+  meta: {
+    title: 'Kirby Plugin Directory',
+    description: 'The Plugin Directory for the GetKirby CMS',
+    keywords: 'kirby, plugins, cms, php, content management system, frontend, freelancer, florenz heldermann, list, collection',
+    image: '/static/favicon/android-chrome-256x256.png'
+  }
 }
 
 const mutations = {
