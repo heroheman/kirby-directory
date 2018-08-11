@@ -41,6 +41,7 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import ListItem from './ListItem.vue'
 import Pagination from './Pagination.vue'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import debounce from 'tiny-debounce'
 
 export default {
   name: 'List',
@@ -119,7 +120,10 @@ export default {
         this.removeLabel()
         this.getResultsSearch({query: query, page: page})
       }
-    }
+    },
+    debounceUpdateList: debounce(function () {
+      this.updateList()
+    }, 1000)
   },
   watch: {
     '$route.params': function () {
@@ -130,8 +134,8 @@ export default {
     this.$store.commit('PAGE_CURRENT_RESULTS', to.params.page)
     next()
   },
-  mounted () {
-    this.updateList()
+  created () {
+    this.debounceUpdateList()
   }
 }
 </script>
