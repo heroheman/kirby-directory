@@ -6,16 +6,12 @@ This page is a frontend [for the great plugin collection](https://github.com/jen
 
 You can find the site here: https://kirby.directory
 
+I also wrote a blog post about the project: https://flore.nz/blog/kirby-directory
+
 ## FAQ
 
 ### *Who are you?*
 I am Florenz Heldermann and an independent frontend developer from Bremen, Germany. More information can be found on my [site](https://flore.nz), [blog](https://flore.nz/blog) or on [Twitter](https://twitter.com/track02). On LinkedIn and Xing I can also be found, but don't even get the idea to reach me there in a timely manner.
-
-### *The page does not load correctly!*
-Github is very restrictive regarding external access to the search API. This is why all issues are downloaded the first time you load the page and saved in your browser using localStorage. Due to this limitation, it is possible that the calls have just been used up. Just wait 30-60 seconds and reload the page.
-
-### *The results are outdated.*
-All plugins are in your browser cache. Although this is deleted once a week, it is possible that not all newer results will be displayed. So if you miss anything, reset the cache. You can find a link in the sidebar.
 
 ### *How can I add my plugin?*
 Not here at all. Please go to the [plugin repository](https://github.com/jenstornell/kirby-plugins) on Github and add an issue. The issue should have a title, a short summary and a link to your Github repository.
