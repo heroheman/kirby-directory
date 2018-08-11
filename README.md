@@ -5,6 +5,7 @@
 This page is a frontend [for the great plugin collection](https://github.com/jenstornell/kirby-plugins) of Jens Törnell on Github. Since Github itself is only moderately usable and I always wanted to implement a project with [Vue.js](https://vuejs.org), I took the opportunity and built a frontend myself using the [Github API](https://developer.github.com/v3/).
 
 You can find the site here: https://kirby.directory
+
 I also wrote a blog post about the project: https://flore.nz/blog/kirby-directory
 
 ## FAQ
