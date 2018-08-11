@@ -1,16 +1,109 @@
 $maxWidth: 1100px;
 
-$font-head: 'Source Sans Pro', sans-serif;
-$font-main: 'Source Sans Pro', sans-serif;
+$font-head: 'Roboto', sans-serif;
+$font-main: 'Roboto', Helvetica, Arial, sans-serif;
+
+$cGrey: #c8c8c8;
 
 $cText: #333;
 $cAccent: red;
 
 $cLink: $cAccent;
-$cBorder: #ddd;
+$cBorder: $cGrey;
+$cSmallprint: $cGrey;
 
 // breakpoints:
 $xs: 48rem;
 $sm: 76.8rem;
 $md: 99.6rem;
 $lg: 144rem;
+
+// MIXINS, INCLUDES and PLACEHOLDER
+
+// headlines
+%h18 {
+  font-size: 1.8rem;
+}
+
+%smallprint {
+  font-size: 1.6rem;
+  font-style: italic;
+  font-weight: 400;
+  color: $cSmallprint;
+}
+
+// mixins
+@mixin custom-underline($color: inherit, $underline-color: transparent, $hover-color: inherit, $hover-underline-color:red, $bg-color: #ffffff) {
+  transition: all .25s ease;
+  color: $color;
+  text-decoration: none;
+  // Underline via gradient background
+  background-image: linear-gradient($underline-color 0%, $underline-color 100%);
+  background-repeat: repeat-x;
+  background-size: 1px 1px;
+  background-position: 0 95%;
+  // Tweak position + thickness for high res (1.75x and up) displays
+  @media (-webkit-min-device-pixel-ratio: 1.75),
+         (min-resolution: 168dpi) {
+    background-image: linear-gradient($underline-color 0%, $underline-color 100%);
+    background-position: 0 93%;
+  }
+  // Clear descendors from underline
+  text-shadow:
+    2px 0.5px $bg-color, 1px 0.5px $bg-color, -1px 0.5px $bg-color, -2px 0.5px $bg-color,
+    2px 0 $bg-color, 1px 0 $bg-color, -1px 0 $bg-color, -2px 0 $bg-color,
+    2px -0.5px $bg-color, 1px -0.5px $bg-color, -1px -0.5px $bg-color, -2px -0.5px $bg-color;
+  &:hover {
+    text-decoration: none;
+    color: $hover-color;
+    background-image: linear-gradient(to bottom, $hover-underline-color 0%, $hover-underline-color 100%);
+  }
+  // Style selected links (or else text-shadow makes it look crazy ugly)
+  // Pseudo selectors must go separately, or they break each other
+  &,
+  > * {
+    &::selection {
+      text-shadow: none;
+    }
+    &::-moz-selection {
+      text-shadow: none;
+    }
+  }
+}
+
+@mixin remove-custom-underline {
+  color: auto;
+  background-image: none;
+  text-shadow: none;
+}
+
+// ANIMATIONS
+
+.fade-enter-active, .fade-leave-active {
+  transition: all .25s;
+  min-height: 0;
+  height: 100%;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  min-height: 30rem;
+}
+
+// bounce
+.bounce-enter-active {
+  animation: bounce-in .5s;
+}
+.bounce-leave-active {
+  animation: bounce-in .5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

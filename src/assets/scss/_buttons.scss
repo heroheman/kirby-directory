@@ -33,3 +33,17 @@
         background: lighten($cAccent, 20%);
     }
 }
+
+.btn--simple {
+  position: relative;
+  display: inline-block;
+  appearance: none;
+  padding-left: 0;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  @extend %smallprint;
+}

@@ -7,7 +7,6 @@ html {
 
 .l-container {
   display: block;
-  width: 100%;
   margin: 0 1rem 0;
   max-width: $maxWidth;
   @media screen and (min-width: $sm) {
@@ -21,15 +20,14 @@ html {
                           "main"
                           "footer";
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr auto;
 
     @media screen and (min-width: $xs) {
-      grid-template-areas:  "header main main main"
-                            "header main main main"
-                            "header main main main"
-                            "footer main main main";
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr 1fr 1fr;
+      grid-template-areas:  "header main"
+                            "header main"
+                            "footer footer";
+      grid-template-columns: 1fr 4fr;
+      grid-template-rows: 1fr auto 10rem;
     }
   }
 }
@@ -37,9 +35,9 @@ html {
 .l-header {
   grid-area: header;
   @media screen and (min-width: $sm) {
-    position: sticky;
-    top: 0;
-    height: 100vh;
+    // position: sticky;
+    // top: 0;
+    // height: 100vh;
   }
 }
 .l-main {

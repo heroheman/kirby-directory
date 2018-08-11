@@ -1,10 +1,11 @@
 .labels {
     padding: 0;
     display: inline-block;
+    line-height: 1.5;
     li {
         display: inline-block;
-        margin-right: 1rem;
-        margin-bottom: 1rem;
+        margin-right: 2rem;
+        margin-bottom: 0rem;
     }
 }
 
@@ -12,7 +13,8 @@
     display: inline-block;
     background: #f2f2f2;
     color: black;
-    text-transform: uppercase;
+    border-bottom: 0;
+    text-decoration: none;
     font-size: 1.2rem;
     padding: .2rem .5rem;
 }
@@ -38,3 +40,64 @@
 .is-Field-method { background-color: #d4c5f9;}
 .is-Deprecated { background-color: #FBCA04;}
 .is-email { background-color: #80eda9;}
+
+[class*='dot-'] {
+  position: relative;
+  padding-left: 1.2rem;
+  text-decoration: none;
+  border-bottom: 0;
+  font-size: 1.4rem;
+  transition: all .25s ease;
+
+  &::before {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    content: '';
+    width: .8rem;
+    height: .8rem;
+    border-radius: 50%;
+    background: lighten(red, 40%);
+    transform: translateY(-50%);
+    transition: all .25s ease;
+  }
+
+  &:hover {
+    // padding-left: 1.3rem;
+    &::before {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}
+
+.dot-File::before { background-color: #ddd;}
+.dot-Has::before { background-color: #0052cc;}
+.dot-License::before { background-color: #c5def5;}
+.dot-State::before { background-color: #fbca04;}
+.dot-Type::before { background-color: #000;}
+.dot-Version::before { background-color: #5319e7;}
+
+.dot-Plugin::before { background-color: #bfd4f2;}
+.dot-Screenshot::before { background-color: #207DE5; color: #fff;}
+.dot-Field::before { background-color: #FAD8C7;}
+.dot-Panel::before { background-color: #000; color: #fff;}
+.dot-CLI::before { background-color: #006B75; color: #fff;}
+.dot-Commercial::before { background-color: #5319e7; color: #fff;}
+.dot-Blueprint::before { background-color: #C7DEF8;}
+.dot-Controller::before { background-color: #bfdadc;}
+.dot-Beta::before { background-color: #ED6420; color: #fff;}
+.dot-Widget::before { background-color: #BFE5BF;}
+.dot-Misc::before { background-color: #5BDDF6;}
+.dot-Snippet::before { background-color: #FEFC20;}
+.dot-Template::before { background-color: #F7C6C7;}
+.dot-Tag::before { background-color: #c7e9bd;}
+.dot-Model::before { background-color: #d4c5f9;}
+.dot-Tutorial::before { background-color: #e1f7c6;}
+.dot-Core::before { background-color: #e3e2e2;}
+.dot-Broken::before { background-color: #e11d21; color: #fff;}
+.dot-Field-method::before { background-color: #d4c5f9;}
+.dot-Deprecated::before { background-color: #FBCA04;}
+.dot-email::before { background-color: #80eda9;}
+.dot-v2::before { background-color: blue;}
+.dot-v3::before { background-color: red;}

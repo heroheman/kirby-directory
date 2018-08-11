@@ -1,0 +1,16 @@
+.l-footer {
+  position: relative;
+  text-align: center;
+  padding-top: 4rem;
+  p {
+    @extend %smallprint;
+    font-size: 1.2rem;
+    font-style: normal;
+  }
+
+  a {
+    font-weight: bold;
+    color: $cText;
+    @include custom-underline;
+  }
+}

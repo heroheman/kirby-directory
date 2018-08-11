@@ -7,17 +7,23 @@ body {
   font-size:16px;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-head;
+}
+
 p, li, span {
   font-size: 1.6rem;
+  line-height: 1.4;
+  color: $cText;
 }
 
 a {
-  color: $cLink;
+  color: $cText;
   text-decoration: none;
-  border-bottom: 1px solid $cBorder;
+  // border-bottom: 1px solid $cAccent;
 }
 
 p {
   line-height: 1.5;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 }
