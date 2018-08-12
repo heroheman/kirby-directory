@@ -1,5 +1,5 @@
 <template>
-  <div class="listitem">
+  <div :class="['listitem', getThumbnail(item.body) ? 'listitem--thumb' : '']">
 
     <router-link tag="h3" class="listitem__name" :to="'/detail/' + item.number + '/' + makeTitleSlug(item.title)" :key="item.id">
       <a>
@@ -129,15 +129,26 @@ export default {
 
 .listitem {
   display: grid;
-  grid-template-areas: "name thumb " "description thumb" "labels thumb";
-  grid-template-columns: 1fr 20rem;
-  grid-template-rows: auto auto 1fr;
+  grid-template-areas: "name" "description" "labels";
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto 1fr;
 
   @media screen and (min-width: $sm) {
-    // grid-template-areas: "name name labels" "description description description";
-    // grid-template-areas: "name" "description" "labels";
-    // grid-template-columns: 40% 1fr;
-    // grid-template-rows: 1fr;
+    grid-template-areas: "name" "description" "labels";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  &--thumb {
+    grid-template-areas: "thumb" "name" "description" "labels";
+    grid-template-columns: auto;
+    grid-template-rows: 2fr 1fr auto 1fr;
+
+    @media screen and (min-width: $sm) {
+      grid-template-areas: "thumb name" "thumb description" "thumb labels";
+      grid-template-columns: 20rem 1fr;
+      grid-template-rows: auto auto 1fr;
+    }
   }
 
   &__name {
@@ -158,18 +169,18 @@ export default {
     .thumb {
       overflow: hidden;
       max-height: 12rem;
-      max-width: 24rem;
-      // clip-path: circle(6rem at center);
-      // clip-path: inset(45% 0% 33% 10% round 10px);
-      // clip-path: circle(50%);
+
+      @media screen and (min-width: $sm) {
+        max-height: 12rem;
+        max-width: 24rem;
+        padding-right: 2rem;
+      }
     }
 
     img {
       // width: 24rem;
       width: 100%;
       overflow: hidden;
-      // margin-top: -10px;
-      // margin-left: -10px;
     }
   }
 
