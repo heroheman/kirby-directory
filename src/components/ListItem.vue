@@ -157,14 +157,16 @@ export default {
 
     .thumb {
       overflow: hidden;
-      height: 12rem;
-      width: 12rem;
-      clip-path: circle(6rem at center);
+      max-height: 12rem;
+      max-width: 24rem;
+      // clip-path: circle(6rem at center);
+      // clip-path: inset(45% 0% 33% 10% round 10px);
+      // clip-path: circle(50%);
     }
 
     img {
-      width: 24rem;
-      // width: 100%;
+      // width: 24rem;
+      width: 100%;
       overflow: hidden;
       // margin-top: -10px;
       // margin-left: -10px;
