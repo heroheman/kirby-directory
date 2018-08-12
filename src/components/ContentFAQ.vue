@@ -35,7 +35,8 @@ I know. I'm still learning. You can write me an E-mail or create a pull request 
 I haven't had time for that yet.
 
 ## Changelog
-* 20180811: initial release
+* 20180811 - 1.0: initial release
+* 20180812 - 1.1: add images to listitems and some bugfixes
 
 ## Roadmap
 * [x] Ask Jens if he agrees that I use his data.

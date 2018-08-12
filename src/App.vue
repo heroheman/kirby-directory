@@ -39,6 +39,7 @@ export default {
       // if no subcomponents specify a metaInfo.title, this title will be used
       // title: ,
       // all titles will be injected into this template
+      htmlAttrs: { lang: 'en' },
       titleTemplate: `%s | ${this.meta.title}`,
       meta: [
         {

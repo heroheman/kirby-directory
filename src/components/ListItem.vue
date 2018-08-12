@@ -1,5 +1,5 @@
 <template>
-  <div class="listitem">
+  <div :class="['listitem', getThumbnail(item.body) ? 'listitem--thumb' : '']">
 
     <router-link tag="h3" class="listitem__name" :to="'/detail/' + item.number + '/' + makeTitleSlug(item.title)" :key="item.id">
       <a>
@@ -12,6 +12,15 @@
         </a>
       </span>
     </router-link>
+
+    <div v-if="getThumbnail(item.body)" class="listitem__thumb">
+      <div class="thumb">
+        <img
+          :src="getThumbnail(item.body)"
+          :alt="item.title"
+        >
+      </div>
+    </div>
 
     <VueMarkdown v-if="item.body"
       :source="cleanMarkdown(item.body)"
@@ -47,6 +56,17 @@ export default {
     'item'
   ],
   methods: {
+    getThumbnail: function (text) {
+      const regex = /(https?:\/\/.*\.(?:png|jpg))/
+      let images = text.match(regex)
+      console.log(images)
+
+      if (images !== null) {
+        return images[0]
+      } else {
+        return false
+      }
+    },
     getAuthor: function (bodytext) {
       let pluginUrl
       let urlparts = []
@@ -111,13 +131,24 @@ export default {
   display: grid;
   grid-template-areas: "name" "description" "labels";
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: 1fr auto 1fr;
 
-  @media screen and (min-width: $sm) {
-    // grid-template-areas: "name name labels" "description description description";
-    // grid-template-areas: "name" "description" "labels";
-    // grid-template-columns: 40% 1fr;
-    // grid-template-rows: 1fr;
+  @media screen and (min-width: $xs) {
+    grid-template-areas: "name" "description" "labels";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  &--thumb {
+    grid-template-areas: "thumb" "name" "description" "labels";
+    grid-template-columns: auto;
+    grid-template-rows: 2fr 1fr auto 1fr;
+
+    @media screen and (min-width: $xs) {
+      grid-template-areas: "thumb name" "thumb description" "thumb labels";
+      grid-template-columns: 20rem 1fr;
+      grid-template-rows: auto auto 1fr;
+    }
   }
 
   &__name {
@@ -129,6 +160,27 @@ export default {
     @extend %h18;
     a {
       @include custom-underline;
+    }
+  }
+
+  &__thumb {
+    grid-area: thumb;
+
+    .thumb {
+      overflow: hidden;
+      max-height: 12rem;
+
+      @media screen and (min-width: $xs) {
+        max-height: 12rem;
+        max-width: 24rem;
+        padding-right: 2rem;
+      }
+    }
+
+    img {
+      // width: 24rem;
+      width: 100%;
+      overflow: hidden;
     }
   }
 
