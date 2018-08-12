@@ -13,6 +13,15 @@
       </span>
     </router-link>
 
+    <div v-if="getThumbnail(item.body)" class="listitem__thumb">
+      <div class="thumb">
+        <img
+          :src="getThumbnail(item.body)"
+          :alt="item.title"
+        >
+      </div>
+    </div>
+
     <VueMarkdown v-if="item.body"
       :source="cleanMarkdown(item.body)"
       class="listitem__description listitem__description--excerpt">
@@ -47,6 +56,17 @@ export default {
     'item'
   ],
   methods: {
+    getThumbnail: function (text) {
+      const regex = /(https?:\/\/.*\.(?:png|jpg))/
+      let images = text.match(regex)
+      console.log(images)
+
+      if (images !== null) {
+        return images[0]
+      } else {
+        return false
+      }
+    },
     getAuthor: function (bodytext) {
       let pluginUrl
       let urlparts = []
@@ -109,8 +129,8 @@ export default {
 
 .listitem {
   display: grid;
-  grid-template-areas: "name" "description" "labels";
-  grid-template-columns: 1fr;
+  grid-template-areas: "name thumb " "description thumb" "labels thumb";
+  grid-template-columns: 1fr 20rem;
   grid-template-rows: auto auto 1fr;
 
   @media screen and (min-width: $sm) {
@@ -129,6 +149,25 @@ export default {
     @extend %h18;
     a {
       @include custom-underline;
+    }
+  }
+
+  &__thumb {
+    grid-area: thumb;
+
+    .thumb {
+      overflow: hidden;
+      height: 12rem;
+      width: 12rem;
+      clip-path: circle(6rem at center);
+    }
+
+    img {
+      width: 24rem;
+      // width: 100%;
+      overflow: hidden;
+      // margin-top: -10px;
+      // margin-left: -10px;
     }
   }
 
