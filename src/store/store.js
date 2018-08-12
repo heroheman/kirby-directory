@@ -122,8 +122,11 @@ const mutations = {
     if (payload.message) {
       state.detail.readme = payload.message
     } else {
-      payload = atob(payload.content)
-      state.detail.readme = payload
+      let encodedPayload = decodeURIComponent(atob(payload.content).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      }).join(''))
+      // payload = atob(payload.content)
+      state.detail.readme = encodedPayload
     }
   },
   GET_COMMENTS: (state, payload) => {
