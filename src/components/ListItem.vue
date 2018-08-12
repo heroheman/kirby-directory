@@ -133,7 +133,7 @@ export default {
   grid-template-columns: 1fr;
   grid-template-rows: 1fr auto 1fr;
 
-  @media screen and (min-width: $sm) {
+  @media screen and (min-width: $xs) {
     grid-template-areas: "name" "description" "labels";
     grid-template-columns: 1fr;
     grid-template-rows: auto auto 1fr;
@@ -144,7 +144,7 @@ export default {
     grid-template-columns: auto;
     grid-template-rows: 2fr 1fr auto 1fr;
 
-    @media screen and (min-width: $sm) {
+    @media screen and (min-width: $xs) {
       grid-template-areas: "thumb name" "thumb description" "thumb labels";
       grid-template-columns: 20rem 1fr;
       grid-template-rows: auto auto 1fr;
@@ -170,7 +170,7 @@ export default {
       overflow: hidden;
       max-height: 12rem;
 
-      @media screen and (min-width: $sm) {
+      @media screen and (min-width: $xs) {
         max-height: 12rem;
         max-width: 24rem;
         padding-right: 2rem;
