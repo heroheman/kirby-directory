@@ -197,8 +197,16 @@ export default {
     a {
       &:not(.dot) {
         color: red;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
       }
     }
+
+    code {
+      white-space: pre-line;
+      word-wrap: break-word;
+    }
+
     border-bottom: 1px solid #ccc;
     margin-bottom: 2rem;
     padding-bottom: 2rem;
