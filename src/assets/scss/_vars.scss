@@ -32,6 +32,18 @@ $lg: 144rem;
   color: $cSmallprint;
 }
 
+// a11y
+%only-sr {
+  position: absolute;
+  width: 0.1rem;
+  height: 0.1rem;
+  margin: -0.1rem;
+  padding: 0;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  overflow: hidden;
+}
+
 // mixins
 @mixin custom-underline($color: inherit, $underline-color: transparent, $hover-color: inherit, $hover-underline-color:red, $bg-color: #ffffff) {
   transition: all .25s ease;
