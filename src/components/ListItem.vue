@@ -142,7 +142,7 @@ export default {
   &--thumb {
     grid-template-areas: "thumb" "name" "description" "labels";
     grid-template-columns: auto;
-    grid-template-rows: 2fr 1fr auto 1fr;
+    grid-template-rows: 2fr auto auto 1fr;
 
     @media screen and (min-width: $xs) {
       grid-template-areas: "thumb name" "thumb description" "thumb labels";
