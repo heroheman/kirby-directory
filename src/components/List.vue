@@ -21,8 +21,8 @@
         <option value="100">100</option>
       </select>
       results per page. <br>
-      <span class="list__summary" v-if="getExcluded.length">
-        <strong>{{getExcludedAmount}}</strong> entries are hidden, beaus the following filters were applied:
+      <span class="list__summary" v-if="getExcluded.length && (getExcludedAmount > 0)">
+        Note: <strong>{{getExcludedAmount}}</strong> entries are hidden, because the following filters were applied:
         <span class="list__summary-excludeditem"
           @click="includeItem(exItem)"
           v-for="(exItem, index) in getExcluded" :key="index">
