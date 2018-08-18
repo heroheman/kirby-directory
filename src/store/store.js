@@ -231,6 +231,7 @@ const actions = {
   getResultsSearch ({commit, state}, payload) {
     const {query, page} = payload
     commit('SET_RESULTS_SEARCH', query)
+    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getDetail ({commit}, payload) {
