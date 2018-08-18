@@ -21,7 +21,10 @@ const state = {
     currentPage: 0,
     perPage: 20,
     maxPage: '',
+    excluded: ['State: Broken', 'State: Deprecated'],
+    excludedAmount: 0,
     results: [],
+    resultsUnexcluded: [],
     resultsPaged: []
   },
   isLoading: true,
@@ -35,19 +38,22 @@ const state = {
       items: ['CLI', 'Screenshot', 'Packagist']
     },
     {
-      name: 'License',
-      items: ['Commercial', 'MIT']
-    },
-    {
-      name: 'State',
-      items: ['Beta', 'Broken', 'Deprecated']
-    },
-    {
       name: 'Type',
       items: ['Plugin', 'Core', 'Tutorial', 'Misc']
     },
     {
+      name: 'License',
+      excludable: true,
+      items: ['Commercial', 'MIT']
+    },
+    {
+      name: 'State',
+      excludable: true,
+      items: ['Beta', 'Broken', 'Deprecated']
+    },
+    {
       name: 'Version',
+      excludable: true,
       items: ['2', '3']
     }
   ],
@@ -62,13 +68,16 @@ const state = {
 const mutations = {
   SET_ITEMS: (state, { items }) => {
     state.items = items
-    state.displayedItems.results = state.items
-  },
-  SET_RESULTS_ALL: (state) => {
+    // backup for reverse exclude
     state.displayedItems.results = state.items
   },
   SET_SEARCH_QUERY: (state, query) => {
     state.query = query
+  },
+  SET_RESULTS_ALL: (state) => {
+    state.displayedItems.results = state.items
+    // backup for reverse exclude
+    state.displayedItems.resultsUnexcluded = state.displayedItems.results
   },
   SET_RESULTS_SEARCH: (state, query) => {
     if (query !== '') {
@@ -81,6 +90,8 @@ const mutations = {
           item.body.toLowerCase().includes(query) ||
           item.labels.some(i => i.name.toLowerCase().includes(query))
       })
+      // backup for reverse exclude
+      state.displayedItems.resultsUnexcluded = state.displayedItems.results
     }
   },
   SET_RESULTS_LABEL: (state, label) => {
@@ -92,6 +103,32 @@ const mutations = {
     } else {
       state.displayedItems.results = state.items
     }
+    // backup for reverse exclude
+    state.displayedItems.resultsUnexcluded = state.displayedItems.results
+  },
+  ADD_EXCLUDE_ITEM: (state, label) => {
+    if (!state.displayedItems.excluded.includes(label)) {
+      let exItems = state.displayedItems.excluded
+      exItems.push(label)
+      state.displayedItems.excluded = exItems
+    }
+  },
+  REMOVE_EXCLUDE_ITEM: (state, label) => {
+    state.displayedItems.excluded = state.displayedItems.excluded.filter(item => item !== label)
+  },
+  EXCLUDE_ITEMS: (state) => {
+    // get backup to readd all missing items
+    state.displayedItems.results = state.displayedItems.resultsUnexcluded
+
+    const filtered = state.displayedItems.results
+      .filter(item => item.labels
+        .every(itemLabel => !state.displayedItems.excluded.includes(itemLabel.name)))
+
+    // get amount of filtered items
+    state.displayedItems.excludedAmount = state.displayedItems.results.length - filtered.length
+
+    // set filtered items
+    state.displayedItems.results = filtered
   },
   PAGE_CURRENT_RESULTS: (state, page) => {
     // set currentpage
@@ -155,23 +192,11 @@ const actions = {
       commit('TOGGLE_LOADING')
     }
 
-    // let request = new XMLHttpRequest()
-    // request.open('GET', pluginData, true)
-    // request.responseType = 'json'
-    // request.onreadystatechange = function () {
-    //   if (request.readyState === 4 && request.status === 200) {
-    //     const items = request.response
-    //     commit('SET_ITEMS', { items: items })
-    //     commit('TOGGLE_LOADING')
-    //     commit('PAGE_CURRENT_RESULTS', 0)
-    //   }
-    // }
-    // await request.send()
-
     let response = await fetch(pluginData)
     let items = await response.json()
 
     commit('SET_ITEMS', { items: items })
+    commit('EXCLUDE_ITEMS')
     commit('TOGGLE_LOADING')
     commit('PAGE_CURRENT_RESULTS', 0)
   },
@@ -180,13 +205,25 @@ const actions = {
   },
   getResultsAll ({ commit, state }, page) {
     commit('SET_RESULTS_ALL')
+    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsFilter ({commit, state}, payload) {
     const {label, page} = payload
     commit('SET_RESULTS_LABEL', label)
+    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
     // commit('REMOVE_QUERY')
+  },
+  excludeItem ({commit, state}, payload) {
+    commit('ADD_EXCLUDE_ITEM', payload)
+    commit('EXCLUDE_ITEMS')
+    commit('PAGE_CURRENT_RESULTS', 0)
+  },
+  includeItem ({commit, state}, payload) {
+    commit('REMOVE_EXCLUDE_ITEM', payload)
+    commit('EXCLUDE_ITEMS')
+    commit('PAGE_CURRENT_RESULTS', 0)
   },
   setSearchQuery ({commit, state}, payload) {
     commit('SET_SEARCH_QUERY', payload)
@@ -234,7 +271,9 @@ const getters = {
   getLastPage: state => {
     return Math.ceil(state.displayedItems.results.length / state.displayedItems.perPage)
   },
-  getSearchTerm: state => state.query
+  getSearchTerm: state => state.query,
+  getExcluded: state => state.displayedItems.excluded,
+  getExcludedAmount: state => state.displayedItems.excludedAmount
 }
 
 const store = new Vuex.Store({

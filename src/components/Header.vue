@@ -44,31 +44,33 @@
       <li v-for="type in group.items" :key="type">
         <router-link
           @click.native="hideNav()"
-          :to="{ name: 'List', params: { label: `${group.name}: ${mutateNavTitle(type)}`, page: 1 }}"
+          :to="{ name: 'List', params: { label: getLabelName(group.name, type), page: 1 }}"
           :class="['dot', `dot-${group.name}`]"
           >
           {{ type }}
         </router-link>
+        <span class="navlist__exclude"
+          v-if="group.excludable && !isExcluded(getLabelName(group.name, type))"
+          :title="`hide ${getLabelName(group.name, type)}`"
+          @click="excludeItem(getLabelName(group.name, type))">
+          <font-awesome-icon icon="eye" color="#ccc" />
+        </span>
+        <span class="navlist__exclude"
+          :title="`show ${getLabelName(group.name, type)}`"
+          v-if="group.excludable && isExcluded(getLabelName(group.name, type))"
+          @click="includeItem(getLabelName(group.name, type))">
+          <font-awesome-icon icon="eye-slash" color="#ccc" />
+        </span>
       </li>
     </ul>
 
-    <!--
-    <button
-      :disabled="buttonDisabled"
-      class="btn--simple" v-on:click="deleteLocalStorage()"
-      title="This resets the cache and re-downloads all the data from Github. As the Github API is very limited - please don't abuse it."
-    >
-      <font-awesome-icon icon="cog" />
-      Reset Cache
-    </button>
-    -->
     <span class="buttonnote" v-if="buttonDisabled">Disabled. Please wait 30 Seconds</span>
   </nav>
 </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 import debounce from 'tiny-debounce'
 
 export default {
@@ -81,13 +83,19 @@ export default {
   },
   computed: {
     ...mapState([
-      'labelGroups'
+      'labelGroups',
+      ''
+    ]),
+    ...mapGetters([
+      'getExcluded'
     ])
   },
   methods: {
     ...mapActions([
       'fetchItemsAll',
-      'removeItemsAll'
+      'removeItemsAll',
+      'excludeItem',
+      'includeItem'
     ]),
     deleteLocalStorage: function () {
       this.removeItemsAll()
@@ -108,8 +116,14 @@ export default {
     hideNav: function () {
       this.menuVisible = false
     },
+    getLabelName (name, type) {
+      return `${name}: ${this.mutateNavTitle(type)}`
+    },
     getLabelClass (payload) {
       return payload
+    },
+    isExcluded (label) {
+      return this.getExcluded.includes(label)
     }
   }
 }
@@ -260,6 +274,16 @@ export default {
       a {
         font-weight: 400;
       }
+    }
+  }
+
+  &__exclude {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.2rem;
+
+    @media screen and (min-width: $xs) {
+      float: right;
     }
   }
 

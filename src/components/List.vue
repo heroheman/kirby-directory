@@ -20,7 +20,15 @@
         <option value="70">70</option>
         <option value="100">100</option>
       </select>
-      results per page.
+      results per page. <br>
+      <span class="list__summary" v-if="getExcluded.length">
+        <strong>{{getExcludedAmount}}</strong> entries are hidden, beaus the following filters were applied:
+        <span class="list__summary-excludeditem"
+          @click="includeItem(exItem)"
+          v-for="(exItem, index) in getExcluded" :key="index">
+          <strong>{{exItem}}</strong>
+        </span>
+      </span>
     </p>
 
     <ul class="list__items" v-if="displayedItems !== 0">
@@ -77,7 +85,9 @@ export default {
     ...mapGetters([
       'getLoading',
       'getLabel',
-      'getQuery'
+      'getQuery',
+      'getExcluded',
+      'getExcludedAmount'
     ])
   },
   methods: {
@@ -89,7 +99,8 @@ export default {
       'setItemsPerPage',
       'setSearchQuery',
       'removeQuery',
-      'removeLabel'
+      'removeLabel',
+      'includeItem'
     ]),
     updatePerPageNumber: function (e) {
       this.setItemsPerPage(Number(e.target.value))
@@ -181,9 +192,42 @@ export default {
   &__summary {
     @extend %smallprint;
     font-style: normal;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #eee;
+
+    &-excludeditem {
+      cursor: pointer;
+      position: relative;
+
+      &::after {
+        content: ' / ';
+      }
+
+      &:last-child {
+        &::after {
+          content: '';
+        }
+      }
+
+      &:hover {
+        strong {
+          &::before{
+            content: '';
+            border-bottom: 2px solid red;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 90%;
+          }
+        }
+      }
+
+      strong {
+        display: inline-block;
+      }
+
+    }
 
     span {
       @extend %smallprint;
