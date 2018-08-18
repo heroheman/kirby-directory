@@ -1,13 +1,16 @@
 <template>
   <section class="search">
 
-    <input class="search__searchfield" name="" type="text" v-model="search" @keyup="searchQuery"
-      placeholder="search all plugins"
-      />
-
-    <button class="search__searchbutton" @click="searchQuery">
-      <font-awesome-icon icon="search" color="#333" />
-    </button>
+    <form @submit="searchQuery">
+      <label for="main-search" class="search__searchlabel">Search</label>
+      <input class="search__searchfield" name="main-search" id="main-search" type="text" v-model="search" @keyup="searchQuery"
+        placeholder="search all plugins"
+        />
+      <button class="search__searchbutton" type="submit">
+        <span class="only-sr">Submit search</span>
+        <font-awesome-icon icon="search" color="#333" aria-hidden="true" />
+      </button>
+    </form>
 
   </section>
 </template>
@@ -77,6 +80,10 @@ export default {
     margin-bottom: 6rem;
   }
 
+  &__searchlabel {
+    @extend %only-sr;
+  }
+
   &__searchfield {
     position: relative;
     width: 100%;
@@ -98,6 +105,9 @@ export default {
     img {
         width: 2rem;
         height: 2rem;
+    }
+    span {
+      @extend %only-sr;
     }
   }
 }
