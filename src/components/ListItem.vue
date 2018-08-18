@@ -59,7 +59,6 @@ export default {
     getThumbnail: function (text) {
       const regex = /(https?:\/\/.*\.(?:png|jpg))/
       let images = text.match(regex)
-      console.log(images)
 
       if (images !== null) {
         return images[0]
