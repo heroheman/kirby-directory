@@ -1,7 +1,7 @@
 <template>
   <section class="search">
 
-    <form @submit="searchQuery">
+    <form @submit.prevent="searchQuery">
       <label for="main-search" class="search__searchlabel">Search</label>
       <input class="search__searchfield" name="main-search" id="main-search" type="text" v-model="search" @keyup="searchQuery"
         placeholder="search all plugins"
@@ -47,7 +47,8 @@ export default {
       'getResultsSearch',
       'setSearchQuery'
     ]),
-    searchQuery: debounce(function () {
+    searchQuery: debounce(function (e) {
+      e.preventDefault()
       if (this.search !== '') {
         this.$router.push({name: 'Search', params: {query: this.$store.getters.getSearchTerm, page: 1}})
         // this.getResultsSearch({query: this.search, page: 1})
