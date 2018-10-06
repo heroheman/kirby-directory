@@ -8,9 +8,20 @@
     </div>
 
     <p class="list__summary" v-if="!getLoading">
+
       There are currently <strong>{{displayedItems.results.length}}</strong> results
       <span v-if="label !== ''">in <strong>{{label}}</strong></span>
       <span v-if="query !== ''">for the term <strong>{{query}}</strong></span>.
+
+      <span class="list__summary" v-if="getExcluded.length && (getExcludedAmount > 0)">
+        <strong>{{getExcludedAmount}}</strong> entries are hidden, because the following filters were applied: <br>
+        <span class="list__summary-excludeditem"
+          @click="includeItem(exItem)"
+          v-for="(exItem, index) in getExcluded" :key="index">
+          <strong>{{exItem}}</strong>
+        </span>
+      </span> <br>
+
       Showing
       <select class="invisible-dropdown" v-model="displayedItems.perPage" v-on:change="updatePerPageNumber">
         <option disabled value="">Please select</option>
@@ -21,14 +32,6 @@
         <option value="100">100</option>
       </select>
       results per page. <br>
-      <span class="list__summary" v-if="getExcluded.length && (getExcludedAmount > 0)">
-        Note: <strong>{{getExcludedAmount}}</strong> entries are hidden, because the following filters were applied:
-        <span class="list__summary-excludeditem"
-          @click="includeItem(exItem)"
-          v-for="(exItem, index) in getExcluded" :key="index">
-          <strong>{{exItem}}</strong>
-        </span>
-      </span>
     </p>
 
     <ul class="list__items" v-if="displayedItems !== 0">
