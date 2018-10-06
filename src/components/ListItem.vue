@@ -31,7 +31,6 @@
       Could'nt find any description
     </p>
 
-
     <ul class="labels listitem__labels">
       <li v-if="getGif(item.body)">
         <button class="listitem__playbutton" title="show/hide gif" @click="toggleGif()">
@@ -87,7 +86,6 @@ export default {
       let gifs = text.match(regex)
 
       if (gifs !== null) {
-        console.log(gifs)
         return gifs[0]
       } else {
         return false
