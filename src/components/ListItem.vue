@@ -32,6 +32,13 @@
     </p>
 
     <ul class="labels listitem__labels">
+      <li v-if="getGif(item.body)">
+        <button class="listitem__playbutton" title="show/hide gif" @click="toggleGif()">
+          <span class="triangle"></span>
+          <!-- <span v-if="!showGif">Show Gif</span>
+          <span v-if="showGif">Hide Gif</span> -->
+        </button>
+      </li>
       <li class="listitem__label" v-for="label in item.labels" :key="label.id">
         <router-link
           :to="{name:'List', params:{ label: label.name }}"
@@ -42,6 +49,9 @@
         </router-link>
       </li>
     </ul>
+
+    <img class="listitem__gif" v-if="showGif" :src="getGif(item.body)" alt="a nice jif">
+
   </div>
 </template>
 
@@ -55,6 +65,11 @@ export default {
   props: [
     'item'
   ],
+  data () {
+    return {
+      showGif: false
+    }
+  },
   methods: {
     getThumbnail: function (text) {
       const regex = /(https?:\/\/.*\.(?:png|jpg))/
@@ -65,6 +80,19 @@ export default {
       } else {
         return false
       }
+    },
+    getGif: function (text) {
+      const regex = /(https?:\/\/.*\.(?:gif|gif))/
+      let gifs = text.match(regex)
+
+      if (gifs !== null) {
+        return gifs[0]
+      } else {
+        return false
+      }
+    },
+    toggleGif: function () {
+      this.showGif = !this.showGif
     },
     getAuthor: function (bodytext) {
       let pluginUrl
@@ -181,6 +209,41 @@ export default {
       width: 100%;
       overflow: hidden;
     }
+  }
+
+  &__playbutton {
+    appearance: none;
+    border: 1px solid #ddd;
+    padding: .1rem .3rem .1rem .5rem;
+    border-radius: 5px;
+    background: transparent;
+    transition: all .25s ease;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #aaa;
+      .triangle {
+        border-color: transparent transparent transparent #aaa;
+      }
+    }
+
+    span {
+      font-size: 1.2rem;
+    }
+
+    .triangle {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 5px 0 5px 10px;
+      border-color: transparent transparent transparent #ddd;
+    }
+  }
+
+  &__gif {
+    max-width: 100%;
+    padding-top: 1rem;
   }
 
   &__authorname {

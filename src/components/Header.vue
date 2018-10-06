@@ -187,6 +187,7 @@ export default {
       display: inline-block;
       width: 1.3rem;
       height: 1.3rem;
+      margin-right: .5rem;
       background: red;
       border-radius: 50%;
     }
@@ -283,7 +284,7 @@ export default {
     font-size: 1.2rem;
 
     @media screen and (min-width: $xs) {
-      float: right;
+      margin-left: .5rem;
     }
   }
 
