@@ -4,7 +4,7 @@
     <form @submit.prevent="searchQuery">
       <label for="main-search" class="search__searchlabel">Search</label>
       <input class="search__searchfield" name="main-search" id="main-search" type="text" v-model="search" @keyup="searchQuery"
-        placeholder="search all plugins"
+        placeholder="search by title, description, label or author and press enter"
         />
       <button class="search__searchbutton" type="submit">
         <span class="only-sr">Submit search</span>
