@@ -39,6 +39,7 @@ I haven't had time for that yet.
 * 20180812 - 1.1: add images to listitems and some bugfixes
 * 20180818 - 1.2: hide broken and deprecated links, global label exclude, better search a11y, small Improvements
 * 20181006 - 1.2.1: change endpoint to [new github repo url](https://github.com/texnixe/kirby-plugins)
+* 20181006 - 1.2.2: add play button, small improvements
 
 ## Roadmap
 * [x] Ask Jens if he agrees that I use his data.
