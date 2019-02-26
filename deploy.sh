@@ -4,9 +4,8 @@ USER=kirtools
 HOST=boethin.uberspace.de
 DIR=html
 
-cd static/api
+cd api
 ./curl_github.sh
-cd ..
 cd ..
 
 npm run build && rsync -avz --delete dist/ ${USER}@${HOST}:~/${DIR}
