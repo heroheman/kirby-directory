@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 
 const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
-const pluginData = '/static/api/items.json'
+const pluginData = '/static/items.json'
 
 Vue.use(Vuex)
 
