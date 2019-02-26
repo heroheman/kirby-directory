@@ -53,12 +53,12 @@ import debounce from 'tiny-debounce'
 
 export default {
   name: 'List',
-  components: {ListItem, Pagination, PulseLoader},
+  components: { ListItem, Pagination, PulseLoader },
   metaInfo () {
     return {
       title: this.getLabel || this.getQuery || 'Home',
       meta: [
-        {description: `See all Plugins for the GetKirby CMS labeled with ${this.label || 'all'}`},
+        { description: `See all Plugins for the GetKirby CMS labeled with ${this.label || 'all'}` },
         {
           'property': 'og:title',
           'content': (this.getLabel || this.getQuery || 'Home') + ` | ${this.meta.title}`
@@ -118,7 +118,7 @@ export default {
       if (this.$route.name === 'List') {
         let label = this.$route.params.label
         this.removeQuery()
-        this.getResultsFilter({label: label, page: page})
+        this.getResultsFilter({ label: label, page: page })
       }
 
       // if has search query
@@ -129,7 +129,7 @@ export default {
         }
 
         this.removeLabel()
-        this.getResultsSearch({query: query, page: page})
+        this.getResultsSearch({ query: query, page: page })
       }
     },
     debounceUpdateList: debounce(function () {

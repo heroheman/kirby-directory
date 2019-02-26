@@ -50,10 +50,10 @@ export default {
     searchQuery: debounce(function (e) {
       e.preventDefault()
       if (this.search !== '') {
-        this.$router.push({name: 'Search', params: {query: this.$store.getters.getSearchTerm, page: 1}})
+        this.$router.push({ name: 'Search', params: { query: this.$store.getters.getSearchTerm, page: 1 } })
         // this.getResultsSearch({query: this.search, page: 1})
       } else {
-        this.$router.push({name: 'ListStart', params: {page: 1}})
+        this.$router.push({ name: 'ListStart', params: { page: 1 } })
       }
     }, 500)
   },

@@ -214,7 +214,7 @@ export default {
   metaInfo: {
     title: 'Privacy'
   },
-  components: {Content}
+  components: { Content }
 }
 </script>
 

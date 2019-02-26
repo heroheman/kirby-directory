@@ -7,7 +7,7 @@
 <script>
 import VueMarkdown from 'vue-markdown'
 export default {
-  components: {VueMarkdown}
+  components: { VueMarkdown }
 }
 </script>
 <style lang="scss">

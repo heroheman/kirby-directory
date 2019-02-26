@@ -39,7 +39,7 @@ export default {
   metaInfo: {
     title: 'Imprint'
   },
-  components: {Content}
+  components: { Content }
 }
 </script>
 

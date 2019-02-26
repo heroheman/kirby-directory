@@ -60,7 +60,7 @@ export default {
   metaInfo: {
     title: 'FAQ'
   },
-  components: {Content}
+  components: { Content }
 }
 </script>
 

@@ -15,7 +15,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: {name: 'ListStart'}
+      redirect: { name: 'ListStart' }
     },
     {
       path: '/faq',

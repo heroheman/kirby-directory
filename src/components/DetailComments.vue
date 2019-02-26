@@ -65,7 +65,7 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
   name: 'DetailCommentsView',
-  components: {VueMarkdown, PulseLoader},
+  components: { VueMarkdown, PulseLoader },
   data () {
     return {
       commentsVisible: false
