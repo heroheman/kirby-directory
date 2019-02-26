@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 
 const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
-const pluginData = '/static/api/items.json'
+const pluginData = '/static/items.json'
 
 Vue.use(Vuex)
 
@@ -148,7 +148,7 @@ const mutations = {
     state.isLoading = !state.isLoading
   },
   GET_DETAIL: (state, payload) => {
-    const {number} = payload
+    const { number } = payload
     // empty details
     state.detail.comments = []
     state.detail.readme = ''
@@ -200,7 +200,7 @@ const actions = {
     commit('TOGGLE_LOADING')
     commit('PAGE_CURRENT_RESULTS', 0)
   },
-  removeItemsAll: function ({commit}) {
+  removeItemsAll: function ({ commit }) {
     commit('REMOVE_ITEMS')
   },
   getResultsAll ({ commit, state }, page) {
@@ -208,54 +208,54 @@ const actions = {
     commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
-  getResultsFilter ({commit, state}, payload) {
-    const {label, page} = payload
+  getResultsFilter ({ commit, state }, payload) {
+    const { label, page } = payload
     commit('SET_RESULTS_LABEL', label)
     commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
     // commit('REMOVE_QUERY')
   },
-  excludeItem ({commit, state}, payload) {
+  excludeItem ({ commit, state }, payload) {
     commit('ADD_EXCLUDE_ITEM', payload)
     commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', 0)
   },
-  includeItem ({commit, state}, payload) {
+  includeItem ({ commit, state }, payload) {
     commit('REMOVE_EXCLUDE_ITEM', payload)
     commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', 0)
   },
-  setSearchQuery ({commit, state}, payload) {
+  setSearchQuery ({ commit, state }, payload) {
     commit('SET_SEARCH_QUERY', payload)
   },
-  getResultsSearch ({commit, state}, payload) {
-    const {query, page} = payload
+  getResultsSearch ({ commit, state }, payload) {
+    const { query, page } = payload
     commit('SET_RESULTS_SEARCH', query)
     commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
-  getDetail ({commit}, payload) {
+  getDetail ({ commit }, payload) {
     commit('GET_DETAIL', payload)
   },
-  getComments: async function ({commit}, payload) {
+  getComments: async function ({ commit }, payload) {
     const response = await fetch(`${issueApi}/${payload}/comments`)
       .then(res => res.json())
     commit('GET_COMMENTS', response)
   },
-  getReadme: async function ({commit, state}, payload) {
+  getReadme: async function ({ commit, state }, payload) {
     let response = await fetch(`${repoApi}/${payload}/readme`)
       .then(res => res.json())
       .catch(error => console.error(`Fetch Error =\n`, error))
 
     commit('GET_README', response)
   },
-  removeLabel ({commit}) {
+  removeLabel ({ commit }) {
     commit('REMOVE_LABEL')
   },
-  removeQuery ({commit}) {
+  removeQuery ({ commit }) {
     commit('REMOVE_QUERY')
   },
-  setItemsPerPage ({commit}, payload) {
+  setItemsPerPage ({ commit }, payload) {
     commit('SET_ITEMS_PER_PAGE', payload)
     commit('PAGE_CURRENT_RESULTS', 1)
   },

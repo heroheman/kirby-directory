@@ -61,7 +61,7 @@ import removeMD from 'remove-markdown'
 
 export default {
   name: 'DetailView',
-  components: {VueMarkdown, DetailComments, DetailReadme, PulseLoader},
+  components: { VueMarkdown, DetailComments, DetailReadme, PulseLoader },
   metaInfo () {
     return {
       title: this.getDetailTitle,
@@ -94,7 +94,7 @@ export default {
       'fetchItemsAll'
     ]),
     updateDetail: debounce(function () {
-      this.getDetail({number: this.$route.params.id})
+      this.getDetail({ number: this.$route.params.id })
     }, 500),
     getLabelClass: function (label) {
       const parts = label.split(':')
@@ -114,7 +114,7 @@ export default {
   },
   mounted () {
     if (this.detail.item.title) {
-      this.getDetail({number: this.$route.params.id})
+      this.getDetail({ number: this.$route.params.id })
     } else {
       // wait a second after items are loaded
       this.updateDetail()

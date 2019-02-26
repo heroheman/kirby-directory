@@ -64,6 +64,9 @@ export default {
         }
       ]
     }
+  },
+  beforeCreate () {
+    this.$store.dispatch('fetchItemsAll')
   }
 }
 </script>

@@ -36,7 +36,7 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'DetailReadmeView',
-  components: {VueMarkdown, PulseLoader},
+  components: { VueMarkdown, PulseLoader },
   data () {
     return {
       readmeVisible: false
