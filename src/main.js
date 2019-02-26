@@ -22,9 +22,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
-  template: '<App/>',
-  beforeCreate () {
-    this.$store.dispatch('fetchItemsAll')
-  }
+  render: h => h(App)
 })
