@@ -1,6 +1,6 @@
 {
-  "name": "myapp-cli3",
-  "version": "0.1.0",
+  "name": "Kirby-Plugins-Directory",
+  "version": "1.2.3",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

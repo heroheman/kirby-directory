@@ -1,13 +1,13 @@
 <template>
   <div class="list">
 
-    <div class="loadingwrapper" v-if="getLoading">
+    <div class="loadingwrapper" v-if="!hasItems">
       <div class="loadingwrapper__inner">
         <pulse-loader :loading="getLoading" color="red"/>
       </div>
     </div>
 
-    <p class="list__summary" v-if="!getLoading">
+    <p class="list__summary" v-if="hasItems">
       There are currently <strong>{{displayedItems.results.length}}</strong> results
       <span v-if="label !== ''">in <strong>{{label}}</strong></span>
       <span v-if="query !== ''">for the term <strong>{{query}}</strong></span>.
@@ -88,7 +88,10 @@ export default {
       'getQuery',
       'getExcluded',
       'getExcludedAmount'
-    ])
+    ]),
+    hasItems: function () {
+      return this.items.length > 0
+    }
   },
   methods: {
     ...mapActions([
@@ -138,6 +141,9 @@ export default {
   },
   watch: {
     '$route.params': function () {
+      this.updateList()
+    },
+    'items': function () {
       this.updateList()
     }
   },
