@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+// import axios from 'axios'
 // import createPersistedState from 'vuex-persistedstate'
 
 const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
-const pluginData = '/static/items.json'
+// const pluginData = '/static/items.json'
+const pluginApi = process.env.VUE_APP_PLUGIN_ENDPOINT
 
 Vue.use(Vuex)
 
@@ -192,7 +194,7 @@ const actions = {
       commit('TOGGLE_LOADING')
     }
 
-    let response = await fetch(pluginData)
+    let response = await fetch(pluginApi)
     let items = await response.json()
 
     commit('SET_ITEMS', { items: items })
