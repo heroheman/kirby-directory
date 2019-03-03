@@ -24,7 +24,7 @@
     <ul class="navlist navlist--main">
       <li>
         <router-link class="navlist__link" :to="{name: 'ListStart', params: { page: '1'} }" @click.native="hideNav()">
-          Home
+          All
         </router-link>
       </li>
       <li>
@@ -45,7 +45,37 @@
     </ul>
 
     <ul
-      v-for="group in labelGroups"
+      v-for="group in labelThemes"
+      :key="group.name"
+      class="navlist navlist--label">
+
+      <li class="navlist__desc">{{group.name}}</li>
+
+      <li v-for="type in group.items" :key="type">
+        <router-link
+          @click.native="hideNav()"
+          :to="{ name: 'List', params: { label: type, page: 1 }}"
+          :class="['dot', `dot-${makeTitleSlug(type)}`]"
+          >
+          {{ type }}
+        </router-link>
+        <span class="navlist__exclude"
+          v-if="group.excludable && !isExcluded(getLabelName(group.name, type))"
+          :title="`hide ${getLabelName(group.name, type)}`"
+          @click="excludeItem(getLabelName(group.name, type))">
+          <font-awesome-icon icon="eye" color="#ccc" />
+        </span>
+        <span class="navlist__exclude"
+          :title="`show ${getLabelName(group.name, type)}`"
+          v-if="group.excludable && isExcluded(getLabelName(group.name, type))"
+          @click="includeItem(getLabelName(group.name, type))">
+          <font-awesome-icon icon="eye-slash" color="#ccc" />
+        </span>
+      </li>
+    </ul>
+
+    <ul
+      v-for="group in labelPlugins"
       :key="group.name"
       class="navlist navlist--label">
 
@@ -93,8 +123,8 @@ export default {
   },
   computed: {
     ...mapState([
-      'labelGroups',
-      ''
+      'labelPlugins',
+      'labelThemes'
     ]),
     ...mapGetters([
       'getExcluded'
@@ -119,6 +149,9 @@ export default {
     }, 30000),
     mutateNavTitle: function (title) {
       return title.replace(' ', '')
+    },
+    makeTitleSlug: function (title) {
+      return title.replace(' ', '-')
     },
     showMenu: function () {
       this.menuVisible = !this.menuVisible

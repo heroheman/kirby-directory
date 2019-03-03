@@ -101,3 +101,18 @@
 .dot-email::before { background-color: #80eda9;}
 .dot-v2::before { background-color: blue;}
 .dot-v3::before { background-color: red;}
+
+$theme-default-bg: #f2f2f2;
+$theme-default-fg: #000;
+
+.dot-Blog::before {}
+.dot-Bootstrap::before { background: $theme-default-bg }
+.dot-Commercial::before { background-color: #5319e7; color: #fff;}
+.dot-Docs::before { background-color: #bf4df2; color: #000;}
+.dot-Foundation::before { background-color: $theme-default-bg; }
+.dot-Kube::before { background-color: $theme-default-bg; }
+.dot-Material::before { background-color: $theme-default-bg; }
+.dot-Portfolio::before { background-color: #d4c5f9; color: #000;}
+.dot-Screenshot::before { background-color: #207de5; color: #000;}
+.dot-Kirby-2::before { background-color: red; color: white;}
+.dot-Kirby-3::before { background-color: black; color: white;}

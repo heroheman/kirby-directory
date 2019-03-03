@@ -31,7 +31,7 @@ const state = {
     resultsPaged: []
   },
   isLoading: true,
-  labelGroups: [
+  labelPlugins: [
     {
       name: 'Has',
       items: ['Blueprint', 'Controller', 'Field', 'Field Method', 'Kirbytext Tag', 'Model', 'Snippet', 'Template', 'Widget']
@@ -58,6 +58,12 @@ const state = {
       name: 'Version',
       excludable: true,
       items: ['2', '3']
+    }
+  ],
+  labelThemes: [
+    {
+      name: 'Themes',
+      items: ['Blog', 'Bootstrap', 'Commercial', 'Docs', 'Foundation', 'Kube', 'Material', 'Portfolio', 'Screenshot', 'Kirby 3 Theme', 'Kirby 2 Theme']
     }
   ],
   meta: {
