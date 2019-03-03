@@ -87,7 +87,8 @@ export default {
       'getLabel',
       'getQuery',
       'getExcluded',
-      'getExcludedAmount'
+      'getExcludedAmount',
+      'getPluginItems'
     ]),
     hasItems: function () {
       return this.items.length > 0

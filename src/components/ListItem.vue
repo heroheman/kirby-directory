@@ -1,7 +1,7 @@
 <template>
   <div :class="['listitem', getThumbnail(item.body) ? 'listitem--thumb' : '']">
 
-    <router-link tag="h3" class="listitem__name" :to="'/detail/' + item.number + '/' + makeTitleSlug(item.title)" :key="item.id">
+    <router-link tag="h3" class="listitem__name" :to="'/detail/' + item.id + '/' + makeTitleSlug(item.title)" :key="item.id">
       <a>
         {{ item.title }}
       </a>
@@ -141,7 +141,7 @@ export default {
     },
     getLabelName: function (label) {
       const parts = label.split(':')
-      if (parts[0] === 'Version') {
+      if (parts[0] !== 'Version') {
         return label
       } else {
         return parts[1].trim()

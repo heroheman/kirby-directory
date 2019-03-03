@@ -102,7 +102,7 @@ export default {
     },
     getLabelName: function (label) {
       const parts = label.split(':')
-      if (parts[0] === 'Version') {
+      if (parts[0] !== 'Version') {
         return label
       } else {
         return parts[1].trim()

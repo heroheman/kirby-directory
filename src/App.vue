@@ -2,7 +2,7 @@
   <div id="app" class="l-container l-container--grid">
     <!-- l-header -->
     <HeaderSection>
-      kirby <span>plugins</span>
+      kirby <span>directory</span>
     </HeaderSection>
 
     <main class="l-main">

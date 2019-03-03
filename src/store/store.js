@@ -7,6 +7,8 @@ const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
 // const pluginData = '/static/items.json'
 const pluginApi = process.env.VUE_APP_PLUGIN_ENDPOINT
+const themeApi = process.env.VUE_APP_THEME_ENDPOINT
+console.log(pluginApi, themeApi)
 
 Vue.use(Vuex)
 
@@ -69,9 +71,9 @@ const state = {
 
 const mutations = {
   SET_ITEMS: (state, { items }) => {
-    state.items = items
+    state.items = [...items]
     // backup for reverse exclude
-    state.displayedItems.results = state.items
+    state.displayedItems.results = [...state.items]
   },
   SET_SEARCH_QUERY: (state, query) => {
     state.query = query
@@ -154,7 +156,7 @@ const mutations = {
     // empty details
     state.detail.comments = []
     state.detail.readme = ''
-    state.detail.item = state.items.find(i => i.number === Number(number))
+    state.detail.item = state.items.find(i => i.id === Number(number))
   },
   GET_README: (state, payload) => {
     // encrypt payload
@@ -194,9 +196,18 @@ const actions = {
       commit('TOGGLE_LOADING')
     }
 
-    let response = await fetch(pluginApi)
-    let items = await response.json()
+    let plugins = await fetch(pluginApi)
+    let themes = await fetch(themeApi)
 
+    plugins = await plugins.json()
+    themes = await themes.json()
+
+    const items = themes.concat(plugins)
+
+    // let response = await fetch(pluginApi)
+    // let items = await response.json()
+
+    console.log(items)
     commit('SET_ITEMS', { items: items })
     commit('EXCLUDE_ITEMS')
     commit('TOGGLE_LOADING')
@@ -276,7 +287,9 @@ const getters = {
   },
   getSearchTerm: state => state.query,
   getExcluded: state => state.displayedItems.excluded,
-  getExcludedAmount: state => state.displayedItems.excludedAmount
+  getExcludedAmount: state => state.displayedItems.excludedAmount,
+  getPluginItems: state => state.items.filter((i) => i.item_type === 'plugin'),
+  getThemeItems: state => state.items.filter((i) => i.item_type === 'theme')
 }
 
 const store = new Vuex.Store({
