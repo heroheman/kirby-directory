@@ -8,7 +8,6 @@ const repoApi = 'https://api.github.com/repos'
 // const pluginData = '/static/items.json'
 const pluginApi = process.env.VUE_APP_PLUGIN_ENDPOINT
 const themeApi = process.env.VUE_APP_THEME_ENDPOINT
-console.log(pluginApi, themeApi)
 
 Vue.use(Vuex)
 
@@ -223,7 +222,6 @@ const actions = {
     // let response = await fetch(pluginApi)
     // let items = await response.json()
 
-    console.log(items)
     commit('SET_ITEMS', { items: items })
     commit('EXCLUDE_ITEMS')
     commit('TOGGLE_LOADING')
@@ -283,6 +281,7 @@ const actions = {
   getReadme: async function ({ commit, state }, payload) {
     let response = await fetch(`${repoApi}/${payload}/readme`)
       .then(res => res.json())
+      // eslint-disable-next-line no-console
       .catch(error => console.error(`Fetch Error =\n`, error))
 
     commit('GET_README', response)
