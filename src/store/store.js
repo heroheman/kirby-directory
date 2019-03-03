@@ -83,6 +83,16 @@ const mutations = {
     // backup for reverse exclude
     state.displayedItems.resultsUnexcluded = state.displayedItems.results
   },
+  SET_RESULTS_PLUGINS: (state) => {
+    state.displayedItems.results = state.items.filter(i => i.item_type === 'plugin')
+    // backup for reverse exclude
+    state.displayedItems.resultsUnexcluded = state.displayedItems.results
+  },
+  SET_RESULTS_THEMES: (state) => {
+    state.displayedItems.results = state.items.filter(i => i.item_type === 'theme')
+    // backup for reverse exclude
+    state.displayedItems.resultsUnexcluded = state.displayedItems.results
+  },
   SET_RESULTS_SEARCH: (state, query) => {
     if (query !== '') {
       state.query = query
@@ -202,7 +212,13 @@ const actions = {
     plugins = await plugins.json()
     themes = await themes.json()
 
-    const items = themes.concat(plugins)
+    let items = themes.concat(plugins)
+
+    items.sort(function (a, b) {
+      // convert date object into number to resolve issue in typescript
+      return +new Date(a.updated_at) - +new Date(b.updated_at)
+    })
+    items = items.reverse()
 
     // let response = await fetch(pluginApi)
     // let items = await response.json()
@@ -219,6 +235,15 @@ const actions = {
   getResultsAll ({ commit, state }, page) {
     commit('SET_RESULTS_ALL')
     commit('EXCLUDE_ITEMS')
+    commit('PAGE_CURRENT_RESULTS', page)
+  },
+  getResultsPlugins ({ commit, state }, page) {
+    commit('SET_RESULTS_PLUGINS')
+    commit('EXCLUDE_ITEMS')
+    commit('PAGE_CURRENT_RESULTS', page)
+  },
+  getResultsThemes ({ commit, state }, page) {
+    commit('SET_RESULTS_THEMES')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsFilter ({ commit, state }, payload) {

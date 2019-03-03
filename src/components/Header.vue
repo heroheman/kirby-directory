@@ -28,6 +28,16 @@
         </router-link>
       </li>
       <li>
+        <router-link class="navlist__link" :to="{name: 'ListPlugins', params: { page: '1'} }" @click.native="hideNav()">
+          Plugins
+        </router-link>
+      </li>
+      <li>
+        <router-link class="navlist__link" :to="{name: 'ListThemes', params: { page: '1'} }" @click.native="hideNav()">
+          Themes
+        </router-link>
+      </li>
+      <li>
         <router-link class="navlist__link" :to="{name: 'ContentFAQ'}" @click.native="hideNav()">
           FAQ
         </router-link>

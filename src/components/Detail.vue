@@ -8,7 +8,6 @@
     </div>
 
     <div class="detail__head" v-if="!getLoading">
-
       <h2 class="detail__headline">
       <button class="back" @click="goBack()" aria-hidden title="go back to overview">
         <font-awesome-icon icon="arrow-circle-left" color="red" size="lg" />

@@ -178,6 +178,27 @@ export default {
     }
   }
 
+  .list__items--themes & {
+    grid-template-areas: "name" "thumb" "labels";
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto 1fr;
+
+    &__thumb {
+      background: #f2f2f2;
+      border-bottom: 1rem solid #f2f2f2;
+      .thumb {
+        max-height: 45rem;
+        max-width: 100%;
+        padding: 1rem 1rem 0;
+        overflow: hidden;
+      }
+      img {
+        max-width: 100%;
+        overflow: visible;
+      }
+    }
+  }
+
   &__name {
     grid-area: name;
     display: block;

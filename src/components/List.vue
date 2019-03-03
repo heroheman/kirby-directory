@@ -1,6 +1,5 @@
 <template>
   <div class="list">
-
     <div class="loadingwrapper" v-if="!hasItems">
       <div class="loadingwrapper__inner">
         <pulse-loader :loading="getLoading" color="red"/>
@@ -31,7 +30,9 @@
       </span>
     </p>
 
-    <ul class="list__items" v-if="displayedItems !== 0">
+    <ul
+      :class="{ 'list__items--themes': isThemes }"
+      class="list__items" v-if="displayedItems !== 0">
       <li class="list__item"
         v-for="item in displayedItems.resultsPaged"
         :key="item.id">
@@ -72,6 +73,7 @@ export default {
   },
   data () {
     return {
+      isThemes: false
     }
   },
   computed: {
@@ -98,6 +100,8 @@ export default {
     ...mapActions([
       'fetchItemsAll',
       'getResultsAll',
+      'getResultsThemes',
+      'getResultsPlugins',
       'getResultsFilter',
       'getResultsSearch',
       'setItemsPerPage',
@@ -116,6 +120,18 @@ export default {
         this.removeQuery()
         this.removeLabel()
         this.getResultsAll(page)
+      }
+
+      if (this.$route.name === 'ListThemes') {
+        this.removeQuery()
+        this.removeLabel()
+        this.getResultsThemes(page)
+      }
+
+      if (this.$route.name === 'ListPlugins') {
+        this.removeQuery()
+        this.removeLabel()
+        this.getResultsPlugins(page)
       }
 
       // if is label
@@ -138,11 +154,21 @@ export default {
     },
     debounceUpdateList: debounce(function () {
       this.updateList()
-    }, 1000)
+    }, 1000),
+    handleViewStyle: function () {
+      if (this.$route.name === 'ListThemes') {
+        this.isThemes = true
+      } else {
+        this.isThemes = false
+      }
+    }
   },
   watch: {
     '$route.params': function () {
       this.updateList()
+    },
+    '$route.name': function () {
+      this.handleViewStyle()
     },
     'items': function () {
       this.updateList()
@@ -153,6 +179,7 @@ export default {
     next()
   },
   created () {
+    this.handleViewStyle()
     this.debounceUpdateList()
   }
 }
@@ -252,6 +279,15 @@ export default {
     list-style: none;
     margin: 0;
     padding: 0;
+
+    &--themes {
+      column-width: auto;
+      column-count: 3;
+      > li {
+        break-inside: avoid;
+      }
+
+    }
   }
 
   &__item {
