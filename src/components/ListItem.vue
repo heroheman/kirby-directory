@@ -15,10 +15,10 @@
 
     <div v-if="getThumbnail(item.body)" class="listitem__thumb">
       <div class="thumb">
-        <img
+        <v-lazy-image
           :src="getThumbnail(item.body)"
           :alt="item.title"
-        >
+        />
       </div>
     </div>
 
@@ -57,11 +57,12 @@
 
 <script>
 import VueMarkdown from 'vue-markdown'
+import VLazyImage from 'v-lazy-image'
 // import removeMD from 'remove-markdown'
 
 export default {
   name: 'ListItem',
-  components: { VueMarkdown },
+  components: { VueMarkdown, VLazyImage },
   props: [
     'item'
   ],
@@ -194,7 +195,11 @@ export default {
       }
       img {
         max-width: 100%;
+        min-height: 30rem;
         overflow: visible;
+        &.v-lazy-image-loaded {
+          min-height: 13rem;
+        }
       }
     }
   }
