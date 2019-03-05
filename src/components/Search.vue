@@ -12,6 +12,43 @@
       </button>
     </form>
 
+    <div class="search__ctrls">
+      <div class="checkbox">
+        <div class="checkbox__desc">
+          Limit search to:
+        </div>
+        <div class="checkbox__box">
+          <input type="checkbox" id="typePlugin">
+          <label for="typePlugin">Plugins</label>
+        </div>
+        <div class="checkbox__box">
+          <input type="checkbox" id="typeTheme">
+          <label for="typeTheme">Themes</label>
+        </div>
+      </div>
+
+      <div class="checkbox">
+        <div class="checkbox__desc">
+          Just show me:
+        </div>
+        <div class="checkbox__box">
+          <input type="checkbox" id="typePlugin">
+          <label for="typePlugin">Kirby 2</label>
+        </div>
+        <div class="checkbox__box">
+          <input type="checkbox" id="typeTheme">
+          <label for="typeTheme">Kirby 3</label>
+        </div>
+      </div>
+
+      <div class="checkbox">
+        <div class="checkbox__box">
+          <input type="checkbox" id="typePlugin">
+          <label for="typePlugin">Hide Commercial</label>
+        </div>
+      </div>
+    </div>
+
   </section>
 </template>
 
@@ -76,6 +113,10 @@ export default {
   width: 100%;
   margin-top: .5rem;
   margin-bottom: 6rem;
+
+  form {
+    margin-bottom: .5rem;
+  }
 
   @media screen and (min-width: $xs) {
     margin-bottom: 6rem;

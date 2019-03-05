@@ -1,0 +1,25 @@
+.checkbox {
+  position: relative;
+  display: inline-block;
+  margin-right: 1rem;
+
+  border: 1px solid #f2f2f2;
+  padding: .5rem;
+
+  font-size: 1.2rem;
+  vertical-align: middle;
+
+  &__desc {
+    display: inline-block;
+    margin-right: 1rem;
+  }
+
+  &__box {
+    display: inline-block;
+
+    input[type="checkbox"],
+    label {
+      vertical-align: middle;
+    }
+  }
+}
