@@ -38,6 +38,7 @@ I haven't had time for that yet.
 * 20180818 - 1.2: hide broken and deprecated links, global label exclude, better search a11y, small Improvements
 * 20181006 - 1.2.1: change endpoint to [new github repo url](https://github.com/texnixe/kirby-plugins)
 * 20181006 - 1.2.2: add play button, small improvements
+* 20190229 - 1.2.3: updated to vue-cli 3
 
 ## Roadmap
 * [x] Ask Jens if he agrees that I use his data.
