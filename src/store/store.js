@@ -34,7 +34,11 @@ const state = {
   labelPlugins: [
     {
       name: 'Has',
-      items: ['Blueprint', 'Controller', 'Field', 'Field Method', 'Kirbytext Tag', 'Model', 'Snippet', 'Template', 'Widget']
+      items: ['Blueprint', 'Controller', 'Field', 'Field Method', 'File Method', 'Kirbytext Tag', 'Model', 'Snippet', 'Template', 'Widget']
+    },
+    {
+      name: 'Tag',
+      items: ['Audio', 'Bootstrap', 'Cache', 'Calendar', 'Database', 'Date', 'E-commerce', 'Editor', 'Email', 'Embed', 'Feed', 'Font', 'Form', 'Foundation', 'Geo location', 'Gulp', 'Hook', 'Icon', 'Image', 'Less', 'Pagination', 'Panel', 'Podcast', 'Redirect', 'Sass', 'Security', 'Select', 'Sitemap', 'Social', 'Statistics', 'Table', 'Tabs', 'Text', 'Time', 'Tool', 'Unique', 'Users', 'Video']
     },
     {
       name: 'File',
