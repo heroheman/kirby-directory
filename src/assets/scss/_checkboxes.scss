@@ -1,4 +1,4 @@
-.checkbox {
+.checkradio {
   position: relative;
   display: inline-block;
   margin-right: 1rem;
@@ -7,7 +7,7 @@
   padding: .5rem;
 
   font-size: 1.2rem;
-  vertical-align: middle;
+  // vertical-align: middle;
 
   &__desc {
     display: inline-block;
@@ -18,8 +18,14 @@
     display: inline-block;
 
     input[type="checkbox"],
+    input[type="radio"],
     label {
       vertical-align: middle;
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      margin-top: 0;
     }
   }
 }

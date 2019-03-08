@@ -13,36 +13,36 @@
     </form>
 
     <div class="search__ctrls">
-      <div class="checkbox">
-        <div class="checkbox__desc">
+      <div class="checkradio">
+        <div class="checkradio__desc">
           Limit search to:
         </div>
-        <div class="checkbox__box">
-          <input type="checkbox" id="typePlugin">
+        <div class="checkradio__box">
+          <input name="pluginOrTheme" type="radio" id="typePlugin">
           <label for="typePlugin">Plugins</label>
         </div>
-        <div class="checkbox__box">
-          <input type="checkbox" id="typeTheme">
+        <div class="checkradio__box">
+          <input name="pluginOrTheme" type="radio" id="typeTheme">
           <label for="typeTheme">Themes</label>
         </div>
       </div>
 
-      <div class="checkbox">
-        <div class="checkbox__desc">
+      <div class="checkradio">
+        <div class="checkradio__desc">
           Just show me:
         </div>
-        <div class="checkbox__box">
-          <input type="checkbox" id="typePlugin">
-          <label for="typePlugin">Kirby 2</label>
+        <div class="checkradio__box">
+          <input name="kversion" type="radio" id="kirby2">
+          <label for="kirby2">Kirby 2</label>
         </div>
-        <div class="checkbox__box">
-          <input type="checkbox" id="typeTheme">
-          <label for="typeTheme">Kirby 3</label>
+        <div class="checkradio__box">
+          <input name="kversion" type="radio" id="kirby3">
+          <label for="kirby3">Kirby 3</label>
         </div>
       </div>
 
-      <div class="checkbox">
-        <div class="checkbox__box">
+      <div class="checkradio">
+        <div class="checkradio__box">
           <input type="checkbox" id="typePlugin">
           <label for="typePlugin">Hide Commercial</label>
         </div>
