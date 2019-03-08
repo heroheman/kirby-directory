@@ -262,6 +262,7 @@ const actions = {
     // commit('REMOVE_QUERY')
   },
   excludeItem ({ commit, state }, payload) {
+    console.log(payload)
     commit('ADD_EXCLUDE_ITEM', payload)
     commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', 0)

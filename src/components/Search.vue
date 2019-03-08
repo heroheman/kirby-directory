@@ -18,11 +18,18 @@
           Limit search to:
         </div>
         <div class="checkradio__box">
-          <input name="pluginOrTheme" type="radio" id="typePlugin">
+          <input name="pluginOrTheme" type="radio" value="typeAll"
+            id="typeAll" v-model="filter.radioType" checked>
+          <label for="typeAll">All</label>
+        </div>
+        <div class="checkradio__box">
+          <input name="pluginOrTheme" type="radio" value="typePlugin"
+            id="typePlugin" v-model="filter.radioType">
           <label for="typePlugin">Plugins</label>
         </div>
         <div class="checkradio__box">
-          <input name="pluginOrTheme" type="radio" id="typeTheme">
+          <input name="pluginOrTheme" type="radio" value="typeTheme"
+            id="typeTheme" v-model="filter.radioType">
           <label for="typeTheme">Themes</label>
         </div>
       </div>
@@ -32,19 +39,26 @@
           Just show me:
         </div>
         <div class="checkradio__box">
-          <input name="kversion" type="radio" id="kirby2">
+          <input name="kversion" type="radio" value="versionAll"
+            id="kirbyAll" v-model="filter.radioVersion" checked>
+          <label for="kirbyAll">All</label>
+        </div>
+        <div class="checkradio__box">
+          <input name="kversion" type="radio" value="version2"
+            id="kirby2" v-model="filter.radioVersion">
           <label for="kirby2">Kirby 2</label>
         </div>
         <div class="checkradio__box">
-          <input name="kversion" type="radio" id="kirby3">
+          <input name="kversion" type="radio" value="version3"
+            id="kirby3" v-model="filter.radioVersion">
           <label for="kirby3">Kirby 3</label>
         </div>
       </div>
 
       <div class="checkradio">
         <div class="checkradio__box">
-          <input type="checkbox" id="typePlugin">
-          <label for="typePlugin">Hide Commercial</label>
+          <input type="checkbox" id="hideCommercial" v-model="filter.hideCommercial">
+          <label for="hideCommercial">Hide Commercial</label>
         </div>
       </div>
     </div>
@@ -58,6 +72,15 @@ import debounce from 'tiny-debounce'
 
 export default {
   name: 'Search',
+  data () {
+    return {
+      filter: {
+        radioType: 'typeAll',
+        radioVersion: 'versionAll',
+        hideCommercial: false
+      }
+    }
+  },
   computed: {
     search: {
       get () {
@@ -76,13 +99,13 @@ export default {
       'getLoading'
     ])
   },
-  mounted () {
-  },
   methods: {
     ...mapActions([
       'getResultsFilter',
       'getResultsSearch',
-      'setSearchQuery'
+      'setSearchQuery',
+      'excludeItem',
+      'includeItem'
     ]),
     searchQuery: debounce(function (e) {
       e.preventDefault()
@@ -92,7 +115,32 @@ export default {
       } else {
         this.$router.push({ name: 'ListStart', params: { page: 1 } })
       }
-    }, 500)
+    }, 500),
+    applyFilter: function () {
+      this.applyVersionFilter()
+    },
+    applyVersionFilter: function () {
+      switch (this.filter.radioVersion) {
+        case 'version2':
+          this.excludeItem('Kirby 3 Theme')
+          this.includeItem('Kirby 2 Theme')
+          this.excludeItem('Version: 3')
+          this.includeItem('Version: 2')
+          break
+        case 'version3':
+          this.excludeItem('Kirby 2 Theme')
+          this.includeItem('Kirby 3 Theme')
+          this.excludeItem('Version: 2')
+          this.includeItem('Version: 3')
+          break
+        default:
+          this.includeItem('Kirby 2 Theme')
+          this.includeItem('Kirby 3 Theme')
+          this.includeItem('Version: 2')
+          this.includeItem('Version: 3')
+          break
+      }
+    }
   },
   beforeRouteLeave: function (to, from, next) {
     if (from.name === 'Search') {
@@ -100,6 +148,11 @@ export default {
       this.search = ''
     }
     next()
+  },
+  watch: {
+    'filter.radioVersion': function () {
+      this.applyFilter()
+    }
   }
 }
 </script>
