@@ -151,7 +151,10 @@ export default {
   },
   watch: {
     'filter.radioVersion': function () {
-      this.applyFilter()
+      this.applyVersionFilter()
+    },
+    'filter.radioType': function () {
+      this.applyTypeFilter()
     }
   }
 }
