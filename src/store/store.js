@@ -98,7 +98,7 @@ const mutations = {
     state.displayedItems.resultsUnexcluded = state.displayedItems.results
   },
   SET_RESULTS_THEMES: (state) => {
-    state.displayedItems.results = state.items.filter(i => i.item_type === 'theme')
+    state.displayedItems.results = state.items.filter(i => i.item_type === 'themes')
     // backup for reverse exclude
     state.displayedItems.resultsUnexcluded = state.displayedItems.results
   },
@@ -262,7 +262,6 @@ const actions = {
     // commit('REMOVE_QUERY')
   },
   excludeItem ({ commit, state }, payload) {
-    console.log(payload)
     commit('ADD_EXCLUDE_ITEM', payload)
     commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', 0)
