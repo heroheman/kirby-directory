@@ -6,8 +6,9 @@ import Vuex from 'vuex'
 const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
 // const pluginData = '/static/items.json'
-const pluginApi = process.env.VUE_APP_PLUGIN_ENDPOINT
-const themeApi = process.env.VUE_APP_THEME_ENDPOINT
+// const pluginApi = process.env.VUE_APP_PLUGIN_ENDPOINT
+// const themeApi = process.env.VUE_APP_THEME_ENDPOINT
+const allApi = process.env.VUE_APP_ALL_ENDPOINT
 
 Vue.use(Vuex)
 
@@ -215,19 +216,21 @@ const actions = {
       commit('TOGGLE_LOADING')
     }
 
-    let plugins = await fetch(pluginApi)
-    let themes = await fetch(themeApi)
+    // let plugins = await fetch(pluginApi)
+    // let themes = await fetch(themeApi)
+    let items = await fetch(allApi)
 
-    plugins = await plugins.json()
-    themes = await themes.json()
+    // plugins = await plugins.json()
+    // themes = await themes.json()
+    // let items = themes.concat(plugins)
 
-    let items = themes.concat(plugins)
+    items = await items.json()
 
-    items.sort(function (a, b) {
-      // convert date object into number to resolve issue in typescript
-      return +new Date(a.updated_at) - +new Date(b.updated_at)
-    })
-    items = items.reverse()
+    // items.sort(function (a, b) {
+    //   // convert date object into number to resolve issue in typescript
+    //   return +new Date(a.updated_at) - +new Date(b.updated_at)
+    // })
+    // items = items.reverse()
 
     // let response = await fetch(pluginApi)
     // let items = await response.json()
