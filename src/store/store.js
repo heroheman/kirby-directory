@@ -94,7 +94,8 @@ const mutations = {
     state.displayedItems.resultsUnexcluded = state.displayedItems.results
   },
   SET_RESULTS_PLUGINS: (state) => {
-    state.displayedItems.results = state.items.filter(i => i.item_type === 'plugin')
+    state.displayedItems.results = state.items
+      .filter(i => i.item_type === 'plugins-v2' || i.item_type === 'plugins-v2')
     // backup for reverse exclude
     state.displayedItems.resultsUnexcluded = state.displayedItems.results
   },
