@@ -116,3 +116,16 @@ $theme-default-fg: #000;
 .dot-Screenshot::before { background-color: #207de5; color: #000;}
 .dot-Kirby-2::before { background-color: red; color: white;}
 .dot-Kirby-3::before { background-color: black; color: white;}
+
+.listitem__type {
+  span {
+    font-size: 1.2rem;
+    padding: .1rem .3rem;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 3px;
+  }
+  &-k2 { border-color: green;}
+  &-k3 { border-color: red; }
+  &-theme { border-color: blue; }
+}

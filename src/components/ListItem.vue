@@ -32,6 +32,7 @@
     </p>
 
     <ul class="labels listitem__labels">
+      <!-- Gif play button -->
       <li v-if="getGif(item.body)">
         <button class="listitem__playbutton" title="show/hide gif" @click="toggleGif()">
           <span class="triangle"></span>
@@ -39,6 +40,19 @@
           <span v-if="showGif">Hide Gif</span> -->
         </button>
       </li>
+
+      <!-- Kirby Version -->
+      <li class="listitem__type" v-if="item.item_type === 'plugins-v3'">
+        <span class="listitem__type-k3">Kirby 3</span>
+      </li>
+      <li class="listitem__type" v-else-if="item.item_type === 'plugins-v2'">
+        <span class="listitem__type-k2">Kirby 2</span>
+      </li>
+      <li class="listitem__type" v-else-if="item.item_type === 'themes'">
+        <span class="listitem__type-theme">Theme</span>
+      </li>
+
+      <!-- All Tags -->
       <li class="listitem__label" v-for="label in item.labels" :key="label.id">
         <router-link
           :to="{name:'List', params:{ label: label.name }}"
@@ -156,124 +170,124 @@ export default {
 @import './../assets/scss/_vars.scss';
 
 .listitem {
-  display: grid;
-  grid-template-areas: "name" "description" "labels";
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr auto 1fr;
-
-  @media screen and (min-width: $xs) {
+    display: grid;
     grid-template-areas: "name" "description" "labels";
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr;
-  }
-
-  &--thumb {
-    grid-template-areas: "thumb" "name" "description" "labels";
-    grid-template-columns: auto;
-    grid-template-rows: 2fr auto auto 1fr;
+    grid-template-rows: 1fr auto 1fr;
 
     @media screen and (min-width: $xs) {
-      grid-template-areas: "thumb name" "thumb description" "thumb labels";
-      grid-template-columns: 20rem 1fr;
-      grid-template-rows: auto auto 1fr;
+        grid-template-areas: "name" "description" "labels";
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
     }
-  }
 
-  .list__items--themes & {
-    grid-template-areas: "name" "thumb" "labels";
-    grid-template-columns: auto;
-    grid-template-rows: auto auto auto 1fr;
+    &--thumb {
+        grid-template-areas: "thumb" "name" "description" "labels";
+        grid-template-columns: auto;
+        grid-template-rows: 2fr auto auto 1fr;
+
+        @media screen and (min-width: $xs) {
+            grid-template-areas: "thumb name" "thumb description" "thumb labels";
+            grid-template-columns: 20rem 1fr;
+            grid-template-rows: auto auto 1fr;
+        }
+    }
+
+    .list__items--themes & {
+        grid-template-areas: "name" "thumb" "labels";
+        grid-template-columns: auto;
+        grid-template-rows: auto auto auto 1fr;
+
+        &__thumb {
+            background: #f2f2f2;
+            border-bottom: 1rem solid #f2f2f2;
+            .thumb {
+                max-height: 45rem;
+                max-width: 100%;
+                padding: 1rem 1rem 0;
+                overflow: hidden;
+            }
+            img {
+                max-width: 100%;
+                min-height: 30rem;
+                overflow: visible;
+                &.v-lazy-image-loaded {
+                    min-height: 13rem;
+                }
+            }
+        }
+    }
+
+    &__name {
+        grid-area: name;
+        display: block;
+        margin: 0;
+        margin-bottom: 1rem;
+
+        @extend %h18;
+        a {
+            @include custom-underline;
+        }
+    }
 
     &__thumb {
-      background: #f2f2f2;
-      border-bottom: 1rem solid #f2f2f2;
-      .thumb {
-        max-height: 45rem;
-        max-width: 100%;
-        padding: 1rem 1rem 0;
-        overflow: hidden;
-      }
-      img {
-        max-width: 100%;
-        min-height: 30rem;
-        overflow: visible;
-        &.v-lazy-image-loaded {
-          min-height: 13rem;
+        grid-area: thumb;
+
+        .thumb {
+            overflow: hidden;
+            max-height: 12rem;
+
+            @media screen and (min-width: $xs) {
+                max-height: 12rem;
+                max-width: 24rem;
+                padding-right: 2rem;
+            }
         }
-      }
-    }
-  }
 
-  &__name {
-    grid-area: name;
-    display: block;
-    margin: 0;
-    margin-bottom: 1rem;
-
-    @extend %h18;
-    a {
-      @include custom-underline;
-    }
-  }
-
-  &__thumb {
-    grid-area: thumb;
-
-    .thumb {
-      overflow: hidden;
-      max-height: 12rem;
-
-      @media screen and (min-width: $xs) {
-        max-height: 12rem;
-        max-width: 24rem;
-        padding-right: 2rem;
-      }
+        img {
+            // width: 24rem;
+            width: 100%;
+            overflow: hidden;
+        }
     }
 
-    img {
-      // width: 24rem;
-      width: 100%;
-      overflow: hidden;
+    &__playbutton {
+        appearance: none;
+        border: 1px solid #ddd;
+        padding: .1rem .3rem .1rem .5rem;
+        border-radius: 5px;
+        background: transparent;
+        transition: all .25s ease;
+        cursor: pointer;
+
+        &:hover {
+            border-color: #aaa;
+            .triangle {
+                border-color: transparent transparent transparent #aaa;
+            }
+        }
+
+        span {
+            font-size: 1.2rem;
+        }
+
+        .triangle {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 5px 0 5px 10px;
+            border-color: transparent transparent transparent #ddd;
+        }
     }
-  }
 
-  &__playbutton {
-    appearance: none;
-    border: 1px solid #ddd;
-    padding: .1rem .3rem .1rem .5rem;
-    border-radius: 5px;
-    background: transparent;
-    transition: all .25s ease;
-    cursor: pointer;
-
-    &:hover {
-      border-color: #aaa;
-      .triangle {
-        border-color: transparent transparent transparent #aaa;
-      }
+    &__gif {
+        max-width: 100%;
+        padding-top: 1rem;
     }
 
-    span {
-      font-size: 1.2rem;
-    }
-
-    .triangle {
-      display: inline-block;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 5px 0 5px 10px;
-      border-color: transparent transparent transparent #ddd;
-    }
-  }
-
-  &__gif {
-    max-width: 100%;
-    padding-top: 1rem;
-  }
-
-  &__authorname {
-    @extend %smallprint;
+    &__authorname {
+        @extend %smallprint;
     display: block;
     @media screen and (min-width: $xs) {
       display: inline-block;
