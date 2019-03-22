@@ -38,18 +38,6 @@ const state = {
       items: ['Blueprint', 'Controller', 'Field', 'Field Method', 'File Method', 'Kirbytext Tag', 'Model', 'Snippet', 'Template', 'Widget']
     },
     {
-      name: 'Tag',
-      items: ['Audio', 'Bootstrap', 'Cache', 'Calendar', 'Database', 'Date', 'E-commerce', 'Editor', 'Email', 'Embed', 'Feed', 'Font', 'Form', 'Foundation', 'Geo location', 'Gulp', 'Hook', 'Icon', 'Image', 'Less', 'Pagination', 'Panel', 'Podcast', 'Redirect', 'Sass', 'Security', 'Select', 'Sitemap', 'Social', 'Statistics', 'Table', 'Tabs', 'Text', 'Time', 'Tool', 'Unique', 'Users', 'Video']
-    },
-    {
-      name: 'File',
-      items: ['CLI', 'Screenshot', 'Packagist']
-    },
-    {
-      name: 'Type',
-      items: ['Plugin', 'Core', 'Tutorial', 'Misc']
-    },
-    {
       name: 'License',
       excludable: true,
       items: ['Commercial', 'MIT']
@@ -93,14 +81,16 @@ const mutations = {
     // backup for reverse exclude
     state.displayedItems.resultsUnexcluded = state.displayedItems.results
   },
-  SET_RESULTS_PLUGINS: (state) => {
-    state.displayedItems.results = state.items
-      .filter(i => i.item_type === 'plugins-v2' || i.item_type === 'plugins-v2')
-    // backup for reverse exclude
-    state.displayedItems.resultsUnexcluded = state.displayedItems.results
-  },
-  SET_RESULTS_THEMES: (state) => {
-    state.displayedItems.results = state.items.filter(i => i.item_type === 'themes')
+  SET_RESULTS: (state, type = null) => {
+    if (type === null) {
+      state.displayedItems.results = state.items
+    } else if (type === 'pluginsAll') {
+      state.displayedItems.results = state.items
+        .filter(i => i.item_type === 'plugins-v2' || i.item_type === 'plugins-v3')
+    } else {
+      state.displayedItems.results = state.items
+        .filter(i => i.item_type === type)
+    }
     // backup for reverse exclude
     state.displayedItems.resultsUnexcluded = state.displayedItems.results
   },
@@ -217,24 +207,8 @@ const actions = {
       commit('TOGGLE_LOADING')
     }
 
-    // let plugins = await fetch(pluginApi)
-    // let themes = await fetch(themeApi)
     let items = await fetch(allApi)
-
-    // plugins = await plugins.json()
-    // themes = await themes.json()
-    // let items = themes.concat(plugins)
-
     items = await items.json()
-
-    // items.sort(function (a, b) {
-    //   // convert date object into number to resolve issue in typescript
-    //   return +new Date(a.updated_at) - +new Date(b.updated_at)
-    // })
-    // items = items.reverse()
-
-    // let response = await fetch(pluginApi)
-    // let items = await response.json()
 
     commit('SET_ITEMS', { items: items })
     commit('EXCLUDE_ITEMS')
@@ -245,17 +219,27 @@ const actions = {
     commit('REMOVE_ITEMS')
   },
   getResultsAll ({ commit, state }, page) {
-    commit('SET_RESULTS_ALL')
+    commit('SET_RESULTS')
     commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsPlugins ({ commit, state }, page) {
-    commit('SET_RESULTS_PLUGINS')
+    commit('SET_RESULTS', 'pluginsAll')
+    commit('EXCLUDE_ITEMS')
+    commit('PAGE_CURRENT_RESULTS', page)
+  },
+  getResultsPluginsV2 ({ commit, state }, page) {
+    commit('SET_RESULTS', 'plugins-v2')
+    commit('EXCLUDE_ITEMS')
+    commit('PAGE_CURRENT_RESULTS', page)
+  },
+  getResultsPluginsV3 ({ commit, state }, page) {
+    commit('SET_RESULTS', 'plugins-v3')
     commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsThemes ({ commit, state }, page) {
-    commit('SET_RESULTS_THEMES')
+    commit('SET_RESULTS', 'themes')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsFilter ({ commit, state }, payload) {
@@ -326,7 +310,7 @@ const getters = {
   getSearchTerm: state => state.query,
   getExcluded: state => state.displayedItems.excluded,
   getExcludedAmount: state => state.displayedItems.excludedAmount,
-  getPluginItems: state => state.items.filter((i) => i.item_type === 'plugin'),
+  getPluginItems: state => state.items.filter((i) => i.item_type !== 'theme'),
   getThemeItems: state => state.items.filter((i) => i.item_type === 'theme')
 }
 

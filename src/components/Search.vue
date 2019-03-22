@@ -103,6 +103,10 @@ export default {
     ...mapActions([
       'getResultsFilter',
       'getResultsSearch',
+      'getResultsPlugins',
+      'getResultsPluginsV2',
+      'getResultsPluginsV3',
+      'getResultsThemes',
       'setSearchQuery',
       'excludeItem',
       'includeItem'
