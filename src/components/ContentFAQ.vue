@@ -41,6 +41,7 @@ I haven't had time for that yet.
 * 20181006 - 1.2.1: change endpoint to [new github repo url](https://github.com/texnixe/kirby-plugins)
 * 20181006 - 1.2.2: add play button, small improvements
 * 20190228 - 1.2.3: updated to vue-cli 3
+* 20190324 - 1.3.0: added (basic) support, express api and support for new repository endpoints
 
 ## Roadmap
 * [x] Ask Jens if he agrees that I use his data.

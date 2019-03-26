@@ -201,6 +201,7 @@ export default {
   background-color: #f2f2f2;
   border-radius: 5px;
   font-size: 1.4rem;
+  padding: 1rem;
 }
 
 .loadingwrapper {
