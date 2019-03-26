@@ -1,6 +1,5 @@
 <template>
   <div class="list">
-
     <div class="loadingwrapper" v-if="!hasItems">
       <div class="loadingwrapper__inner">
         <pulse-loader :loading="getLoading" color="red"/>
@@ -21,17 +20,22 @@
         <option value="100">100</option>
       </select>
       results per page. <br>
-      <span class="list__summary" v-if="getExcluded.length && (getExcludedAmount > 0)">
-        Note: <strong>{{getExcludedAmount}}</strong> entries are hidden, because the following filters were applied:
-        <span class="list__summary-excludeditem"
-          @click="includeItem(exItem)"
-          v-for="(exItem, index) in getExcluded" :key="index">
-          <strong>{{exItem}}</strong>
-        </span>
-      </span>
     </p>
 
-    <ul class="list__items" v-if="displayedItems !== 0">
+    <p class="alert">
+      <small>
+        <strong>Note:</strong>
+          This is a developer snapshot.
+          Due to the release of Kirby 3 and a reorganization in the Kirby plugin repository,
+          I was forced to decide to release a very early version of the directory or to offer
+          a non-functioning site.  It can and will lead to errors in functionality, usability
+          and presentation. Sorry about that.
+      </small>
+    </p>
+
+    <ul
+      :class="{ 'list__items--themes': isThemes }"
+      class="list__items" v-if="displayedItems !== 0">
       <li class="list__item"
         v-for="item in displayedItems.resultsPaged"
         :key="item.id">
@@ -72,6 +76,7 @@ export default {
   },
   data () {
     return {
+      isThemes: false
     }
   },
   computed: {
@@ -86,8 +91,7 @@ export default {
       'getLoading',
       'getLabel',
       'getQuery',
-      'getExcluded',
-      'getExcludedAmount'
+      'getPluginItems'
     ]),
     hasItems: function () {
       return this.items.length > 0
@@ -97,13 +101,16 @@ export default {
     ...mapActions([
       'fetchItemsAll',
       'getResultsAll',
+      'getResultsThemes',
+      'getResultsPlugins',
+      'getResultsPluginsV2',
+      'getResultsPluginsV3',
       'getResultsFilter',
       'getResultsSearch',
       'setItemsPerPage',
       'setSearchQuery',
       'removeQuery',
-      'removeLabel',
-      'includeItem'
+      'removeLabel'
     ]),
     updatePerPageNumber: function (e) {
       this.setItemsPerPage(Number(e.target.value))
@@ -115,6 +122,24 @@ export default {
         this.removeQuery()
         this.removeLabel()
         this.getResultsAll(page)
+      }
+
+      if (this.$route.name === 'ListThemes') {
+        this.removeQuery()
+        this.removeLabel()
+        this.getResultsThemes(page)
+      }
+
+      if (this.$route.name === 'ListPluginsV2') {
+        this.removeQuery()
+        this.removeLabel()
+        this.getResultsPluginsV2(page)
+      }
+
+      if (this.$route.name === 'ListPluginsV3') {
+        this.removeQuery()
+        this.removeLabel()
+        this.getResultsPluginsV3(page)
       }
 
       // if is label
@@ -137,11 +162,21 @@ export default {
     },
     debounceUpdateList: debounce(function () {
       this.updateList()
-    }, 1000)
+    }, 1000),
+    handleViewStyle: function () {
+      if (this.$route.name === 'ListThemes') {
+        this.isThemes = true
+      } else {
+        this.isThemes = false
+      }
+    }
   },
   watch: {
     '$route.params': function () {
       this.updateList()
+    },
+    '$route.name': function () {
+      this.handleViewStyle()
     },
     'items': function () {
       this.updateList()
@@ -152,6 +187,7 @@ export default {
     next()
   },
   created () {
+    this.handleViewStyle()
     this.debounceUpdateList()
   }
 }
@@ -159,6 +195,15 @@ export default {
 
 <style lang="scss">
 @import './../assets/scss/_vars.scss';
+
+.alert {
+  border: 1px solid #f2f2f2;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  font-size: 1.4rem;
+  padding: 1rem;
+}
+
 .loadingwrapper {
   position: relative;
   min-width: 50vw;
@@ -251,6 +296,15 @@ export default {
     list-style: none;
     margin: 0;
     padding: 0;
+
+    &--themes {
+      column-width: auto;
+      column-count: 3;
+      > li {
+        break-inside: avoid;
+      }
+
+    }
   }
 
   &__item {

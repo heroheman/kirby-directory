@@ -41,6 +41,7 @@
 .is-Deprecated { background-color: #FBCA04;}
 .is-email { background-color: #80eda9;}
 
+.dot,
 [class*='dot-'] {
   position: relative;
   padding-left: 1.2rem;
@@ -54,12 +55,19 @@
     left: 0;
     top: 50%;
     content: '';
-    width: .8rem;
-    height: .8rem;
+    width: 1rem;
+    height: 1rem;
     border-radius: 50%;
     background: lighten(red, 40%);
     transform: translateY(-50%);
     transition: all .25s ease;
+
+    $givenColor: var(--label-color);
+    $labelColor: #f2f2f2;
+    $labelColor: var(--label-color);
+
+    background-color: $labelColor;
+    border: 2px solid #f2f2f2;
   }
 
   &:hover {
@@ -101,3 +109,31 @@
 .dot-email::before { background-color: #80eda9;}
 .dot-v2::before { background-color: blue;}
 .dot-v3::before { background-color: red;}
+
+$theme-default-bg: #f2f2f2;
+$theme-default-fg: #000;
+
+.dot-Blog::before {}
+.dot-Bootstrap::before { background: $theme-default-bg }
+.dot-Commercial::before { background-color: #5319e7; color: #fff;}
+.dot-Docs::before { background-color: #bf4df2; color: #000;}
+.dot-Foundation::before { background-color: $theme-default-bg; }
+.dot-Kube::before { background-color: $theme-default-bg; }
+.dot-Material::before { background-color: $theme-default-bg; }
+.dot-Portfolio::before { background-color: #d4c5f9; color: #000;}
+.dot-Screenshot::before { background-color: #207de5; color: #000;}
+.dot-Kirby-2::before { background-color: red; color: white;}
+.dot-Kirby-3::before { background-color: black; color: white;}
+
+.listitem__type {
+  span {
+    font-size: 1.2rem;
+    padding: .1rem .3rem;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 3px;
+  }
+  &-k2 { border-color: green;}
+  &-k3 { border-color: red; }
+  &-theme { border-color: blue; }
+}

@@ -14,6 +14,18 @@
       </router-link>
 
       <router-link
+        :to="{ name: 'ListThemes', params: { page: i }}"
+        v-else-if="$route.name === 'ListThemes'">
+        {{ i }}
+      </router-link>
+
+      <router-link
+        :to="{ name: 'ListPlugins', params: { page: i }}"
+        v-else-if="$route.name === 'ListPlugins'">
+        {{ i }}
+      </router-link>
+
+      <router-link
         :to="{ name: 'List', params: { label: label, page: i }}"
         v-else>
         {{ i }}

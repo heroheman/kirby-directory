@@ -1,10 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+// import axios from 'axios'
 // import createPersistedState from 'vuex-persistedstate'
 
 const issueApi = 'https://api.github.com/repos/jenstornell/kirby-plugins/issues'
 const repoApi = 'https://api.github.com/repos'
-const pluginData = '/static/items.json'
+// const pluginData = '/static/items.json'
+// const pluginApi = process.env.VUE_APP_PLUGIN_ENDPOINT
+// const themeApi = process.env.VUE_APP_THEME_ENDPOINT
+const itemsEndpoint = process.env.VUE_APP_ALL_ENDPOINT
+const labelsEndpoint = process.env.VUE_APP_LABELS_ENDPOINT
 
 Vue.use(Vuex)
 
@@ -12,6 +17,7 @@ const state = {
   items: [],
   query: '',
   label: '',
+  labels: [],
   detail: {
     item: {},
     comments: [],
@@ -21,42 +27,10 @@ const state = {
     currentPage: 0,
     perPage: 20,
     maxPage: '',
-    excluded: ['State: Broken', 'State: Deprecated'],
-    excludedAmount: 0,
     results: [],
-    resultsUnexcluded: [],
     resultsPaged: []
   },
   isLoading: true,
-  labelGroups: [
-    {
-      name: 'Has',
-      items: ['Blueprint', 'Controller', 'Field', 'Field Method', 'Kirbytext Tag', 'Model', 'Snippet', 'Template', 'Widget']
-    },
-    {
-      name: 'File',
-      items: ['CLI', 'Screenshot', 'Packagist']
-    },
-    {
-      name: 'Type',
-      items: ['Plugin', 'Core', 'Tutorial', 'Misc']
-    },
-    {
-      name: 'License',
-      excludable: true,
-      items: ['Commercial', 'MIT']
-    },
-    {
-      name: 'State',
-      excludable: true,
-      items: ['Beta', 'Broken', 'Deprecated']
-    },
-    {
-      name: 'Version',
-      excludable: true,
-      items: ['2', '3']
-    }
-  ],
   meta: {
     title: 'Kirby Plugin Directory',
     description: 'The Plugin Directory for the GetKirby CMS',
@@ -67,17 +41,26 @@ const state = {
 
 const mutations = {
   SET_ITEMS: (state, { items }) => {
-    state.items = items
+    state.items = [...items]
     // backup for reverse exclude
-    state.displayedItems.results = state.items
+    state.displayedItems.results = [...state.items]
   },
   SET_SEARCH_QUERY: (state, query) => {
     state.query = query
   },
   SET_RESULTS_ALL: (state) => {
     state.displayedItems.results = state.items
-    // backup for reverse exclude
-    state.displayedItems.resultsUnexcluded = state.displayedItems.results
+  },
+  SET_RESULTS: (state, type = null) => {
+    if (type === null) {
+      state.displayedItems.results = state.items
+    } else if (type === 'pluginsAll') {
+      state.displayedItems.results = state.items
+        .filter(i => i.item_type === 'plugins-v2' || i.item_type === 'plugins-v3')
+    } else {
+      state.displayedItems.results = state.items
+        .filter(i => i.item_type === type)
+    }
   },
   SET_RESULTS_SEARCH: (state, query) => {
     if (query !== '') {
@@ -90,8 +73,6 @@ const mutations = {
           item.body.toLowerCase().includes(query) ||
           item.labels.some(i => i.name.toLowerCase().includes(query))
       })
-      // backup for reverse exclude
-      state.displayedItems.resultsUnexcluded = state.displayedItems.results
     }
   },
   SET_RESULTS_LABEL: (state, label) => {
@@ -103,32 +84,6 @@ const mutations = {
     } else {
       state.displayedItems.results = state.items
     }
-    // backup for reverse exclude
-    state.displayedItems.resultsUnexcluded = state.displayedItems.results
-  },
-  ADD_EXCLUDE_ITEM: (state, label) => {
-    if (!state.displayedItems.excluded.includes(label)) {
-      let exItems = state.displayedItems.excluded
-      exItems.push(label)
-      state.displayedItems.excluded = exItems
-    }
-  },
-  REMOVE_EXCLUDE_ITEM: (state, label) => {
-    state.displayedItems.excluded = state.displayedItems.excluded.filter(item => item !== label)
-  },
-  EXCLUDE_ITEMS: (state) => {
-    // get backup to readd all missing items
-    state.displayedItems.results = state.displayedItems.resultsUnexcluded
-
-    const filtered = state.displayedItems.results
-      .filter(item => item.labels
-        .every(itemLabel => !state.displayedItems.excluded.includes(itemLabel.name)))
-
-    // get amount of filtered items
-    state.displayedItems.excludedAmount = state.displayedItems.results.length - filtered.length
-
-    // set filtered items
-    state.displayedItems.results = filtered
   },
   PAGE_CURRENT_RESULTS: (state, page) => {
     // set currentpage
@@ -152,7 +107,7 @@ const mutations = {
     // empty details
     state.detail.comments = []
     state.detail.readme = ''
-    state.detail.item = state.items.find(i => i.number === Number(number))
+    state.detail.item = state.items.find(i => i.id === Number(number))
   },
   GET_README: (state, payload) => {
     // encrypt payload
@@ -182,6 +137,9 @@ const mutations = {
   },
   REMOVE_LABEL: (state) => {
     state.label = ''
+  },
+  SET_LABELS: (state, labels) => {
+    state.labels = labels
   }
 }
 
@@ -192,11 +150,10 @@ const actions = {
       commit('TOGGLE_LOADING')
     }
 
-    let response = await fetch(pluginData)
-    let items = await response.json()
+    let items = await fetch(itemsEndpoint)
+    items = await items.json()
 
     commit('SET_ITEMS', { items: items })
-    commit('EXCLUDE_ITEMS')
     commit('TOGGLE_LOADING')
     commit('PAGE_CURRENT_RESULTS', 0)
   },
@@ -204,26 +161,30 @@ const actions = {
     commit('REMOVE_ITEMS')
   },
   getResultsAll ({ commit, state }, page) {
-    commit('SET_RESULTS_ALL')
-    commit('EXCLUDE_ITEMS')
+    commit('SET_RESULTS')
+    commit('PAGE_CURRENT_RESULTS', page)
+  },
+  getResultsPlugins ({ commit, state }, page) {
+    commit('SET_RESULTS', 'pluginsAll')
+    commit('PAGE_CURRENT_RESULTS', page)
+  },
+  getResultsPluginsV2 ({ commit, state }, page) {
+    commit('SET_RESULTS', 'plugins-v2')
+    commit('PAGE_CURRENT_RESULTS', page)
+  },
+  getResultsPluginsV3 ({ commit, state }, page) {
+    commit('SET_RESULTS', 'plugins-v3')
+    commit('PAGE_CURRENT_RESULTS', page)
+  },
+  getResultsThemes ({ commit, state }, page) {
+    commit('SET_RESULTS', 'themes')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsFilter ({ commit, state }, payload) {
     const { label, page } = payload
     commit('SET_RESULTS_LABEL', label)
-    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
     // commit('REMOVE_QUERY')
-  },
-  excludeItem ({ commit, state }, payload) {
-    commit('ADD_EXCLUDE_ITEM', payload)
-    commit('EXCLUDE_ITEMS')
-    commit('PAGE_CURRENT_RESULTS', 0)
-  },
-  includeItem ({ commit, state }, payload) {
-    commit('REMOVE_EXCLUDE_ITEM', payload)
-    commit('EXCLUDE_ITEMS')
-    commit('PAGE_CURRENT_RESULTS', 0)
   },
   setSearchQuery ({ commit, state }, payload) {
     commit('SET_SEARCH_QUERY', payload)
@@ -231,7 +192,6 @@ const actions = {
   getResultsSearch ({ commit, state }, payload) {
     const { query, page } = payload
     commit('SET_RESULTS_SEARCH', query)
-    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getDetail ({ commit }, payload) {
@@ -245,6 +205,7 @@ const actions = {
   getReadme: async function ({ commit, state }, payload) {
     let response = await fetch(`${repoApi}/${payload}/readme`)
       .then(res => res.json())
+      // eslint-disable-next-line no-console
       .catch(error => console.error(`Fetch Error =\n`, error))
 
     commit('GET_README', response)
@@ -258,6 +219,11 @@ const actions = {
   setItemsPerPage ({ commit }, payload) {
     commit('SET_ITEMS_PER_PAGE', payload)
     commit('PAGE_CURRENT_RESULTS', 1)
+  },
+  async getLabels ({ commit }) {
+    const labels = await fetch(labelsEndpoint)
+    const items = await labels.json()
+    commit('SET_LABELS', items)
   },
   toggleLoading (commit) {
     commit('TOGGLE_LOADING')
@@ -273,8 +239,12 @@ const getters = {
     return Math.ceil(state.displayedItems.results.length / state.displayedItems.perPage)
   },
   getSearchTerm: state => state.query,
-  getExcluded: state => state.displayedItems.excluded,
-  getExcludedAmount: state => state.displayedItems.excludedAmount
+  getPluginItems: state => state.items.filter((i) => i.item_type !== 'theme'),
+  getThemeItems: state => state.items.filter((i) => i.item_type === 'theme'),
+  getLabels: state => state.labels,
+  getLabelsThemes: state => state.labels.filter(label => label.label_type === 'themes'),
+  getLabelsPluginsV2: state => state.labels.filter(label => label.label_type === 'plugins-v2'),
+  getLabelsPluginsV3: state => state.labels.filter(label => label.label_type === 'plugins-v3')
 }
 
 const store = new Vuex.Store({
