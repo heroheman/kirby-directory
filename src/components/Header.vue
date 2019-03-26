@@ -7,10 +7,14 @@
       </router-link>
     </h1>
     <div class="header__mobile-nav">
-      <router-link tag="button" class="navlist__link" :to="{name: 'ListStart', params: { page: '1'} }" @click.native="hideNav()" title="Home">
+      <router-link tag="button" class="navlist__link"
+        :to="{name: 'ListStart', params: { page: '1'} }"
+        title="Home">
         <font-awesome-icon icon="home" color="red" />
       </router-link>
-      <router-link tag="button" class="navlist__link" :to="{name: 'ContentFAQ'}" @click.native="hideNav()" title="FAQ">
+      <router-link tag="button" class="navlist__link"
+        :to="{name: 'ContentFAQ'}"
+        title="FAQ">
         <font-awesome-icon icon="question" color="red" />
       </router-link>
       <button class="header__toggle" @click="showMenu()">
@@ -23,58 +27,101 @@
 
     <ul class="navlist navlist--main">
       <li>
-        <router-link class="navlist__link" :to="{name: 'ListStart', params: { page: '1'} }" @click.native="hideNav()">
+        <router-link class="navlist__link"
+          :to="{name: 'ListStart', params: { page: '1'} }"
+          @click.native="toggleTags()">
           All
         </router-link>
+        <transition name="fade">
+        <ul class="navlist navlist--inline" v-if="labelTagsVisible">
+          <li
+            v-for="label in sortLabelsByTag(labels)"
+            :key="label.id"
+          >
+            <router-link
+              :class="['dot', `dot-${label.name}`]"
+              :to="{ name: 'List', params: { label: label.name, page: 1 }}"
+              :style="`--label-color: #${label.color}`"
+            >{{label.shortname}}
+            </router-link>
+          </li>
+        </ul>
+        </transition>
       </li>
+
       <li>
-        <router-link class="navlist__link" :to="{name: 'ListPlugins', params: { page: '1'} }" @click.native="hideNav()">
-          Plugins
+        <router-link class="navlist__link"
+          :to="{name: 'ListPluginsV2', params: { page: '1'} }"
+          @click.native="toggleK2()">
+          Plugins for Kirby 2
         </router-link>
+        <ul class="navlist navlist--label" v-if="labelV2Visible">
+          <li
+            v-for="label in sortLabelsByType(getLabelsPluginsV2)"
+            :key="label.id"
+          >
+            <router-link
+              :class="['dot', `dot-${label.name}`]"
+              :to="{ name: 'List', params: { label: label.name, page: 1 }}"
+              :style="`--label-color: #${label.color}`"
+            >{{label.shortname}}
+            </router-link>
+          </li>
+        </ul>
+      </li>
+
+      <li>
+        <router-link class="navlist__link"
+          :to="{name: 'ListPluginsV3', params: { page: '1'} }"
+          @click.native="toggleK3()">
+          Plugins for Kirby 3
+        </router-link>
+        <ul class="navlist navlist--label" v-if="labelV3Visible">
+          <li
+            v-for="label in sortLabelsByType(getLabelsPluginsV3)"
+            :key="label.id"
+          >
+            <router-link
+              :class="['dot', `dot-${label.name}`]"
+              :to="{ name: 'List', params: { label: label.name, page: 1 }}"
+              :style="`--label-color: #${label.color}`"
+            >{{label.shortname}}
+            </router-link>
+          </li>
+        </ul>
       </li>
       <li>
-        <router-link class="navlist__link" :to="{name: 'ListThemes', params: { page: '1'} }" @click.native="hideNav()">
+        <router-link class="navlist__link"
+          :to="{name: 'ListThemes', params: { page: '1'} }"
+          @click.native="toggleThemes()">
           Themes
         </router-link>
+
+        <ul class="navlist navlist--label" v-if="labelThemeVisible">
+          <li
+            v-for="label in getLabelsThemes"
+            :key="label.id"
+          >
+            <router-link
+              :class="['dot', `dot-${label.name}`]"
+              :to="{ name: 'List', params: { label: label.name, page: 1 }}"
+              :style="`--label-color: #${label.color}`"
+            >{{label.name}}
+            </router-link>
+          </li>
+        </ul>
+
       </li>
       <li>
-        <router-link class="navlist__link" :to="{name: 'ContentFAQ'}" @click.native="hideNav()">
+        <router-link class="navlist__link"
+          :to="{name: 'ContentFAQ'}"
+          @click.native="hideNav()">
           FAQ
         </router-link>
       </li>
     </ul>
 
-    <ul
-      v-for="group in labelThemes"
-      :key="group.name"
-      class="navlist navlist--label">
-
-      <li class="navlist__desc">{{group.name}}</li>
-
-      <li v-for="type in group.items" :key="type">
-        <router-link
-          @click.native="hideNav()"
-          :to="{ name: 'List', params: { label: type, page: 1 }}"
-          :class="['dot', `dot-${makeTitleSlug(type)}`]"
-          >
-          {{ type }}
-        </router-link>
-        <span class="navlist__exclude"
-          v-if="group.excludable && !isExcluded(getLabelName(group.name, type))"
-          :title="`hide ${getLabelName(group.name, type)}`"
-          @click="excludeItem(getLabelName(group.name, type))">
-          <font-awesome-icon icon="eye" color="#ccc" />
-        </span>
-        <span class="navlist__exclude"
-          :title="`show ${getLabelName(group.name, type)}`"
-          v-if="group.excludable && isExcluded(getLabelName(group.name, type))"
-          @click="includeItem(getLabelName(group.name, type))">
-          <font-awesome-icon icon="eye-slash" color="#ccc" />
-        </span>
-      </li>
-    </ul>
-
-    <ul
+    <!-- <ul
       v-for="group in labelPlugins"
       :key="group.name"
       class="navlist navlist--label">
@@ -102,32 +149,36 @@
           <font-awesome-icon icon="eye-slash" color="#ccc" />
         </span>
       </li>
-    </ul>
+    </ul> -->
 
-    <span class="buttonnote" v-if="buttonDisabled">Disabled. Please wait 30 Seconds</span>
   </nav>
 </div>
 </template>
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
-import debounce from 'tiny-debounce'
 
 export default {
   name: 'Header',
   data () {
     return {
       buttonDisabled: false,
-      menuVisible: false
+      menuVisible: false,
+      labelThemeVisible: false,
+      labelV2Visible: false,
+      labelV3Visible: false,
+      labelTagsVisible: true
     }
   },
   computed: {
     ...mapState([
-      'labelPlugins',
-      'labelThemes'
+      'labels'
     ]),
     ...mapGetters([
-      'getExcluded'
+      'getExcluded',
+      'getLabelsThemes',
+      'getLabelsPluginsV2',
+      'getLabelsPluginsV3'
     ])
   },
   methods: {
@@ -135,18 +186,9 @@ export default {
       'fetchItemsAll',
       'removeItemsAll',
       'excludeItem',
-      'includeItem'
+      'includeItem',
+      'getLabels'
     ]),
-    deleteLocalStorage: function () {
-      this.removeItemsAll()
-      this.fetchItemsAll()
-      this.buttonDisabled = true
-      this.hideNav()
-      this.disableButton()
-    },
-    disableButton: debounce(function () {
-      this.buttonDisabled = false
-    }, 30000),
     mutateNavTitle: function (title) {
       return title.replace(' ', '')
     },
@@ -156,8 +198,29 @@ export default {
     showMenu: function () {
       this.menuVisible = !this.menuVisible
     },
-    hideNav: function () {
-      this.menuVisible = false
+    toggleThemes: function () {
+      this.labelThemeVisible = true
+      this.labelV2Visible = false
+      this.labelV3Visible = false
+      this.labelTagsVisible = false
+    },
+    toggleK2: function () {
+      this.labelThemeVisible = false
+      this.labelV2Visible = true
+      this.labelV3Visible = false
+      this.labelTagsVisible = false
+    },
+    toggleK3: function () {
+      this.labelThemeVisible = false
+      this.labelV2Visible = false
+      this.labelV3Visible = true
+      this.labelTagsVisible = false
+    },
+    toggleTags: function () {
+      this.labelThemeVisible = false
+      this.labelV2Visible = false
+      this.labelV3Visible = false
+      this.labelTagsVisible = true
     },
     getLabelName (name, type) {
       return `${name}: ${this.mutateNavTitle(type)}`
@@ -167,7 +230,40 @@ export default {
     },
     isExcluded (label) {
       return this.getExcluded.includes(label)
+    },
+    sortLabelsByType (labels) {
+      // TODO: this is shitty
+      let sortedLabels = []
+      for (let label of labels) {
+        let splitted = label.name.split(':')
+        if (splitted[1]) {
+          label.groupname = splitted[0]
+          label.shortname = splitted[1]
+        }
+        sortedLabels.push(label)
+      }
+      sortedLabels = sortedLabels
+        .sort((a, b) => (a.groupname > b.groupname) ? 1 : ((b.groupname > a.groupname) ? -1 : 0))
+      sortedLabels = sortedLabels.filter(i => i.groupname === 'Type' || i.groupname === 'Has')
+      return sortedLabels
+    },
+    sortLabelsByTag (labels) {
+      // TODO: this is shitty
+      let sortedLabels = []
+      for (let label of labels) {
+        let splitted = label.name.split(':')
+        if (splitted[1]) {
+          label.groupname = splitted[0]
+          label.shortname = splitted[1]
+        }
+        sortedLabels.push(label)
+      }
+      sortedLabels = sortedLabels.filter(i => i.groupname === 'Tag')
+      return sortedLabels
     }
+  },
+  mounted () {
+    this.getLabels()
   }
 }
 </script>
@@ -293,6 +389,7 @@ export default {
     > a {
       text-decoration: none;
       font-weight: 800;
+      text-transform: capitalize;
       border: 0;
     }
   }
@@ -315,6 +412,16 @@ export default {
         display: inline-block;
       }
 
+      a {
+        font-weight: 400;
+      }
+    }
+  }
+
+  &--inline {
+    > li {
+      display: inline-block !important;
+      margin-right: 1.5rem;
       a {
         font-weight: 400;
       }

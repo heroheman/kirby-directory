@@ -102,6 +102,8 @@ export default {
       'getResultsAll',
       'getResultsThemes',
       'getResultsPlugins',
+      'getResultsPluginsV2',
+      'getResultsPluginsV3',
       'getResultsFilter',
       'getResultsSearch',
       'setItemsPerPage',
@@ -128,10 +130,16 @@ export default {
         this.getResultsThemes(page)
       }
 
-      if (this.$route.name === 'ListPlugins') {
+      if (this.$route.name === 'ListPluginsV2') {
         this.removeQuery()
         this.removeLabel()
-        this.getResultsPlugins(page)
+        this.getResultsPluginsV2(page)
+      }
+
+      if (this.$route.name === 'ListPluginsV3') {
+        this.removeQuery()
+        this.removeLabel()
+        this.getResultsPluginsV3(page)
       }
 
       // if is label

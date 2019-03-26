@@ -12,56 +12,56 @@
       </button>
     </form>
 
-    <div class="search__ctrls">
-      <div class="checkradio">
-        <div class="checkradio__desc">
-          Limit search to:
-        </div>
-        <div class="checkradio__box">
-          <input name="pluginOrTheme" type="radio" value="typeAll"
-            id="typeAll" v-model="filter.radioType" checked>
-          <label for="typeAll">All</label>
-        </div>
-        <div class="checkradio__box">
-          <input name="pluginOrTheme" type="radio" value="typePlugin"
-            id="typePlugin" v-model="filter.radioType">
-          <label for="typePlugin">Plugins</label>
-        </div>
-        <div class="checkradio__box">
-          <input name="pluginOrTheme" type="radio" value="typeTheme"
-            id="typeTheme" v-model="filter.radioType">
-          <label for="typeTheme">Themes</label>
-        </div>
-      </div>
+    <!-- <div class="search__ctrls"> -->
+    <!--   <div class="checkradio"> -->
+    <!--     <div class="checkradio__desc"> -->
+    <!--       Limit search to: -->
+    <!--     </div> -->
+    <!--     <div class="checkradio__box"> -->
+    <!--       <input name="pluginOrTheme" type="radio" value="typeAll" -->
+    <!--         id="typeAll" v-model="filter.radioType" checked> -->
+    <!--       <label for="typeAll">All</label> -->
+    <!--     </div> -->
+    <!--     <div class="checkradio__box"> -->
+    <!--       <input name="pluginOrTheme" type="radio" value="typePlugin" -->
+    <!--         id="typePlugin" v-model="filter.radioType"> -->
+    <!--       <label for="typePlugin">Plugins</label> -->
+    <!--     </div> -->
+    <!--     <div class="checkradio__box"> -->
+    <!--       <input name="pluginOrTheme" type="radio" value="typeTheme" -->
+    <!--         id="typeTheme" v-model="filter.radioType"> -->
+    <!--       <label for="typeTheme">Themes</label> -->
+    <!--     </div> -->
+    <!--   </div> -->
 
-      <div class="checkradio">
-        <div class="checkradio__desc">
-          Just show me:
-        </div>
-        <div class="checkradio__box">
-          <input name="kversion" type="radio" value="versionAll"
-            id="kirbyAll" v-model="filter.radioVersion" checked>
-          <label for="kirbyAll">All</label>
-        </div>
-        <div class="checkradio__box">
-          <input name="kversion" type="radio" value="version2"
-            id="kirby2" v-model="filter.radioVersion">
-          <label for="kirby2">Kirby 2</label>
-        </div>
-        <div class="checkradio__box">
-          <input name="kversion" type="radio" value="version3"
-            id="kirby3" v-model="filter.radioVersion">
-          <label for="kirby3">Kirby 3</label>
-        </div>
-      </div>
+    <!--   <div class="checkradio"> -->
+    <!--     <div class="checkradio__desc"> -->
+    <!--       Just show me: -->
+    <!--     </div> -->
+    <!--     <div class="checkradio__box"> -->
+    <!--       <input name="kversion" type="radio" value="versionAll" -->
+    <!--         id="kirbyAll" v-model="filter.radioVersion" checked> -->
+    <!--       <label for="kirbyAll">All</label> -->
+    <!--     </div> -->
+    <!--     <div class="checkradio__box"> -->
+    <!--       <input name="kversion" type="radio" value="version2" -->
+    <!--         id="kirby2" v-model="filter.radioVersion"> -->
+    <!--       <label for="kirby2">Kirby 2</label> -->
+    <!--     </div> -->
+    <!--     <div class="checkradio__box"> -->
+    <!--       <input name="kversion" type="radio" value="version3" -->
+    <!--         id="kirby3" v-model="filter.radioVersion"> -->
+    <!--       <label for="kirby3">Kirby 3</label> -->
+    <!--     </div> -->
+    <!--   </div> -->
 
-      <div class="checkradio">
-        <div class="checkradio__box">
-          <input type="checkbox" id="hideCommercial" v-model="filter.hideCommercial">
-          <label for="hideCommercial">Hide Commercial</label>
-        </div>
-      </div>
-    </div>
+    <!--   <div class="checkradio"> -->
+    <!--     <div class="checkradio__box"> -->
+    <!--       <input type="checkbox" id="hideCommercial" v-model="filter.hideCommercial"> -->
+    <!--       <label for="hideCommercial">Hide Commercial</label> -->
+    <!--     </div> -->
+    <!--   </div> -->
+    <!-- </div> -->
 
   </section>
 </template>

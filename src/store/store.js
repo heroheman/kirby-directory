@@ -8,7 +8,8 @@ const repoApi = 'https://api.github.com/repos'
 // const pluginData = '/static/items.json'
 // const pluginApi = process.env.VUE_APP_PLUGIN_ENDPOINT
 // const themeApi = process.env.VUE_APP_THEME_ENDPOINT
-const allApi = process.env.VUE_APP_ALL_ENDPOINT
+const itemsEndpoint = process.env.VUE_APP_ALL_ENDPOINT
+const labelsEndpoint = process.env.VUE_APP_LABELS_ENDPOINT
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ const state = {
   items: [],
   query: '',
   label: '',
+  labels: [],
   detail: {
     item: {},
     comments: [],
@@ -46,11 +48,6 @@ const state = {
       name: 'State',
       excludable: true,
       items: ['Beta', 'Broken', 'Deprecated']
-    },
-    {
-      name: 'Version',
-      excludable: true,
-      items: ['2', '3']
     }
   ],
   labelThemes: [
@@ -197,6 +194,9 @@ const mutations = {
   },
   REMOVE_LABEL: (state) => {
     state.label = ''
+  },
+  SET_LABELS: (state, labels) => {
+    state.labels = labels
   }
 }
 
@@ -207,7 +207,7 @@ const actions = {
       commit('TOGGLE_LOADING')
     }
 
-    let items = await fetch(allApi)
+    let items = await fetch(itemsEndpoint)
     items = await items.json()
 
     commit('SET_ITEMS', { items: items })
@@ -294,6 +294,11 @@ const actions = {
     commit('SET_ITEMS_PER_PAGE', payload)
     commit('PAGE_CURRENT_RESULTS', 1)
   },
+  async getLabels ({ commit }) {
+    const labels = await fetch(labelsEndpoint)
+    const items = await labels.json()
+    commit('SET_LABELS', items)
+  },
   toggleLoading (commit) {
     commit('TOGGLE_LOADING')
   }
@@ -311,7 +316,11 @@ const getters = {
   getExcluded: state => state.displayedItems.excluded,
   getExcludedAmount: state => state.displayedItems.excludedAmount,
   getPluginItems: state => state.items.filter((i) => i.item_type !== 'theme'),
-  getThemeItems: state => state.items.filter((i) => i.item_type === 'theme')
+  getThemeItems: state => state.items.filter((i) => i.item_type === 'theme'),
+  getLabels: state => state.labels,
+  getLabelsThemes: state => state.labels.filter(label => label.label_type === 'themes'),
+  getLabelsPluginsV2: state => state.labels.filter(label => label.label_type === 'plugins-v2'),
+  getLabelsPluginsV3: state => state.labels.filter(label => label.label_type === 'plugins-v3')
 }
 
 const store = new Vuex.Store({
