@@ -6,9 +6,21 @@
     </HeaderSection>
 
     <main class="l-main">
-      <Search />
 
-      <router-view/>
+      <b-container>
+        <b-row>
+          <b-col>
+            <Search />
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col>
+            <router-view/>
+          </b-col>
+        </b-row>
+
+      </b-container>
 
     </main>
 
@@ -74,6 +86,4 @@ export default {
 
 <style lang="scss">
 @import './assets/scss/main.scss';
-#app {
-}
 </style>

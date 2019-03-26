@@ -1,48 +1,48 @@
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+// html {
+//   box-sizing: border-box;
+// }
+// *, *:before, *:after {
+//   box-sizing: inherit;
+// }
 
-.l-container {
-  display: block;
-  margin: 0 1rem 0;
-  max-width: $maxWidth;
-  @media screen and (min-width: $sm) {
-    margin: 3rem auto 0;
-  }
+// .l-container {
+//   display: block;
+//   margin: 0 1rem 0;
+//   max-width: $maxWidth;
+//   @media screen and (min-width: $sm) {
+//     margin: 3rem auto 0;
+//   }
 
-  &--grid {
-    display: grid;
-    grid-template-areas:  "header"
-                          "main"
-                          "main"
-                          "footer";
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr 1fr auto;
+//   &--grid {
+//     display: grid;
+//     grid-template-areas:  "header"
+//                           "main"
+//                           "main"
+//                           "footer";
+//     grid-template-columns: 1fr;
+//     grid-template-rows: auto 1fr 1fr auto;
 
-    @media screen and (min-width: $xs) {
-      grid-template-areas:  "header main"
-                            "header main"
-                            "footer footer";
-      grid-template-columns: 2fr 6fr;
-      grid-template-rows: 1fr auto 10rem;
-    }
-  }
-}
+//     @media screen and (min-width: $xs) {
+//       grid-template-areas:  "header main"
+//                             "header main"
+//                             "footer footer";
+//       grid-template-columns: 2fr 6fr;
+//       grid-template-rows: 1fr auto 10rem;
+//     }
+//   }
+// }
 
-.l-header {
-  grid-area: header;
-  @media screen and (min-width: $sm) {
-    // position: sticky;
-    // top: 0;
-    // height: 100vh;
-  }
-}
-.l-main {
-  grid-area: main;
-}
-.l-footer {
-  grid-area: footer;
-}
+// .l-header {
+//   grid-area: header;
+//   @media screen and (min-width: $sm) {
+//     // position: sticky;
+//     // top: 0;
+//     // height: 100vh;
+//   }
+// }
+// .l-main {
+//   grid-area: main;
+// }
+// .l-footer {
+//   grid-area: footer;
+// }
