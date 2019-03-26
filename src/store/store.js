@@ -27,35 +27,10 @@ const state = {
     currentPage: 0,
     perPage: 20,
     maxPage: '',
-    excluded: ['State: Broken', 'State: Deprecated'],
-    excludedAmount: 0,
     results: [],
-    resultsUnexcluded: [],
     resultsPaged: []
   },
   isLoading: true,
-  labelPlugins: [
-    {
-      name: 'Has',
-      items: ['Blueprint', 'Controller', 'Field', 'Field Method', 'File Method', 'Kirbytext Tag', 'Model', 'Snippet', 'Template', 'Widget']
-    },
-    {
-      name: 'License',
-      excludable: true,
-      items: ['Commercial', 'MIT']
-    },
-    {
-      name: 'State',
-      excludable: true,
-      items: ['Beta', 'Broken', 'Deprecated']
-    }
-  ],
-  labelThemes: [
-    {
-      name: 'Themes',
-      items: ['Blog', 'Bootstrap', 'Commercial', 'Docs', 'Foundation', 'Kube', 'Material', 'Portfolio', 'Screenshot', 'Kirby 3 Theme', 'Kirby 2 Theme']
-    }
-  ],
   meta: {
     title: 'Kirby Plugin Directory',
     description: 'The Plugin Directory for the GetKirby CMS',
@@ -75,8 +50,6 @@ const mutations = {
   },
   SET_RESULTS_ALL: (state) => {
     state.displayedItems.results = state.items
-    // backup for reverse exclude
-    state.displayedItems.resultsUnexcluded = state.displayedItems.results
   },
   SET_RESULTS: (state, type = null) => {
     if (type === null) {
@@ -88,8 +61,6 @@ const mutations = {
       state.displayedItems.results = state.items
         .filter(i => i.item_type === type)
     }
-    // backup for reverse exclude
-    state.displayedItems.resultsUnexcluded = state.displayedItems.results
   },
   SET_RESULTS_SEARCH: (state, query) => {
     if (query !== '') {
@@ -102,8 +73,6 @@ const mutations = {
           item.body.toLowerCase().includes(query) ||
           item.labels.some(i => i.name.toLowerCase().includes(query))
       })
-      // backup for reverse exclude
-      state.displayedItems.resultsUnexcluded = state.displayedItems.results
     }
   },
   SET_RESULTS_LABEL: (state, label) => {
@@ -115,32 +84,6 @@ const mutations = {
     } else {
       state.displayedItems.results = state.items
     }
-    // backup for reverse exclude
-    state.displayedItems.resultsUnexcluded = state.displayedItems.results
-  },
-  ADD_EXCLUDE_ITEM: (state, label) => {
-    if (!state.displayedItems.excluded.includes(label)) {
-      let exItems = state.displayedItems.excluded
-      exItems.push(label)
-      state.displayedItems.excluded = exItems
-    }
-  },
-  REMOVE_EXCLUDE_ITEM: (state, label) => {
-    state.displayedItems.excluded = state.displayedItems.excluded.filter(item => item !== label)
-  },
-  EXCLUDE_ITEMS: (state) => {
-    // get backup to readd all missing items
-    state.displayedItems.results = state.displayedItems.resultsUnexcluded
-
-    const filtered = state.displayedItems.results
-      .filter(item => item.labels
-        .every(itemLabel => !state.displayedItems.excluded.includes(itemLabel.name)))
-
-    // get amount of filtered items
-    state.displayedItems.excludedAmount = state.displayedItems.results.length - filtered.length
-
-    // set filtered items
-    state.displayedItems.results = filtered
   },
   PAGE_CURRENT_RESULTS: (state, page) => {
     // set currentpage
@@ -211,7 +154,6 @@ const actions = {
     items = await items.json()
 
     commit('SET_ITEMS', { items: items })
-    commit('EXCLUDE_ITEMS')
     commit('TOGGLE_LOADING')
     commit('PAGE_CURRENT_RESULTS', 0)
   },
@@ -220,22 +162,18 @@ const actions = {
   },
   getResultsAll ({ commit, state }, page) {
     commit('SET_RESULTS')
-    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsPlugins ({ commit, state }, page) {
     commit('SET_RESULTS', 'pluginsAll')
-    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsPluginsV2 ({ commit, state }, page) {
     commit('SET_RESULTS', 'plugins-v2')
-    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsPluginsV3 ({ commit, state }, page) {
     commit('SET_RESULTS', 'plugins-v3')
-    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getResultsThemes ({ commit, state }, page) {
@@ -245,19 +183,8 @@ const actions = {
   getResultsFilter ({ commit, state }, payload) {
     const { label, page } = payload
     commit('SET_RESULTS_LABEL', label)
-    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
     // commit('REMOVE_QUERY')
-  },
-  excludeItem ({ commit, state }, payload) {
-    commit('ADD_EXCLUDE_ITEM', payload)
-    commit('EXCLUDE_ITEMS')
-    commit('PAGE_CURRENT_RESULTS', 0)
-  },
-  includeItem ({ commit, state }, payload) {
-    commit('REMOVE_EXCLUDE_ITEM', payload)
-    commit('EXCLUDE_ITEMS')
-    commit('PAGE_CURRENT_RESULTS', 0)
   },
   setSearchQuery ({ commit, state }, payload) {
     commit('SET_SEARCH_QUERY', payload)
@@ -265,7 +192,6 @@ const actions = {
   getResultsSearch ({ commit, state }, payload) {
     const { query, page } = payload
     commit('SET_RESULTS_SEARCH', query)
-    commit('EXCLUDE_ITEMS')
     commit('PAGE_CURRENT_RESULTS', page)
   },
   getDetail ({ commit }, payload) {
@@ -313,8 +239,6 @@ const getters = {
     return Math.ceil(state.displayedItems.results.length / state.displayedItems.perPage)
   },
   getSearchTerm: state => state.query,
-  getExcluded: state => state.displayedItems.excluded,
-  getExcludedAmount: state => state.displayedItems.excludedAmount,
   getPluginItems: state => state.items.filter((i) => i.item_type !== 'theme'),
   getThemeItems: state => state.items.filter((i) => i.item_type === 'theme'),
   getLabels: state => state.labels,

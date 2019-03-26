@@ -20,14 +20,6 @@
         <option value="100">100</option>
       </select>
       results per page. <br>
-      <span class="list__summary" v-if="getExcluded.length && (getExcludedAmount > 0)">
-        Note: <strong>{{getExcludedAmount}}</strong> entries are hidden, because the following filters were applied:
-        <span class="list__summary-excludeditem"
-          @click="includeItem(exItem)"
-          v-for="(exItem, index) in getExcluded" :key="index">
-          <strong>{{exItem}}</strong>
-        </span>
-      </span>
     </p>
 
     <ul
@@ -88,8 +80,6 @@ export default {
       'getLoading',
       'getLabel',
       'getQuery',
-      'getExcluded',
-      'getExcludedAmount',
       'getPluginItems'
     ]),
     hasItems: function () {
@@ -109,8 +99,7 @@ export default {
       'setItemsPerPage',
       'setSearchQuery',
       'removeQuery',
-      'removeLabel',
-      'includeItem'
+      'removeLabel'
     ]),
     updatePerPageNumber: function (e) {
       this.setItemsPerPage(Number(e.target.value))
