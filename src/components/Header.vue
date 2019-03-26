@@ -32,7 +32,6 @@
           @click.native="toggleTags()">
           All
         </router-link>
-        <transition name="fade">
         <ul class="navlist navlist--inline" v-if="labelTagsVisible">
           <li
             v-for="label in sortLabelsByTag(labels)"
@@ -46,7 +45,6 @@
             </router-link>
           </li>
         </ul>
-        </transition>
       </li>
 
       <li>
