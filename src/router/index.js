@@ -43,6 +43,26 @@ export default new Router({
       component: List
     },
     {
+      path: '/plugins/:page?',
+      name: 'ListPlugins',
+      component: List
+    },
+    {
+      path: '/plugins/v2/:page?',
+      name: 'ListPluginsV2',
+      component: List
+    },
+    {
+      path: '/plugins/v3/:page?',
+      name: 'ListPluginsV3',
+      component: List
+    },
+    {
+      path: '/themes/:page?',
+      name: 'ListThemes',
+      component: List
+    },
+    {
       path: '/search/:query/:page?',
       name: 'Search',
       component: List

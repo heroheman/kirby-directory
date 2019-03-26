@@ -8,15 +8,13 @@
     </div>
 
     <div class="detail__head" v-if="!getLoading">
-
       <h2 class="detail__headline">
       <button class="back" @click="goBack()" aria-hidden title="go back to overview">
         <font-awesome-icon icon="arrow-circle-left" color="red" size="lg" />
       </button>
         <a :href="detail.item.html_url">
-          #{{ detail.item.number }}
-        </a> &dash;
         {{ detail.item.title }}
+        </a>
       </h2>
     </div>
 
@@ -102,7 +100,7 @@ export default {
     },
     getLabelName: function (label) {
       const parts = label.split(':')
-      if (parts[0] === 'Version') {
+      if (parts[0] !== 'Version') {
         return label
       } else {
         return parts[1].trim()

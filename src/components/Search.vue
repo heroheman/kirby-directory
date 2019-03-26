@@ -21,6 +21,15 @@ import debounce from 'tiny-debounce'
 
 export default {
   name: 'Search',
+  data () {
+    return {
+      filter: {
+        radioType: 'typeAll',
+        radioVersion: 'versionAll',
+        hideCommercial: false
+      }
+    }
+  },
   computed: {
     search: {
       get () {
@@ -39,13 +48,17 @@ export default {
       'getLoading'
     ])
   },
-  mounted () {
-  },
   methods: {
     ...mapActions([
       'getResultsFilter',
       'getResultsSearch',
-      'setSearchQuery'
+      'getResultsPlugins',
+      'getResultsPluginsV2',
+      'getResultsPluginsV3',
+      'getResultsThemes',
+      'setSearchQuery',
+      'excludeItem',
+      'includeItem'
     ]),
     searchQuery: debounce(function (e) {
       e.preventDefault()
@@ -55,7 +68,32 @@ export default {
       } else {
         this.$router.push({ name: 'ListStart', params: { page: 1 } })
       }
-    }, 500)
+    }, 500),
+    applyFilter: function () {
+      this.applyVersionFilter()
+    },
+    applyVersionFilter: function () {
+      switch (this.filter.radioVersion) {
+        case 'version2':
+          this.excludeItem('Kirby 3 Theme')
+          this.includeItem('Kirby 2 Theme')
+          this.excludeItem('Version: 3')
+          this.includeItem('Version: 2')
+          break
+        case 'version3':
+          this.excludeItem('Kirby 2 Theme')
+          this.includeItem('Kirby 3 Theme')
+          this.excludeItem('Version: 2')
+          this.includeItem('Version: 3')
+          break
+        default:
+          this.includeItem('Kirby 2 Theme')
+          this.includeItem('Kirby 3 Theme')
+          this.includeItem('Version: 2')
+          this.includeItem('Version: 3')
+          break
+      }
+    }
   },
   beforeRouteLeave: function (to, from, next) {
     if (from.name === 'Search') {
@@ -63,6 +101,14 @@ export default {
       this.search = ''
     }
     next()
+  },
+  watch: {
+    'filter.radioVersion': function () {
+      this.applyVersionFilter()
+    },
+    'filter.radioType': function () {
+      this.applyTypeFilter()
+    }
   }
 }
 </script>
@@ -75,10 +121,10 @@ export default {
   top: 1rem;
   width: 100%;
   margin-top: .5rem;
-  margin-bottom: 6rem;
+  margin-bottom: 5.5rem;
 
-  @media screen and (min-width: $xs) {
-    margin-bottom: 6rem;
+  form {
+    margin-bottom: .5rem;
   }
 
   &__searchlabel {

@@ -2,7 +2,7 @@
   <div id="app" class="l-container l-container--grid">
     <!-- l-header -->
     <HeaderSection>
-      kirby <span>plugins</span>
+      kirby <span>directory</span>
     </HeaderSection>
 
     <main class="l-main">
@@ -14,7 +14,8 @@
 
     <footer class="l-footer">
       <p>&copy; 2018 - Frontend by <a href="https://flore.nz">Florenz Heldermann</a>
-      | Backend data provided by Jens Tornell's <a href="https://github.com/jenstornell/kirby-plugins">Github Plugin Collection</a>
+      | Backend data provided by 's <a href="https://github.com/texnixe/kirby-plugins">Github Plugin Collection</a>
+        maintained by <a href="https://github.com/texnixe/">Sonja Broda</a> and <a href="https://github.com/jenstornell/">Jens Tornell</a>
       | <router-link :to="{name: 'ContentPrivacy'}">Privacy</router-link>
       | <router-link :to="{name: 'ContentImprint'}">Imprint</router-link></p>
     </footer>
