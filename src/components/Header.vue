@@ -17,9 +17,9 @@
         title="FAQ">
         <font-awesome-icon icon="question" color="red" />
       </router-link>
-      <button class="header__toggle" @click="showMenu()">
+      <!-- <button class="header__toggle" @click="showMenu()">
         <font-awesome-icon icon="ellipsis-h" color="red" />
-      </button>
+      </button> -->
     </div>
   </header>
 
@@ -120,37 +120,6 @@
         </router-link>
       </li>
     </ul>
-
-    <!-- <ul
-      v-for="group in labelPlugins"
-      :key="group.name"
-      class="navlist navlist--label">
-
-      <li class="navlist__desc">{{group.name}}</li>
-
-      <li v-for="type in group.items" :key="type">
-        <router-link
-          @click.native="hideNav()"
-          :to="{ name: 'List', params: { label: getLabelName(group.name, type), page: 1 }}"
-          :class="['dot', `dot-${group.name}`]"
-          >
-          {{ type }}
-        </router-link>
-        <span class="navlist__exclude"
-          v-if="group.excludable && !isExcluded(getLabelName(group.name, type))"
-          :title="`hide ${getLabelName(group.name, type)}`"
-          @click="excludeItem(getLabelName(group.name, type))">
-          <font-awesome-icon icon="eye" color="#ccc" />
-        </span>
-        <span class="navlist__exclude"
-          :title="`show ${getLabelName(group.name, type)}`"
-          v-if="group.excludable && isExcluded(getLabelName(group.name, type))"
-          @click="includeItem(getLabelName(group.name, type))">
-          <font-awesome-icon icon="eye-slash" color="#ccc" />
-        </span>
-      </li>
-    </ul> -->
-
   </nav>
 </div>
 </template>
@@ -402,6 +371,7 @@ export default {
   }
 
   &--label {
+    margin-top: 1rem;
     > li {
       margin-right: 1rem;
       &::not(.navlist__desc) {
@@ -419,6 +389,7 @@ export default {
   }
 
   &--inline {
+    margin-top: 1rem;
     > li {
       display: inline-block !important;
       margin-right: 1.5rem;

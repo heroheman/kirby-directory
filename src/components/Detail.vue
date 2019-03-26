@@ -13,9 +13,8 @@
         <font-awesome-icon icon="arrow-circle-left" color="red" size="lg" />
       </button>
         <a :href="detail.item.html_url">
-          #{{ detail.item.number }}
-        </a> &dash;
         {{ detail.item.title }}
+        </a>
       </h2>
     </div>
 
