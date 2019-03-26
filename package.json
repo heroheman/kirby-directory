@@ -13,6 +13,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.1.1",
     "@fortawesome/vue-fontawesome": "^0.1.1",
     "axios": "^0.18.0",
+    "bootstrap": "^4.3.1",
+    "bootstrap-vue": "^2.0.0-rc.15",
     "highlight.js": "^9.14.2",
     "intersection-observer": "^0.5.1",
     "remove-markdown": "^0.3.0",
