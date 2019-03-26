@@ -1,5 +1,8 @@
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="info" sticky>
+  <b-navbar
+    toggleable="lg"
+    variant="white"
+    sticky>
     <b-container>
       <b-navbar-brand href="#" :to="{name: 'ListStart', params: { page: '1'} }">
         <div class="header-brand">
@@ -158,14 +161,13 @@ export default {
   margin: 0 1rem 0 0;
   vertical-align: middle;
   font-weight: 400;
-  font-size: 2rem;
 
   &::before {
     content: '';
     position: relative;
     display: inline-block;
-    width: 1.3rem;
-    height: 1.3rem;
+    width: .8rem;
+    height: .8rem;
     margin-right: .5rem;
     background: red;
     border-radius: 50%;

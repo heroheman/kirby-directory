@@ -1,16 +1,25 @@
 <template>
   <section class="search">
 
-    <form @submit.prevent="searchQuery">
-      <label for="main-search" class="search__searchlabel">Search</label>
-      <input class="search__searchfield" name="main-search" id="main-search" type="text" v-model="search" @keyup="searchQuery"
-        placeholder="search by title, description, label or author and press enter"
+    <b-jumbotron
+      header-tag="h2"
+      header-level="6"
+      bg-variant="white"
+      border-variant="black"
+      text-variant="black"
+      lead="A collection of plugins and themes for Kirby CMS">
+
+      <form @submit.prevent="searchQuery">
+        <label for="main-search" class="search__searchlabel">Search</label>
+        <b-form-input  name="main-search" id="main-search" type="text" v-model="search" @keyup="searchQuery"
+          placeholder="search by title, description, label or author and press enter"
         />
-      <button class="search__searchbutton" type="submit">
-        <span class="only-sr">Submit search</span>
-        <font-awesome-icon icon="search" color="#333" aria-hidden="true" />
-      </button>
-    </form>
+        <button class="search__searchbutton" type="submit">
+          <span class="only-sr">Submit search</span>
+          <font-awesome-icon icon="search" color="#333" aria-hidden="true" />
+        </button>
+      </form>
+    </b-jumbotron>
 
   </section>
 </template>
@@ -123,8 +132,13 @@ export default {
   margin-top: .5rem;
   margin-bottom: 5.5rem;
 
+  .jumbotron {
+    padding: 2rem;
+  }
+
   form {
     margin-bottom: .5rem;
+    position: relative;
   }
 
   &__searchlabel {
@@ -143,7 +157,7 @@ export default {
 
   &__searchbutton {
     position: absolute;
-    top: 1rem;
+    top: .5rem;
     right: 1rem;
     appearance: none;
     -webkit-appearance: none;
