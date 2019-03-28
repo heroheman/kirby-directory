@@ -1,22 +1,16 @@
 <template>
   <div id="app" class="l-container l-container--grid">
     <!-- l-header -->
-    <HeaderSection>
-      kirby <span>directory</span>
-    </HeaderSection>
-
+    <HeaderSection :searchVisible="searchVisible" />
     <main class="l-main">
-
-      <Search />
+      <Search v-observe-visibility="searchVisibilityChanged" />
       <b-container>
         <b-row>
           <b-col>
             <router-view/>
           </b-col>
         </b-row>
-
       </b-container>
-
     </main>
 
     <footer class="l-footer">
@@ -37,10 +31,21 @@ import Search from './components/Search.vue'
 export default {
   name: 'App',
   components: { HeaderSection, Search },
+  data () {
+    return {
+      searchVisible: true
+    }
+  },
   computed: {
     ...mapState([
       'meta'
     ])
+  },
+  methods: {
+    searchVisibilityChanged (searchVisible, entry) {
+      this.searchVisible = searchVisible
+      console.log(searchVisible)
+    }
   },
   metaInfo () {
     return {

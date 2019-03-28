@@ -2,6 +2,17 @@
   <div :class="['listitem', (getThumbnail(item.body) || getGif(item.body)) ? 'listitem--thumb' : '']">
 
     <router-link tag="h3" class="listitem__name" :to="'/detail/' + item.id + '/' + makeTitleSlug(item.title)" :key="item.id">
+
+      <!-- Item Type -->
+      <span class="listitem__type" v-if="item.item_type === 'plugins-v3'">
+        <span class="listitem__type-k3">Kirby 3</span>
+      </span>
+      <span class="listitem__type" v-else-if="item.item_type === 'plugins-v2'">
+        <span class="listitem__type-k2">Kirby 2</span>
+      </span>
+      <span class="listitem__type" v-else-if="item.item_type === 'themes'">
+        <span class="listitem__type-theme">Theme</span>
+      </span>
       <a>
         {{ item.title }}
       </a>
@@ -44,17 +55,6 @@
     </p>
 
     <ul class="labels listitem__labels">
-      <!-- Kirby Version -->
-      <li class="listitem__type" v-if="item.item_type === 'plugins-v3'">
-        <span class="listitem__type-k3">Kirby 3</span>
-      </li>
-      <li class="listitem__type" v-else-if="item.item_type === 'plugins-v2'">
-        <span class="listitem__type-k2">Kirby 2</span>
-      </li>
-      <li class="listitem__type" v-else-if="item.item_type === 'themes'">
-        <span class="listitem__type-theme">Theme</span>
-      </li>
-
       <!-- All Tags -->
       <li class="listitem__label" v-for="label in item.labels" :key="label.id">
         <router-link
@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     getThumbnail: function (text) {
-      const regex = /(https?:\/\/.*\.(?:png|jpg))/
+      const regex = /(https?:\/\/.*\.(?:png|jpg|jpeg))/
       let images = text.match(regex)
 
       if (images !== null) {
@@ -217,6 +217,11 @@ export default {
                 }
             }
         }
+    }
+
+    &__type {
+      position: relative;
+      top: -2px;
     }
 
     &__name {

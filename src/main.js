@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import Meta from 'vue-meta'
 import store from './store/store'
+import VueObserveVisibility from 'vue-observe-visibility'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faArrowLeft, faArrowCircleLeft, faComments, faStream, faCog, faEllipsisH, faSearch, faLink, faHome, faQuestion, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
@@ -18,6 +19,7 @@ library.add(faArrowLeft, faArrowCircleLeft, faComments, faStream, faCog, faEllip
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(BootstrapVue)
 Vue.use(Meta)
+Vue.use(VueObserveVisibility)
 
 Vue.config.productionTip = false
 

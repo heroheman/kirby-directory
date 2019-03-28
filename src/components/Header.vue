@@ -15,28 +15,30 @@
 
       <b-collapse is-nav id="nav_collapse">
 
-        <b-navbar-nav class="ml-auto" pills>
-          <b-nav-item
-            :to="{name: 'ListStart', params: { page: '1'} }"
-          >All</b-nav-item>
+        <transition>
+          <b-navbar-nav class="ml-auto" pills v-if="!searchVisible">
+            <b-nav-item
+              :to="{name: 'ListStart', params: { page: '1'} }"
+            >All</b-nav-item>
 
-          <b-nav-item
-            :to="{name: 'ListPluginsV2', params: { page: '1'} }"
-          >Plugins for Kirby 2</b-nav-item>
+            <b-nav-item
+              :to="{name: 'ListPluginsV2', params: { page: '1'} }"
+            >Plugins for Kirby 2</b-nav-item>
 
-          <b-nav-item
-            :to="{name: 'ListPluginsV3', params: { page: '1'} }"
-          >Plugins for Kirby 3</b-nav-item>
+            <b-nav-item
+              :to="{name: 'ListPluginsV3', params: { page: '1'} }"
+            >Plugins for Kirby 3</b-nav-item>
 
-          <b-nav-item
-            :to="{name: 'ListThemes', params: { page: '1'} }"
-          >Themes</b-nav-item>
+            <b-nav-item
+              :to="{name: 'ListThemes', params: { page: '1'} }"
+            >Themes</b-nav-item>
 
-          <b-nav-item
-            :to="{name: 'ContentFAQ'}"
-          >FAQ</b-nav-item>
-        </b-navbar-nav>
+            <b-nav-item
+              :to="{name: 'ContentFAQ'}"
+            >FAQ</b-nav-item>
+          </b-navbar-nav>
 
+        </transition>
       </b-collapse>
     </b-container>
   </b-navbar>
@@ -47,6 +49,7 @@ import { mapGetters, mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Header',
+  props: ['searchVisible'],
   data () {
     return {
       buttonDisabled: false,
