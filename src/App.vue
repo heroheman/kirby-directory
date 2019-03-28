@@ -44,7 +44,6 @@ export default {
   methods: {
     searchVisibilityChanged (searchVisible, entry) {
       this.searchVisible = searchVisible
-      console.log(searchVisible)
     }
   },
   metaInfo () {
