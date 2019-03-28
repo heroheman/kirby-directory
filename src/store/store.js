@@ -10,6 +10,8 @@ const repoApi = 'https://api.github.com/repos'
 // const themeApi = process.env.VUE_APP_THEME_ENDPOINT
 const itemsEndpoint = process.env.VUE_APP_ALL_ENDPOINT
 const labelsEndpoint = process.env.VUE_APP_LABELS_ENDPOINT
+const detailsEndpoint = process.env.VUE_APP_DETAIL_ENDPOINT
+const issueEndpoint = process.env.VUE_APP_ISSUE_ENDPOINT
 
 Vue.use(Vuex)
 
@@ -19,9 +21,9 @@ const state = {
   label: '',
   labels: [],
   detail: {
-    item: {},
-    comments: [],
-    readme: ''
+    issue: {},
+    details: {},
+    comments: []
   },
   displayedItems: {
     currentPage: 0,
@@ -44,6 +46,12 @@ const mutations = {
     state.items = [...items]
     // backup for reverse exclude
     state.displayedItems.results = [...state.items]
+  },
+  SET_DETAILS: (state, payload) => {
+    console.log(payload)
+    state.detail.comments = []
+    state.detail.issue = { ...payload.issue }
+    state.detail.details = { ...payload.details }
   },
   SET_SEARCH_QUERY: (state, query) => {
     state.query = query
@@ -102,13 +110,6 @@ const mutations = {
   TOGGLE_LOADING: (state) => {
     state.isLoading = !state.isLoading
   },
-  GET_DETAIL: (state, payload) => {
-    const { number } = payload
-    // empty details
-    state.detail.comments = []
-    state.detail.readme = ''
-    state.detail.item = state.items.find(i => i.id === Number(number))
-  },
   GET_README: (state, payload) => {
     // encrypt payload
     if (payload.message) {
@@ -157,6 +158,18 @@ const actions = {
     commit('TOGGLE_LOADING')
     commit('PAGE_CURRENT_RESULTS', 0)
   },
+  getDetails: async function ({ commit }, itemId) {
+    const id = itemId.number
+    const issueUrl = `${issueEndpoint}/${id}`
+    let issue = await fetch(issueUrl)
+    issue = await issue.json()
+
+    const detailUrl = `${detailsEndpoint}/${id}`
+    let details = await fetch(detailUrl)
+    details = await details.json()
+
+    commit('SET_DETAILS', { details, issue })
+  },
   removeItemsAll: function ({ commit }) {
     commit('REMOVE_ITEMS')
   },
@@ -193,9 +206,6 @@ const actions = {
     const { query, page } = payload
     commit('SET_RESULTS_SEARCH', query)
     commit('PAGE_CURRENT_RESULTS', page)
-  },
-  getDetail ({ commit }, payload) {
-    commit('GET_DETAIL', payload)
   },
   getComments: async function ({ commit }, payload) {
     const response = await fetch(`${issueApi}/${payload}/comments`)
@@ -234,7 +244,7 @@ const getters = {
   getLoading: state => state.isLoading,
   getLabel: state => state.label,
   getQuery: state => state.query,
-  getDetailTitle: state => state.detail.item.title,
+  getDetailTitle: state => state.detail.issue.title,
   getLastPage: state => {
     return Math.ceil(state.displayedItems.results.length / state.displayedItems.perPage)
   },

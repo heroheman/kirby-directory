@@ -8,13 +8,19 @@ import store from './store/store'
 import VueObserveVisibility from 'vue-observe-visibility'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faArrowLeft, faArrowCircleLeft, faComments, faStream, faCog, faEllipsisH, faSearch, faLink, faHome, faQuestion, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import {
+  faArrowLeft, faArrowCircleLeft, faComments, faStream,
+  faCog, faEllipsisH, faSearch, faLink, faHome, faQuestion,
+  faEye, faEyeSlash, faStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-library.add(faArrowLeft, faArrowCircleLeft, faComments, faStream, faCog, faEllipsisH, faSearch, faLink, faHome, faQuestion, faEye, faEyeSlash)
+library.add(
+  faArrowLeft, faArrowCircleLeft, faComments, faStream,
+  faCog, faEllipsisH, faSearch, faLink, faHome, faQuestion,
+  faEye, faEyeSlash, faStar)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(BootstrapVue)

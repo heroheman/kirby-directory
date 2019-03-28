@@ -1,30 +1,9 @@
 <template>
   <div class="detail__body-section">
 
-    <h3 class="detail__subheadline is-toggle"
-      title="Show Readme"
-      @click="showReadme()"
-      v-if="!readmeVisible"
-    >
-      <font-awesome-icon icon="stream" size="1x" />
-        Show Readme
-        for {{detail.item.title}}
-    </h3>
-
-    <h3 class="detail__subheadline is-toggle"
-      title="Hide Readme"
-      @click="hideReadme()"
-      v-else
-    >
-      <font-awesome-icon icon="stream" />
-        Hide Readme
-        for {{detail.item.title}}
-    </h3>
-
-    <div v-if="readmeVisible">
-      <pulse-loader color="red" :loading="!detail.readme.length"/>
-      <vue-markdown class="detail__readme" :source="detail.readme">
-      </vue-markdown>
+    <div>
+      <pulse-loader color="red" :loading="!readme"/>
+      <vue-markdown class="detail__readme" :source="encodeReadme(readme)" />
     </div>
   </div>
 </template>
@@ -32,48 +11,14 @@
 <script>
 import VueMarkdown from 'vue-markdown'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
-import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'DetailReadmeView',
   components: { VueMarkdown, PulseLoader },
-  data () {
-    return {
-      readmeVisible: false
-    }
-  },
-  computed: {
-    ...mapState([
-      'detail'
-    ]),
-    ...mapGetters([
-      'getLoading'
-    ])
-  },
+  props: ['readme'],
   methods: {
-    ...mapActions([
-      'getComments',
-      'getReadme'
-    ]),
-    getPluginRepo: function () {
-      let bodytext = this.detail.item.body
-      let pluginUrl
-      let urlparts = []
-
-      // eslint-disable-next-line
-      pluginUrl = bodytext.match(/https?:\/\/github.com[^\s\)]+/)
-      urlparts = pluginUrl[0].split('/')
-
-      return urlparts[3] + '/' + urlparts[4]
-    },
-    showReadme: function () {
-      if (this.detail.readme === '') {
-        this.getReadme(this.getPluginRepo())
-      }
-      this.readmeVisible = true
-    },
-    hideReadme: function () {
-      this.readmeVisible = false
+    encodeReadme: function (text) {
+      return atob(text)
     }
   }
 }
@@ -83,10 +28,16 @@ export default {
 
   .detail__readme {
     padding: 0;
-    border-top: 1px solid $cBorder;
 
     h1, h2, h3, h4, h5, h6 {
-      font-size: 2rem;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    h1, h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid #ccc;
+      margin-top: 2.5rem;
     }
 
     img {
@@ -98,11 +49,13 @@ export default {
       white-space: pre-line;
       word-wrap: break-word;
       text-align: justify;
-      font-size: 1rem;
+      border: 1px solid #ddd;
+      padding: .5rem;
+      font-size: small;
+      background: white;
 
       @media screen and (min-width: $sm) {
         white-space: pre-wrap;
-        font-size: 1.4rem;
       }
     }
 
