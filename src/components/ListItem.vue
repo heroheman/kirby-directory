@@ -1,5 +1,5 @@
 <template>
-  <div :class="['listitem', getThumbnail(item.body) ? 'listitem--thumb' : '']">
+  <div :class="['listitem', (getThumbnail(item.body) || getGif(item.body)) ? 'listitem--thumb' : '']">
 
     <router-link tag="h3" class="listitem__name" :to="'/detail/' + item.id + '/' + makeTitleSlug(item.title)" :key="item.id">
       <a>
@@ -12,6 +12,18 @@
         </a>
       </span>
     </router-link>
+
+    <!-- Gif play button -->
+    <div v-if="getGif(item.body)" class="listitem__thumb">
+      <div class="thumb thumb--gif">
+        <div class="thumb__placeholder" v-if="!showGif">
+          <button class="listitem__playbutton" title="show/hide gif" @click="toggleGif()">
+            <span class="triangle"></span>
+          </button>
+        </div>
+        <img class="listitem__gif" v-if="showGif" :src="getGif(item.body)" alt="a nice jif">
+      </div>
+    </div>
 
     <div v-if="getThumbnail(item.body)" class="listitem__thumb">
       <div class="thumb">
@@ -32,15 +44,6 @@
     </p>
 
     <ul class="labels listitem__labels">
-      <!-- Gif play button -->
-      <li v-if="getGif(item.body)">
-        <button class="listitem__playbutton" title="show/hide gif" @click="toggleGif()">
-          <span class="triangle"></span>
-          <!-- <span v-if="!showGif">Show Gif</span>
-          <span v-if="showGif">Hide Gif</span> -->
-        </button>
-      </li>
-
       <!-- Kirby Version -->
       <li class="listitem__type" v-if="item.item_type === 'plugins-v3'">
         <span class="listitem__type-k3">Kirby 3</span>
@@ -63,8 +66,6 @@
         </router-link>
       </li>
     </ul>
-
-    <img class="listitem__gif" v-if="showGif" :src="getGif(item.body)" alt="a nice jif">
 
   </div>
 </template>
@@ -176,21 +177,21 @@ export default {
     grid-template-rows: 1fr auto 1fr;
 
     @media screen and (min-width: $xs) {
-        grid-template-areas: "name" "description" "labels";
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto 1fr;
+      grid-template-areas: "name" "description" "labels";
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto 1fr;
     }
 
     &--thumb {
-        grid-template-areas: "thumb" "name" "description" "labels";
-        grid-template-columns: auto;
-        grid-template-rows: 2fr auto auto 1fr;
+      grid-template-areas: "thumb" "name" "description" "labels";
+      grid-template-columns: auto;
+      grid-template-rows: 2fr auto auto 1fr;
 
-        @media screen and (min-width: $xs) {
-            grid-template-areas: "thumb name" "thumb description" "thumb labels";
-            grid-template-columns: 20rem 1fr;
-            grid-template-rows: auto auto 1fr;
-        }
+      @media screen and (min-width: $xs) {
+        grid-template-areas: "thumb name" "thumb description" "thumb labels";
+        grid-template-columns: 15rem 1fr;
+        grid-template-rows: auto auto 1fr;
+      }
     }
 
     .list__items--themes & {
@@ -219,29 +220,51 @@ export default {
     }
 
     &__name {
-        grid-area: name;
-        display: block;
-        margin: 0;
-        margin-bottom: 1rem;
+      grid-area: name;
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin: 0;
+      margin-bottom: 1rem;
 
-        @extend %h18;
-        a {
-            @include custom-underline;
-        }
+      a {
+        @include custom-underline;
+      }
     }
 
     &__thumb {
         grid-area: thumb;
 
         .thumb {
-            overflow: hidden;
-            max-height: 12rem;
+          overflow: hidden;
+          max-height: 12rem;
 
-            @media screen and (min-width: $xs) {
-                max-height: 12rem;
-                max-width: 24rem;
-                padding-right: 2rem;
+          @media screen and (min-width: $xs) {
+            max-height: 12rem;
+            max-width: 24rem;
+            margin-right: 2rem;
+          }
+
+          &__placeholder {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 8rem;
+            background: #f3f3f3;
+
+            .listitem__playbutton {
+              position: absolute;
+              z-index: 100;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%)
             }
+          }
+
+          &--gif {
+            position: relative;
+          }
         }
 
         img {
@@ -283,13 +306,12 @@ export default {
 
     &__gif {
         max-width: 100%;
-        padding-top: 1rem;
     }
 
     &__authorname {
-        @extend %smallprint;
-    display: block;
-    @media screen and (min-width: $xs) {
+      @extend %smallprint;
+      display: block;
+      @media screen and (min-width: $xs) {
       display: inline-block;
     }
     span, a {
@@ -318,11 +340,11 @@ export default {
     grid-area: description;
     margin-bottom: 1rem;
     &--excerpt {
-      img, img, pre, ul, strong, br, table,
+      img, img, pre, ul, ol, strong, br, table,
       h1, h2, h3, h4, h5, h6, > p:first-child, blockquote + p
       { display: none; }
       p {
-        font-size: 1.4rem;
+        font-size: 1rem;
         padding: 0;
         margin: 0;
       }

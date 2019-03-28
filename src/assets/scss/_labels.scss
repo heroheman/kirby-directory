@@ -1,12 +1,13 @@
 .labels {
-    padding: 0;
+  padding: 0;
+  display: inline-block;
+  line-height: 1.5;
+
+  li {
     display: inline-block;
-    line-height: 1.5;
-    li {
-        display: inline-block;
-        margin-right: 2rem;
-        margin-bottom: 0rem;
-    }
+    margin-right: 1rem;
+    margin-bottom: 0rem;
+  }
 }
 
 .label {
@@ -47,7 +48,7 @@
   padding-left: 1.2rem;
   text-decoration: none;
   border-bottom: 0;
-  font-size: 1.4rem;
+  font-size: .8rem;
   transition: all .25s ease;
 
   &::before {
@@ -127,7 +128,7 @@ $theme-default-fg: #000;
 
 .listitem__type {
   span {
-    font-size: 1.2rem;
+    font-size: .8rem;
     padding: .1rem .3rem;
     border-width: 1px;
     border-style: solid;

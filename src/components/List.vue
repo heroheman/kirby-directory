@@ -22,17 +22,6 @@
       results per page. <br>
     </p>
 
-    <p class="alert">
-      <small>
-        <strong>Note:</strong>
-          This is a developer snapshot.
-          Due to the release of Kirby 3 and a reorganization in the Kirby plugin repository,
-          I was forced to decide to release a very early version of the directory or to offer
-          a non-functioning site.  It can and will lead to errors in functionality, usability
-          and presentation. Sorry about that.
-      </small>
-    </p>
-
     <ul
       :class="{ 'list__items--themes': isThemes }"
       class="list__items" v-if="displayedItems !== 0">
@@ -195,15 +184,6 @@ export default {
 
 <style lang="scss">
 @import './../assets/scss/_vars.scss';
-
-.alert {
-  border: 1px solid #f2f2f2;
-  background-color: #f2f2f2;
-  border-radius: 5px;
-  font-size: 1.4rem;
-  padding: 1rem;
-}
-
 .loadingwrapper {
   position: relative;
   min-width: 50vw;
@@ -243,9 +223,15 @@ export default {
   &__summary {
     @extend %smallprint;
     font-style: normal;
-    font-size: 1.3rem;
+    padding-top: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #eee;
+
+    position: sticky;
+    top: 3.5rem;
+    background: White;
+    margin: 0;
+    z-index: 120;
 
     &-excludeditem {
       cursor: pointer;
@@ -282,7 +268,6 @@ export default {
 
     span {
       @extend %smallprint;
-      font-size: inherit;
       font-style: normal;
     }
 

@@ -1,7 +1,8 @@
 <template>
   <b-navbar
     toggleable="lg"
-    variant="white"
+    variant="dark"
+    type="dark"
     sticky>
     <b-container>
       <b-navbar-brand href="#" :to="{name: 'ListStart', params: { page: '1'} }">
@@ -14,7 +15,7 @@
 
       <b-collapse is-nav id="nav_collapse">
 
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="ml-auto" pills>
           <b-nav-item
             :to="{name: 'ListStart', params: { page: '1'} }"
           >All</b-nav-item>

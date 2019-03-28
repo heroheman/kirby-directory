@@ -7,13 +7,8 @@
 
     <main class="l-main">
 
+      <Search />
       <b-container>
-        <b-row>
-          <b-col>
-            <Search />
-          </b-col>
-        </b-row>
-
         <b-row>
           <b-col>
             <router-view/>

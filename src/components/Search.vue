@@ -2,12 +2,37 @@
   <section class="search">
 
     <b-jumbotron
+      fluid
       header-tag="h2"
       header-level="6"
-      bg-variant="white"
-      border-variant="black"
-      text-variant="black"
-      lead="A collection of plugins and themes for Kirby CMS">
+      bg-variant=null
+      border-variant="dark"
+      text-variant="white"
+      header="A collection of plugins and themes for Kirby CMS">
+
+      <div class="mt-3">
+        <b-button
+          class="mr-1"
+          :to="{name: 'ListStart', params: { page: '1'} }"
+        >All</b-button>
+
+        <b-button
+          class="mr-1"
+          :to="{name: 'ListPluginsV2', params: { page: '1'} }"
+        >Plugins for Kirby 2</b-button>
+
+        <b-button
+          class="mr-1"
+          :to="{name: 'ListPluginsV3', params: { page: '1'} }"
+        >Plugins for Kirby 3</b-button>
+
+        <b-button
+          class="mr-1"
+          :to="{name: 'ListThemes', params: { page: '1'} }"
+        >Themes</b-button>
+      </div>
+
+      <hr border-variant="white" class="border-light my-4">
 
       <form @submit.prevent="searchQuery">
         <label for="main-search" class="search__searchlabel">Search</label>
@@ -127,13 +152,11 @@ export default {
 
 .search {
   position: relative;
-  top: 1rem;
   width: 100%;
-  margin-top: .5rem;
-  margin-bottom: 5.5rem;
 
   .jumbotron {
-    padding: 2rem;
+    // padding: 2rem;
+    background-color: #444;
   }
 
   form {
