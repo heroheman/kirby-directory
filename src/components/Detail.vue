@@ -42,28 +42,31 @@
               :alt="detail.details.owner.login">
               <p class="detail__meta-authorname">
                 {{detail.details.owner.login}}
-                <br>
-                <b-button
-                  size="sm"
-                  style="margin-right: .2rem;"
-                  :href="`https://github.com/${detail.details.owner.login}`"
-                  target="_blank">
-                  Follow
-                </b-button>
-                <b-button
-                  size="sm"
-                  :href="detail.details.html_url"
-                  target="_blank">
-                    <font-awesome-icon icon="star" color="#fff" aria-hidden="true" />
-                  {{detail.details.stargazers_count}}
-                </b-button>
+
+                <b-button-group class="detail__meta-authoractions">
+                  <b-button
+                    class=""
+                    size="sm"
+                    :href="`https://github.com/${detail.details.owner.login}`"
+                    target="_blank">
+                    Follow
+                  </b-button>
+
+                  <b-button
+                    size="sm"
+                    :href="detail.details.html_url"
+                    target="_blank">
+                      <font-awesome-icon icon="star" color="#fff" aria-hidden="true" />
+                    {{detail.details.stargazers_count}}
+                  </b-button>
+                </b-button-group>
               </p>
           </b-media>
         </div>
 
         <div class="detail__meta-pane">
           <h3 class="detail__meta-headline">Labels</h3>
-          <ul class="detail__labels labels">
+          <ul class="detail__labels labels" v-if="detail.issue.labels.length">
             <li class="listitem__label" v-for="label in detail.issue.labels" :key="label.id">
               <router-link
                 :to="{name:'List', params:{ label: label.name }}"
@@ -74,17 +77,21 @@
               </router-link>
             </li>
           </ul>
+          <p v-else>
+            <em>
+              No labels assigned.
+            </em>
+          </p>
         </div>
 
         <div class="detail__meta-pane" v-if="hasDetails">
-          <h3 class="detail__meta-headline">Github Stars</h3>
-            <font-awesome-icon icon="star" color="#333" aria-hidden="true" />
-          {{detail.details.stargazers_count}}
-        </div>
-
-        <div class="detail__meta-pane" v-if="hasDetails">
-          Created: {{formatDate(detail.details.created_at)}}<br>
-          Updated: {{formatDate(detail.details.updated_at)}}
+          <h3 class="detail__meta-headline">Misc</h3>
+          <p>
+            Created
+            <strong :title="detail.details.created_at">{{formatDate(detail.details.created_at)}}</strong>
+            and updated
+            <strong :title="detail.details.updated_at">{{formatDate(detail.details.updated_at)}}</strong>.
+          </p>
         </div>
       </section>
 
@@ -99,8 +106,7 @@ import VueMarkdown from 'vue-markdown'
 import DetailReadme from './DetailReadme.vue'
 import debounce from 'tiny-debounce'
 import removeMD from 'remove-markdown'
-import parse from 'date-fns/parse'
-import format from 'date-fns/format'
+import { parse, format, distanceInWordsToNow } from 'date-fns'
 
 export default {
   name: 'DetailView',
@@ -135,10 +141,13 @@ export default {
   methods: {
     parse,
     format,
+    distanceInWordsToNow,
     formatDate: function (date) {
       let formatted = parse(new Date(date))
-      formatted = format(formatted, 'DD.MM.YYYY')
-      return formatted
+      // formatted = format(formatted, 'DD.MM.YYYY')
+      formatted = distanceInWordsToNow(new Date(date))
+
+      return formatted + ' ago'
     },
     ...mapActions([
       'getDetails',
@@ -217,15 +226,18 @@ export default {
     &-authorimg {
       border-radius: 50%;
     }
-    &-authorname {
-      vertical-align: middle;
-
+    &-authoractions {
       .btn {
         display: inline-block;
+        margin-right: .2rem;
         svg {
           height: .9rem;
+          margin-right: 0;
         }
       }
+    }
+    &-authorname {
+      vertical-align: middle;
     }
   }
 
