@@ -7,7 +7,6 @@
     </div>
 
     <section class="detail" v-if="!getLoading">
-
       <section class="detail__head">
         <h2 class="detail__headline">
           <button class="back" @click="goBack()" aria-hidden title="go back to overview">
@@ -17,7 +16,9 @@
           {{ detail.issue.title }}
           </a>
         </h2>
-        <h3 class="detail__subheadline">{{ detail.details.description}}</h3>
+        <h3 class="detail__subheadline" v-if="hasDetails">
+          {{ detail.details.description}}
+        </h3>
       </section>
 
       <section class="detail__short">
@@ -25,14 +26,14 @@
         </vue-markdown>
       </section>
 
-      <section class="detail__long">
+      <section class="detail__long" v-if="hasDetails">
         <DetailReadme :readme="detail.details.readme" />
       </section>
 
       <section class="detail__meta">
-        <div class="detail__meta-pane">
+        <div class="detail__meta-pane" v-if="hasDetails">
           <h3 class="detail__meta-headline">Author</h3>
-          <b-media>
+          <b-media v-if="hasDetails">
             <img
               class="detail__meta-authorimg"
               slot="aside"
@@ -75,13 +76,13 @@
           </ul>
         </div>
 
-        <div class="detail__meta-pane">
+        <div class="detail__meta-pane" v-if="hasDetails">
           <h3 class="detail__meta-headline">Github Stars</h3>
             <font-awesome-icon icon="star" color="#333" aria-hidden="true" />
           {{detail.details.stargazers_count}}
         </div>
 
-        <div class="detail__meta-pane">
+        <div class="detail__meta-pane" v-if="hasDetails">
           Created: {{formatDate(detail.details.created_at)}}<br>
           Updated: {{formatDate(detail.details.updated_at)}}
         </div>
@@ -127,7 +128,8 @@ export default {
     ]),
     ...mapGetters([
       'getLoading',
-      'getDetailTitle'
+      'getDetailTitle',
+      'hasDetails'
     ])
   },
   methods: {

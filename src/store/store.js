@@ -48,10 +48,15 @@ const mutations = {
     state.displayedItems.results = [...state.items]
   },
   SET_DETAILS: (state, payload) => {
+    // eslint-disable-next-line
     console.log(payload)
     state.detail.comments = []
     state.detail.issue = { ...payload.issue }
-    state.detail.details = { ...payload.details }
+    if (!payload.details.message) {
+      state.detail.details = { ...payload.details }
+    } else {
+      state.detail.details = {}
+    }
   },
   SET_SEARCH_QUERY: (state, query) => {
     state.query = query
@@ -159,6 +164,9 @@ const actions = {
     commit('PAGE_CURRENT_RESULTS', 0)
   },
   getDetails: async function ({ commit }, itemId) {
+    // eslint-disable-next-line
+    console.log(issueEndpoint, detailsEndpoint)
+
     const id = itemId.number
     const issueUrl = `${issueEndpoint}/${id}`
     let issue = await fetch(issueUrl)
@@ -254,7 +262,14 @@ const getters = {
   getLabels: state => state.labels,
   getLabelsThemes: state => state.labels.filter(label => label.label_type === 'themes'),
   getLabelsPluginsV2: state => state.labels.filter(label => label.label_type === 'plugins-v2'),
-  getLabelsPluginsV3: state => state.labels.filter(label => label.label_type === 'plugins-v3')
+  getLabelsPluginsV3: state => state.labels.filter(label => label.label_type === 'plugins-v3'),
+  hasDetails: state => {
+    if (Object.keys(state.detail.details).length === 0) {
+      return false
+    } else {
+      return true
+    }
+  }
 }
 
 const store = new Vuex.Store({

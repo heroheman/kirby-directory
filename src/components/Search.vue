@@ -8,7 +8,7 @@
       bg-variant=null
       border-variant="dark"
       text-variant="white"
-      header="A collection of plugins and themes for Kirby CMS">
+      header="The <em>unoffical</em> plugin and theme collection for Kirby CMS">
 
       <div class="mt-3">
         <b-button
