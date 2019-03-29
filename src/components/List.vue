@@ -11,25 +11,49 @@
       <span v-if="label !== ''">in <strong>{{label}}</strong></span>
       <span v-if="query !== ''">for the term <strong>{{query}}</strong></span>.
       Showing
-      <select class="invisible-dropdown" v-model="displayedItems.perPage" v-on:change="updatePerPageNumber">
+      <select class="invisible-dropdown"
+        v-model="displayedItems.perPage"
+        v-on:change="updatePerPageNumber"
+      >
+
         <option disabled value="">Please select</option>
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="50">50</option>
         <option value="70">70</option>
         <option value="100">100</option>
+
       </select>
-      results per page. <br>
+      results per page. |
+      <span @click="setListitemSize('normal')">normal</span>
+      <span @click="setListitemSize('small')"> small</span> <br>
     </p>
 
+    <!-- Regular Items -->
     <ul
+      v-if="getListtype === 'normal' && displayedItems !== 0"
       :class="{ 'list__items--themes': isThemes }"
-      class="list__items" v-if="displayedItems !== 0">
+      class="list__items">
+
       <li class="list__item"
         v-for="item in displayedItems.resultsPaged"
         :key="item.id">
         <ListItem :item="item"/>
       </li>
+
+    </ul>
+
+    <!-- Small Items -->
+    <ul
+      v-if="getListtype === 'small' && displayedItems !== 0"
+      class="list__items">
+
+      <li class="list__item--small"
+        v-for="item in displayedItems.resultsPaged"
+        :key="item.id">
+        <ListItemSmall :item="item"/>
+      </li>
+
     </ul>
 
     <Pagination />
@@ -40,13 +64,14 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import ListItem from './ListItem.vue'
+import ListItemSmall from './ListItemSmall.vue'
 import Pagination from './Pagination.vue'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import debounce from 'tiny-debounce'
 
 export default {
   name: 'List',
-  components: { ListItem, Pagination, PulseLoader },
+  components: { ListItem, ListItemSmall, Pagination, PulseLoader },
   metaInfo () {
     return {
       title: this.getLabel || this.getQuery || 'Home',
@@ -80,6 +105,7 @@ export default {
       'getLoading',
       'getLabel',
       'getQuery',
+      'getListtype',
       'getPluginItems'
     ]),
     hasItems: function () {
@@ -97,6 +123,7 @@ export default {
       'getResultsFilter',
       'getResultsSearch',
       'setItemsPerPage',
+      'setListitemSize',
       'setSearchQuery',
       'removeQuery',
       'removeLabel'
@@ -296,6 +323,11 @@ export default {
     border-bottom: 1px solid #eee;
     margin-bottom: 3rem;
     padding: 2rem 0;
+
+    &--small {
+      border-bottom: 1px solid #eee;
+      margin: 1rem 0;
+    }
   }
 
 }

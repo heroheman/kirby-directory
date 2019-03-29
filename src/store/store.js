@@ -26,6 +26,7 @@ const state = {
     comments: []
   },
   displayedItems: {
+    listtype: 'normal',
     currentPage: 0,
     perPage: 20,
     maxPage: '',
@@ -138,6 +139,9 @@ const mutations = {
   SET_ITEMS_PER_PAGE: (state, payload) => {
     state.displayedItems.perPage = payload
   },
+  SET_LISTITEM_SIZE: (state, size) => {
+    state.displayedItems.listtype = size
+  },
   REMOVE_QUERY: (state) => {
     state.query = ''
   },
@@ -238,6 +242,9 @@ const actions = {
     commit('SET_ITEMS_PER_PAGE', payload)
     commit('PAGE_CURRENT_RESULTS', 1)
   },
+  setListitemSize ({ commit }, size) {
+    commit('SET_LISTITEM_SIZE', size)
+  },
   async getLabels ({ commit }) {
     const labels = await fetch(labelsEndpoint)
     const items = await labels.json()
@@ -263,6 +270,7 @@ const getters = {
   getLabelsThemes: state => state.labels.filter(label => label.label_type === 'themes'),
   getLabelsPluginsV2: state => state.labels.filter(label => label.label_type === 'plugins-v2'),
   getLabelsPluginsV3: state => state.labels.filter(label => label.label_type === 'plugins-v3'),
+  getListtype: state => state.displayedItems.listtype,
   hasDetails: state => {
     if (Object.keys(state.detail.details).length === 0) {
       return false

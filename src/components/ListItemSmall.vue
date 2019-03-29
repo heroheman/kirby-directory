@@ -1,5 +1,5 @@
 <template>
-  <div :class="['listitem','listitem--normal', (getThumbnail(item.body) || getGif(item.body)) ? 'listitem--thumb' : '']">
+  <div class="listitem listitem--small">
 
     <router-link tag="h3" class="listitem__name" :to="'/detail/' + item.id + '/' + makeTitleSlug(item.title)" :key="item.id">
 
@@ -23,37 +23,6 @@
         </a>
       </span>
     </router-link>
-
-    <!-- Gif play button -->
-    <div v-if="getGif(item.body)" class="listitem__thumb">
-      <div class="thumb thumb--gif">
-        <div class="thumb__placeholder" v-if="!showGif">
-          <button class="listitem__playbutton" title="show/hide gif" @click="toggleGif()">
-            <span class="triangle"></span>
-          </button>
-        </div>
-        <img class="listitem__gif" v-if="showGif" :src="getGif(item.body)" alt="a nice jif">
-      </div>
-    </div>
-
-    <div v-if="getThumbnail(item.body)" class="listitem__thumb">
-      <div class="thumb">
-        <v-lazy-image
-          :src="getThumbnail(item.body)"
-          :alt="item.title"
-        />
-      </div>
-    </div>
-
-    <VueMarkdown v-if="item.body"
-      :source="cleanMarkdown(item.body)"
-      class="listitem__description listitem__description--excerpt">
-    </VueMarkdown>
-
-    <p class="listitem__description listitem__description--excerpt" v-else >
-      Could'nt find any description
-    </p>
-
     <ul class="labels listitem__labels">
       <!-- All Tags -->
       <li class="listitem__label" v-for="label in item.labels" :key="label.id">
@@ -71,13 +40,8 @@
 </template>
 
 <script>
-import VueMarkdown from 'vue-markdown'
-import VLazyImage from 'v-lazy-image'
-// import removeMD from 'remove-markdown'
-
 export default {
   name: 'ListItem',
-  components: { VueMarkdown, VLazyImage },
   props: [
     'item'
   ],
@@ -87,26 +51,6 @@ export default {
     }
   },
   methods: {
-    getThumbnail: function (text) {
-      const regex = /(https?:\/\/.*\.(?:png|jpg|jpeg))/
-      let images = text.match(regex)
-
-      if (images !== null) {
-        return images[0]
-      } else {
-        return false
-      }
-    },
-    getGif: function (text) {
-      const regex = /(https?:\/\/.*\.(?:gif|gif))/
-      let gifs = text.match(regex)
-
-      if (gifs !== null) {
-        return gifs[0]
-      } else {
-        return false
-      }
-    },
     toggleGif: function () {
       this.showGif = !this.showGif
     },
@@ -123,18 +67,6 @@ export default {
         urlparts = pluginUrl[0].split('/')
         return urlparts[3]
       }
-    },
-    cleanMarkdown: function (description) {
-      let cleanDesc
-      // remove img markdown from text
-      cleanDesc = description.replace(/(!\[.*?\]\()(.+?)(\))/g, '')
-      // remove markdown
-      // cleanDesc = removeMD(description, { useImgAltText: false })
-      // remove urls
-      // cleanDesc = description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '')
-      // remove the single Github, that has no link anymore. sad.
-      // cleanDesc = description.replace(/GitHub/ig, '')
-      return cleanDesc
     },
     makeTitleSlug: function (title) {
       return title.toString().toLowerCase()
