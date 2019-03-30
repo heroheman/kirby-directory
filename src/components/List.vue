@@ -6,63 +6,80 @@
       </div>
     </div>
 
-    <p class="list__summary" v-if="hasItems">
-      There are currently <strong>{{displayedItems.results.length}}</strong> results
-      <span v-if="label !== ''">in <strong>{{label}}</strong></span>
-      <span v-if="query !== ''">for the term <strong>{{query}}</strong></span>.
-      Showing
-      <select class="invisible-dropdown"
-        v-model="displayedItems.perPage"
-        v-on:change="updatePerPageNumber"
-      >
+    <div class="sticky-summary">
+      <b-row>
+        <b-col>
+          <p class="list__summary" v-if="hasItems">
+            There are currently <strong>{{displayedItems.results.length}}</strong> results
+            <span v-if="label !== ''">in <strong>{{label}}</strong></span>
+            <span v-if="query !== ''">for the term <strong>{{query}}</strong></span>.
+            Showing
+            <select class="invisible-dropdown"
+              v-model="displayedItems.perPage"
+              v-on:change="updatePerPageNumber"
+            >
 
-        <option disabled value="">Please select</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-        <option value="70">70</option>
-        <option value="100">100</option>
+              <option disabled value="">Please select</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="70">70</option>
+              <option value="100">100</option>
 
-      </select>
-      results per page. |
-      <span @click="setListitemSize('normal')">normal</span>
-      <span @click="setListitemSize('small')"> small</span> <br>
-    </p>
+            </select>
+            results per page. |
+            <span @click="setListitemSize('normal')">normal</span>
+            <span @click="setListitemSize('small')"> small</span> <br>
+          </p>
+        </b-col>
+      </b-row>
+    </div>
 
-    <!-- Regular Items -->
-    <ul
-      v-if="getListtype === 'normal' && displayedItems !== 0"
-      :class="{ 'list__items--themes': isThemes }"
-      class="list__items">
+    <b-row>
+      <b-col cols="3">
+        <QuickNavigation />
+      </b-col>
 
-      <li class="list__item"
-        v-for="item in displayedItems.resultsPaged"
-        :key="item.id">
-        <ListItem :item="item"/>
-      </li>
+      <b-col cols="9">
+        <!-- Regular Items -->
+        <ul
+          v-if="getListtype === 'normal' && displayedItems !== 0"
+          :class="{ 'list__items--themes': isThemes }"
+          class="list__items">
 
-    </ul>
+          <li class="list__item"
+            v-for="item in displayedItems.resultsPaged"
+            :key="item.id">
+            <ListItem :item="item"/>
+          </li>
 
-    <!-- Small Items -->
-    <ul
-      v-if="getListtype === 'small' && displayedItems !== 0"
-      class="list__items">
+        </ul>
 
-      <li class="list__item--small"
-        v-for="item in displayedItems.resultsPaged"
-        :key="item.id">
-        <ListItemSmall :item="item"/>
-      </li>
+        <!-- Small Items -->
+        <ul
+          v-if="getListtype === 'small' && displayedItems !== 0"
+          class="list__items">
 
-    </ul>
+          <li class="list__item--small"
+            v-for="item in displayedItems.resultsPaged"
+            :key="item.id">
+            <ListItemSmall :item="item"/>
+          </li>
 
-    <Pagination />
+        </ul>
+      </b-col>
+    </b-row>
+
+    <b-row>
+      <Pagination />
+    </b-row>
 
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
+import QuickNavigation from './QuickNavigation.vue'
 import ListItem from './ListItem.vue'
 import ListItemSmall from './ListItemSmall.vue'
 import Pagination from './Pagination.vue'
@@ -71,7 +88,7 @@ import debounce from 'tiny-debounce'
 
 export default {
   name: 'List',
-  components: { ListItem, ListItemSmall, Pagination, PulseLoader },
+  components: { ListItem, ListItemSmall, Pagination, PulseLoader, QuickNavigation },
   metaInfo () {
     return {
       title: this.getLabel || this.getQuery || 'Home',
@@ -230,6 +247,15 @@ export default {
   }
 }
 
+.sticky-summary {
+
+    position: sticky;
+    top: 3.5rem;
+    background: White;
+    margin: 0;
+    z-index: 120;
+}
+
 .invisible-dropdown {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -253,12 +279,6 @@ export default {
     padding-top: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #eee;
-
-    position: sticky;
-    top: 3.5rem;
-    background: White;
-    margin: 0;
-    z-index: 120;
 
     &-excludeditem {
       cursor: pointer;
